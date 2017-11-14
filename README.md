@@ -14,7 +14,7 @@
 
 暂时进行简单的划分，如果后续内容较多，会进行目录的重新规划。
 
-* [常见问题](https://github.com/GuoXiaoyang/Interview-Questions/GeneralQuestions.md)
+* [常见问题](https://github.com/GuoXiaoyang/Interview-Questions/blob/master/GeneralQuestions.md)
 * [HTML相关问题]()
 * [CSS问题]()
 * [JS问题]()
