@@ -72,25 +72,42 @@ XHTML是XML的子集，相比HTML语法更为严格，比如元素一定要自�
 
 #### 如果网页内容需要支持多语言，你会怎么做？
 
+使用utf-8编码，使用`lang`属性来表示网站语言或元素语言；服务端设置`Content-Language`。
 
+之前用React-Intl时，需要在JS中先导入所需语言，然后配置翻译文件，按需加载。
 
 ---
 
 #### 在设计和开发多语言网站时，有哪些问题你必须要考虑？
 
-
+* 首先当然是内容上的翻译，注意日期／时间／单复数／用词习惯／当地习俗
+* 根据用户地阅读习惯适配网页，比如阅读方向／断句／字体等
+* 最好用户可自行选择语言
 
 ---
 
 #### 使用 `data- `属性的好处是什么？
 
-
+使HTML能够存储自定义的数据，提供JS进行扩展操作。元素上的data属性在JS中可以用元素的dataset属性获取。
 
 ---
 
 #### 如果把 HTML5 看作做一个开放平台，那它的构建模块有哪些？
 
+考虑页面内容结构的话，HTML包含以下重要元素：
 
+- `<article>`
+- `<aside>`
+- `<audio>`
+- `<canvas>`
+- `<figcaption>`
+- `<figure>`
+- `<footer>`
+- `<header>`
+- `<hgroup>`
+- `<output>`
+- `<section>`
+- `<video>`
 
 ---
 
@@ -129,3 +146,5 @@ XHTML是XML的子集，相比HTML语法更为严格，比如元素一定要自�
 [1] http://www.jianshu.com/p/c3dcdad42e6d
 
 [2] https://www.sitepoint.com/differences-html-xhtml/
+
+[3] https://neal.codes/blog/front-end-interview-questions-html#fn:3
