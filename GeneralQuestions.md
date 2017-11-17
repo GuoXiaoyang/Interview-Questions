@@ -323,7 +323,7 @@ CORS全称Cross-Origin Resource Sharing。
 
 当然是用来解决跨域请求的问题，XHR中是不能进行跨域请求资源的，通过服务器设置可以接收跨域的API请求／静态资源请求等。
 
-服务器设置跨域，有三个与CORS请求相关的字段，都以`Access-Control-`开头。
+服务器设置跨域<sup><a href=http://www.ruanyifeng.com/blog/2016/04/cors.html">1</a></sup>，有三个与CORS请求相关的字段，都以`Access-Control-`开头。
 
 **（1）Access-Control-Allow-Origin**
 
