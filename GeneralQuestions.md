@@ -141,7 +141,203 @@ SEO：
 
 #### 你能描述渐进增强 (progressive enhancement) 和优雅降级 (graceful degradation) 之间的不同吗?
 
+这两种都是网页开发的流程。
+
+* 渐进增强比较像瀑布式模型，先考虑兼容性，适配低版本及兼容性差浏览器；然后在基础上对现代浏览器进行功能的增强。
+* 优雅降级则更接近敏捷开发，先针对现代浏览器将功能开发完善，然后对于老旧版本浏览器进行功能或者页面上的降级。
+
+---
+
+#### 你如何对网站的文件和资源进行优化？
+
+* 尽可能减少静态资源数量：比如雪碧图、JS／CSS的压缩合并、使用SVG或者CSS来绘矢量图
+* 静态资源缓存：服务器缓存的配置
+* 优化网络环境：CDN加速，http压缩传输
+* 优化加载体验：JS异步加载
+
+---
+
+#### 浏览器同一时间可以从一个域名下载多少资源？
+
+依据浏览器实现而不同，现代浏览器大约6-8个，老版本会少一些。
+
+```
+Firefox 2:  2  
+Firefox 3+: 6  
+Opera 9.26: 4  
+Opera 12:   6  
+Safari 3:   4  
+Safari 5:   6  
+IE 7:       2  
+IE 8:       6  
+IE 10:      8  
+Chrome:     6  
+```
+
+例外情况：如果使用多个子域名反向代理到同一个根域名，就可以增加静态资源的下载数量了。
+
+---
+
+#### 请说出三种减少页面加载时间的方法。(加载时间指感知的时间或者实际加载时间)
+
+感觉和`你如何对网站的文件和资源进行优化`题目有一定的相似，当然网站资源的优化对于页面的加载时间肯定是提升的。
+
+- 尽可能减少静态资源数量：比如雪碧图、JS／CSS的压缩合并、使用SVG或者CSS来绘矢量图
+
+- 静态资源缓存：服务器缓存的配置
+
+- 优化网络环境：CDN加速，http压缩传输
+
+- 优化加载体验：JS异步加载
+
+- 预加载数据，比如在用户可能访问页面之前就获取页面的数据；
+
+  上述是提升实际加载时间，减少感知时间的方法：
+
+- 提供加载进度条或者其他加载动画
+
+---
+
+#### 如果你参与到一个项目中，发现他们使用 Tab 来缩进代码，但是你喜欢空格，你会怎么做？
+
+当然是实用Tab了，尊重团队合作嘛。
+
+当然有些办法可以让你更好的改变：配置编辑器的缩进为Tab；配置代码Lint，提交前进行检查或者用钩子更改不符要求的缩进。
+
+---
+
+#### 请写一个简单的幻灯效果页面。
+
+一开始想的方案是，数组存储图片的路径，点击切换`<img>`标签的`src`属性。但是这样用户切换图片时，会有加载延迟。所以比较好的方案应该是：
+
+HTML中定义好slide列表，只有当前显示的图片有显示类：
+
+```HTML
+<div class="slide-page">
+  <div class="left"></div>
+  <div class="right"></div>
+  <ul class="slide-list">
+    <li class="slide"><img src="XX1"></li>
+  	<li class="slide show"><img src="XX2"></li>
+  	<li class="slide"><img src="XX3"></li> 
+  </ul>
+</div>
+```
+
+定义样式
+
+```CSS
+.slide-page {
+  position:fixed;
+  top: 0;
+  left: 0;
+}
+.slide {
+  display: none;
+}
+.show {
+  display:block;
+}
+```
+
+为slide框划分左／右方向键区域，分别绑定点击事件，移去当前图片显示类，即将显示的图片添加显示类，另外注意判别边界。
+
+```javascript
+const currentSlideIndex = 0;
+left.addEventListener('click', () => {
+  if(currentSlideIndex > 0) {
+    slideList[currentSlideIndex].classList.remove('show');
+    currentSlideIndex--;
+    slideList[currentSlideIndex].classList.add('show');
+  }
+});
+right.addEventListener('click', () => {
+  if(currentSlideIndex < listLength-1) {
+    slideList[currentSlideIndex].classList.remove('show');
+    currentSlideIndex++;
+    slideList[currentSlideIndex].classList.add('show');
+  }
+});
+```
+
+---
+
+#### 如果今年你打算熟练掌握一项新技术，那会是什么？
+
+今年已经年底啦。。作为一个新手，目前还是希望对已学的知识框架打好基础，如果有余力，希望能够把Node原理和MongoDB深入学习下，改变目前对后端停留在框架使用的局面。也很想抽空学习下Vue，毕竟还没有接触过这个框架嘞
+
+---
+
+#### 请谈谈你对网页标准和标准制定机构重要性的理解。
+
+其实这个比较好理解吧，就像上次去买一个水龙头的时候，商家告诉担心口径大小不一致的我们，全世界水龙头的大小就那么几种，不会有错的。
+
+本质上就是为了世界和平和资源最大化利用😅吧，毕竟如果没有标准，各大厂商和利益机构会尽可能的维护自己的利益，这样可能会出现XX浏览器Web开发工程师和XX手机Web开发工程师😂。
+
+所以一定要有标准，而且标准的制定者最好是第三方或者至少不要被某家利益方掌控
+
+---
+
+#### 什么是 FOUC (无样式内容闪烁)？你如何来避免 FOUC？
+
+浏览器在加载完DOM后如果继续加载样式(比如CSS中的`import`或者JS脚本中加载样式)，那么浏览器会先以默认样式呈现内容，然后渲染新的样式，总归是个容易分散用户注意力和显得不太专业的用户体验。
+
+避免方式就是在`<head>`标签内尽量一次性引入样式文件。
+
+---
+
+#### 请解释什么是 ARIA 和屏幕阅读器 (screenreaders)，以及如何使网站实现无障碍访问 (accessible)。
+
+老实说我了解得不多，对目前国内网页的无障碍实现情况真心没有接触过。Google搜索了一番也没有介绍国内网站对无障碍访问的支持力度，所以顺手在知乎上提出该[问题](https://www.zhihu.com/question/68265768?guide=1)。
+
+> ARIA 是一个为残疾人士等提供无障碍访问动态、可交互 Web 内容的技术规范，为浏览器、媒体播放器、辅助技术的开发人员以及 Web 内容开发者定义了可以获得更广泛跨平台可访问性的方法。
+>
+> 屏幕阅读器是一种可将文字、图形以及电脑接口的其他部分（借文字转语音技术）转换成语音及/或点字的软件。
+
+简单说下个人理解的一些常用方法来实现无障碍访问：
+
+* 合理的HTML语义化，帮助屏幕阅读器进行转化
+
+
+* 添加必要属性，比如`alt`属性，`role`属性
+
+---
+
+#### 请解释 CSS 动画和 JavaScript 动画的优缺点。
+
+动画这块目前也写得很少，大概总结下：
+
+* CSS动画
+
+  优点在于使用GPU计算，不占用JS资源；缺点是相对难掌控，因为逻辑性要差一些，旧版浏览器不支持
+
+* JavaScript动画
+
+  与CSS动画相反，占用主线程资源但能够精细控制
+
+---
+
+#### 什么是跨域资源共享 (CORS)？它用于解决什么问题？
+
+CORS全称Cross-Origin Resource Sharing。
+
+当然是用来解决跨域请求的问题，XHR中是不能进行跨域请求资源的，通过服务器设置可以接收跨域的API请求／静态资源请求等。
+
+服务器设置跨域，有三个与CORS请求相关的字段，都以`Access-Control-`开头。
+
+**（1）Access-Control-Allow-Origin**
+
+该字段是必须的。它的值要么是请求时`Origin`字段的值，要么是一个`*`，表示接受任意域名的请求。
+
+**（2）Access-Control-Allow-Credentials**
+
+该字段可选。它的值是一个布尔值，表示是否允许发送Cookie。默认情况下，Cookie不包括在CORS请求之中。设为`true`，即表示服务器明确许可，Cookie可以包含在请求中，一起发给服务器。这个值也只能设为`true`，如果服务器不要浏览器发送Cookie，删除该字段即可。
+
+**（3）Access-Control-Expose-Headers**
+
+该字段可选。CORS请求时，`XMLHttpRequest`对象的`getResponseHeader()`方法只能拿到6个基本字段：`Cache-Control`、`Content-Language`、`Content-Type`、`Expires`、`Last-Modified`、`Pragma`。如果想拿到其他字段，就必须在`Access-Control-Expose-Headers`里面指定。上面的例子指定，`getResponseHeader('FooBar')`可以返回`FooBar`字段的值。
 
 
 
+[ 1 ] 跨域：http://www.ruanyifeng.com/blog/2016/04/cors.html
 
