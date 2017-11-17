@@ -15,10 +15,10 @@
 暂时进行简单的划分，如果后续内容较多，会进行目录的重新规划。
 
 * [常见问题](https://github.com/GuoXiaoyang/Interview-Questions/blob/master/GeneralQuestions.md)
-* [HTML相关问题](https://github.com/GuoXiaoyang/Interview-Questions/blob/master/)
-* [CSS问题](https://github.com/GuoXiaoyang/Interview-Questions/blob/master/)
-* [JS问题](https://github.com/GuoXiaoyang/Interview-Questions/blob/master/)
-* [测试相关问题](https://github.com/GuoXiaoyang/Interview-Questions/blob/master/)
-* [性能相关问题](https://github.com/GuoXiaoyang/Interview-Questions/blob/master/)
-* [网络相关问题](https://github.com/GuoXiaoyang/Interview-Questions/blob/master/)
-* [代码相关问题](https://github.com/GuoXiaoyang/Interview-Questions/blob/master/)
+* [HTML相关问题](https://github.com/GuoXiaoyang/Interview-Questions/blob/master/HTMLQuestions)
+* [CSS问题](https://github.com/GuoXiaoyang/Interview-Questions/blob/master/CSSQuestions)
+* [JS问题](https://github.com/GuoXiaoyang/Interview-Questions/blob/master/JavaScriptQuestions)
+* [测试相关问题](https://github.com/GuoXiaoyang/Interview-Questions/blob/master/TestQuestions)
+* [性能相关问题](https://github.com/GuoXiaoyang/Interview-Questions/blob/master/PerformenceQuestions)
+* [网络相关问题](https://github.com/GuoXiaoyang/Interview-Questions/blob/master/NetworkQuestions)
+* [代码相关问题](https://github.com/GuoXiaoyang/Interview-Questions/blob/master/CodeQuestions)
