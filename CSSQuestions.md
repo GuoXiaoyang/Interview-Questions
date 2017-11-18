@@ -2,7 +2,9 @@
 
 #### CSS 中类 (classes) 和 ID 的区别。
 
+ID唯一，CSS
 
+类不唯一
 
 ---
 
