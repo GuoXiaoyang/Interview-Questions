@@ -2,31 +2,82 @@
 
 #### CSS 中类 (classes) 和 ID 的区别。
 
-ID唯一，CSS
-
-类不唯一
+* ID唯一，CSS用`#`选择
+* 类不唯一，CSS用`.`选择，
 
 ---
-
-
 
 #### 请问 "resetting" 和 "normalizing" CSS 之间的区别？你会如何选择，为什么？
 
+都是解决浏览器默认样式不一致的问题
+
+`resetting`重置所有样式
+
+`normalizing`只是修改一些样式让不同浏览器一致，相比起来更轻量级
+
 ---
 
-#### 请解释浮动 (Floats) 及其工作原理。
+#### 请解释浮动 (Floats) 及其工作原理。 
+
+浮动使得元素脱离当前文档流，向指定方向移动直至遇到其他浮动元素或者父元素，初始是为了解决图像的文本围绕效果。现在是很多网页布局的一种方式。
 
 ---
 
 #### 描述`z-index`和叠加上下文是如何形成的。
 
+这个问题比较有名的CSS博主有篇文章比较详细<sup><a href="http://www.zhangxinxu.com/wordpress/2016/01/understand-css-stacking-context-order-z-index/">1</a></sup>，我大概总结下：
+
+`z-index`描述元素在z轴的显示顺序，指示元素如何堆叠在屏幕上，大部分元素默认值auto。当元素发生层叠的时候，其覆盖关系遵循下面2个准则：
+
+* 谁大谁上：在同一个层叠上下文中，较高`z-index`值的元素覆盖低`z-index`值的元素。
+* 后来居上：当元素的层叠水平一致、层叠顺序相同的时候，在DOM流中处于后面的元素会覆盖前面的元素。
+
+
+
+由于父元素嵌套子元素，所以层叠上下文主要描述了元素所处的局部层叠结构，毕竟不同的父元素里同样`z-index`值的元素层叠水平是不一致的。层叠上下文分为根元素层叠上下文／定位元素`z-index`非auto时的层叠上下文／CSS3中的层叠上下文。
+
+
+
 ---
 
 #### 请描述 BFC(Block Formatting Context) 及其如何工作。
 
+日常JS可能更关注些，对块级格式上下文的确不太了解，参考了这篇博文<sup><a href="http://kayosite.com/block-formatting-contexts-in-detail.html">2</a></sup>。
+
+触发了块级格式上下文的元素可以看作是隔离的独立容器，容器里面的元素不会在布局上影响到外面的元素，并且 BFC 具有普通容器没有的一些特性，例如可以包含浮动元素，防止出现高度塌陷的问题。
+
+触发 BFC 的条件如下：
+
+- 浮动元素，float 除 none 以外的值
+- 绝对定位元素，position（absolute，fixed）
+- display 为以下其中之一的值 inline-blocks，table-cells，table-captions
+- overflow 除了 visible 以外的值（hidden，auto，scroll）
+
+主要有3个特性：
+
+* 可以阻止外边距折叠
+
+
+* 可以包含浮动元素
+
+
+* 阻止元素被浮动元素覆盖
+
 ---
 
 #### 列举不同的清除浮动的技巧，并指出它们各自适用的使用场景。
+
+这篇博文总结得非常专业。貌似CSS的每个问题都可以开一篇博文来详细分析啊，可能CSS比较需要`show me the code, show me the result`吧。
+
+浮动引起的问题主要是父元素内容高度不会被撑开，导致高度塌陷。清除浮动主要两种方案：`clear`和BFC元素(上个问题提到的能够包含浮动元素)。
+
+`clear`有几种方法
+
+* 直接对浮动元素的兄弟元素使用，但是这样兄弟元素的外边距会被浮动元素影响，大于浮动元素高度才能生效
+* 空`div`元素使用`clear:float`，但是破坏语义和结构分离的原则
+* `:after`伪元素，通常该方法弊端最少
+
+BFC元素根据上一个问题有几种方法，比如`overflow`，父元素设置浮动或者改变`display`等，但父元素设置浮动会将问题传递给父元素的父元素，改变`display`则会破坏元素的盒子模型，所以`overflow`方法比较适用。
 
 ---
 
@@ -115,3 +166,9 @@ ID唯一，CSS
 #### 请问为何要使用 `translate()` 而非 absolute positioning，或反之的理由？为什么？
 
 ---
+
+#### 参考文献
+
+[1] http://www.zhangxinxu.com/wordpress/2016/01/understand-css-stacking-context-order-z-index/
+
+[2] http://kayosite.com/block-formatting-contexts-in-detail.html
