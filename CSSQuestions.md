@@ -95,20 +95,108 @@ BFC元素根据上一个问题有几种方法，比如`overflow`，父元素设�
 
 大概查询了下方案，真的不少<sup><a href="https://css-tricks.com/the-image-replacement-museum/">5</a></sup>：
 
-1. **Fahrner图片替换法（FIR）**
+1. **2015 H5BP**替换法
 
 ```html
-<h1 id="fir"><span>Fahrner Image Replacement</span></h1>
+<h3 class="visuallyhidden">
+  CSS-Tricks
+</h3>
 ```
 
 ```css
-#fir {
+h3.visuallyhidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+```
+
+
+
+该方法并没有真的进行图片替换，只是将文字隐藏起来的同时对屏幕阅读器可见。图片可自行添加其他元素。
+
+* **2012 H5BP替换法**
+
+```html
+<h3 class="h5bp">
+  CSS-Tricks
+</h3>
+```
+
+```css
+h3.h5bp {
+  border: 0;
+  font: 0/0 a;
+  text-shadow: none;
+  color: transparent;
+  background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-90/test.png);
+  width: 300px;
+  height: 75px;
+}
+```
+
+将字体大小设为0来隐藏文字，貌似是一个错误的语法但可以生效？
+
+- **2012 Scott Kellum替换法**
+
+```html
+<h3 class="skm">
+  CSS-Tricks
+</h3>
+```
+
+```css
+h3.skm {
+  width: 300px;
+  height: 75px;
+  background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-90/test.png);
+  text-indent: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+}
+```
+
+将文字缩进到不可见。
+
+- **2003 Phark替换法**
+
+```html
+<h3 class="phark">
+  CSS-Tricks
+</h3>
+```
+
+```css
+h3.phark {
+  width: 300px;
+  height: 75px;
+  background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-90/test.png);
+  text-indent: -9999px;
+}
+```
+
+同样将文字缩进到不可见。在浏览器不能显示图片时，丢失文字。
+
+- **2003 Fahrner替换法（FIR）**
+
+```html
+<h3 class="fir">
+  <span>Fahrner Image Replacement</span>
+</h3>
+```
+
+```css
+h3.fir {
   width: 300px;
   height: 300px;
   background: url(fir.jpg) no-repeat;
 }
-
-#fir span {
+h3.fir span {
   display: none;
 }
 
@@ -118,28 +206,56 @@ BFC元素根据上一个问题有几种方法，比如`overflow`，父元素设�
 
 ​	优点：使用CSS而不是标记语法提供图片，更改图片只需更改CSS。
 
-​	缺点：
+​	缺点：需要一组不具备任何语义的`<span>`标签；`display`属性影响屏幕阅读器使用者；浏览器不能显示图片时，文字不可显示。
 
--  需要一组不具备任何语义的`<span>`标签才能运作
-- display属性影响屏幕阅读器使用者
-- 关闭浏览器显示图片，同时启用CSS支持时，文字图片均不可显示。
+- **2003 Glider/Levin 替换法**
 
- 
+```html
+<h3 class="levin">
+  <span></span>CSS-Tricks
+</h3>
+```
+
+```css
+h3.levin {
+  width: 300px;
+  height: 75px;
+  position: relative;
+}
+h3.levin span {
+  background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-90/test.png);
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+```
+
+使用空`<span>`标签显示图片，覆盖文字，在不显示图像时能够显示文字；但该方法要求图片不能透明，否则会显示出文字。
+
+
 
 ---
 
 #### 你会如何解决特定浏览器的样式问题？
 
+可能表单内容多一些
+
 ---
 
 #### 如何为有功能限制的浏览器提供网页？
+
+
 
 ---
 
 #### 你会使用哪些技术和处理方法？
 
+
+
 ---
 #### 有哪些的隐藏内容的方法 (如果同时还要保证屏幕阅读器可用呢)？
+
+这个和图像替换的方法类似吧，隐藏内容但保证阅读器可用，需要
 
 ---
 #### 你用过栅格系统 (grid system) 吗？如果使用过，你最喜欢哪种？
