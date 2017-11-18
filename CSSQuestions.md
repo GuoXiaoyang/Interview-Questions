@@ -67,7 +67,7 @@
 
 #### 列举不同的清除浮动的技巧，并指出它们各自适用的使用场景。
 
-这篇博文总结得非常专业。貌似CSS的每个问题都可以开一篇博文来详细分析啊，可能CSS比较需要`show me the code, show me the result`吧。
+这篇博文<sup><a href="http://kayosite.com/remove-floating-style-in-detail.html">3</a></sup>总结得非常专业。貌似CSS的每个问题都可以开一篇博文来详细分析啊，可能CSS比较需要`show me the code, show me the result`吧。
 
 浮动引起的问题主要是父元素内容高度不会被撑开，导致高度塌陷。清除浮动主要两种方案：`clear`和BFC元素(上个问题提到的能够包含浮动元素)。
 
@@ -83,9 +83,48 @@ BFC元素根据上一个问题有几种方法，比如`overflow`，父元素设�
 
 #### 请解释 CSS sprites，以及你要如何在页面或网站中实现它。
 
+雪碧图，合并图片到一张大图，然后通过来`background-position`定位需要的图像；减少http请求次数。
+
 ---
 
 #### 你最喜欢的图片替换方法是什么，你如何选择使用。
+
+这个也没有接触过诶；
+
+图片替换主要是指将文字替换成图片的技术，即在html语句中使用文字，浏览器显示时用对应的图片显示。其意义在于便于做网站优化（SEO），文字才是搜索引擎寻找的主要对象<sup><a href="https://www.cnblogs.com/wmhuang/p/image_change.html">4</a></sup>。
+
+大概查询了下方案，真的不少<sup><a href="https://css-tricks.com/the-image-replacement-museum/">5</a></sup>：
+
+1. **Fahrner图片替换法（FIR）**
+
+```html
+<h1 id="fir"><span>Fahrner Image Replacement</span></h1>
+```
+
+```css
+#fir {
+  width: 300px;
+  height: 300px;
+  background: url(fir.jpg) no-repeat;
+}
+
+#fir span {
+  display: none;
+}
+
+```
+
+​	用`<span>`标签的display属性把文字隐藏起来，最后指定`<h1>`的背景图片。
+
+​	优点：使用CSS而不是标记语法提供图片，更改图片只需更改CSS。
+
+​	缺点：
+
+-  需要一组不具备任何语义的`<span>`标签才能运作
+- display属性影响屏幕阅读器使用者
+- 关闭浏览器显示图片，同时启用CSS支持时，文字图片均不可显示。
+
+ 
 
 ---
 
@@ -172,3 +211,9 @@ BFC元素根据上一个问题有几种方法，比如`overflow`，父元素设�
 [1] http://www.zhangxinxu.com/wordpress/2016/01/understand-css-stacking-context-order-z-index/
 
 [2] http://kayosite.com/block-formatting-contexts-in-detail.html
+
+[3] http://kayosite.com/remove-floating-style-in-detail.html
+
+[4] https://www.cnblogs.com/wmhuang/p/image_change.html
+
+[5] https://css-tricks.com/the-image-replacement-museum/

@@ -174,7 +174,9 @@ IE 10:      8
 Chrome:     6  
 ```
 
-例外情况：如果使用多个子域名反向代理到同一个根域名，就可以增加静态资源的下载数量了。
+例外情况：如果使用多个子域名反向代理到同一个根域名(Domain Sharding，域名分片)，就可以增加静态资源的下载数量了。
+
+但域名分片对于移动端网页不一定适用，主要是移动端tcp延迟和多个请求带来的电量、性能消耗，还是尽量对资源进行压缩合并。
 
 ---
 
@@ -323,7 +325,7 @@ CORS全称Cross-Origin Resource Sharing。
 
 当然是用来解决跨域请求的问题，XHR中是不能进行跨域请求资源的，通过服务器设置可以接收跨域的API请求／静态资源请求等。
 
-服务器设置跨域<sup><a href=http://www.ruanyifeng.com/blog/2016/04/cors.html">1</a></sup>，有三个与CORS请求相关的字段，都以`Access-Control-`开头。
+服务器设置跨域<sup><a href="http://www.ruanyifeng.com/blog/2016/04/cors.html">1</a></sup>，有三个与CORS请求相关的字段，都以`Access-Control-`开头。
 
 **（1）Access-Control-Allow-Origin**
 
