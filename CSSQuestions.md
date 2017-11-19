@@ -286,63 +286,281 @@ Bootstrap的适配属于渐进增强方式，优先适配小屏设备。
 ---
 #### 你熟悉 SVG 样式的书写吗？
 
-直接使用比较多，特别是矢量图标。大致看过MDN的文档，通过标签属性中的特定指令进行绘图，与canvas绘图方法差别较大。
+直接使用比较多，特别是矢量图标。大致看过MDN的文档<sup><a href="https://developer.mozilla.org/en-US/docs/Web/SVG">6</a></sup>，通过标签属性中的特定指令进行绘图，与canvas绘图方法差别较大。
 
 ---
 #### 如何优化网页的打印样式？
 
+这个应该也是在设备查询中优化吧。
 
+```css
+@media print {
+  ...
+}
+```
+
+另外，在标签内也可以指定打印样式。
+
+```Html
+<link rel=“stylesheet” type="text/css" media="print" href="XXX.css">
+```
+
+* 不要使用CSS背景图片，使用`<img>`
+* 注意像素的一致性
 
 ---
 #### 在书写高效 CSS 时会有哪些问题需要考虑？
 
+既然是高效能，当然要让浏览器选择效率提高，id选择效率高于类，但不能牺牲可读性。
+
+* 避免使用通用选择器，尽量避免使用后代选择器
+* 规范命名
+* 组件化／模块化
+
 ---
 #### 使用 CSS 预处理器的优缺点有哪些？
+
+优点
+
+* 更像一门编程语言，扩展性好，有函数／变量／混合器
+* 可嵌套，书写更方便
+
+缺点：
+
+* 需要预处理器编译成CSS
+* 门槛略高
 
 ---
 #### 请描述你曾经使用过的 CSS 预处理器的优缺点。
 
+使用过sass，优缺点如上吧。
+
 ---
 #### 如果设计中使用了非标准的字体，你该如何去实现？
+
+如果我自己使用，很可能就在`<head>`标签或者CSS中`@import`导入外部字体了；
+
+但是有可能只有少数文本使用该字体，导入所有字体文件就有点浪费了
+
+* 用图片代替
+* 可以将使用的文本打包出自定义的Webfont，使用`@font-face`定义字体类别。
 
 ---
 #### 请解释浏览器是如何判断元素是否匹配某个 CSS 选择器？
 
+从后往前判断，因为CSS选择器的规则肯定小于元素集合数量，所以遍历选择器规则来过滤元素集合是比较快捷，至于为什么从后往前，主要是元素集合是树形结构，查找兄弟元素和父元素更为方便。
+
 ---
 #### 请描述伪元素 (pseudo-elements) 及其用途。
+
+伪元素不是真正的元素，所以JS不能操作伪元素，但CSS选择器可以选择并为其设置样式。
+
+- [`::after`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/::after)
+- [`::before`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/::before) 这两个伪元素通常用来清除浮动／为元素添加背景或其他样式的美化
+- [`::first-letter`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/::first-letter)
+- [`::first-line`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/::first-line)  这两个伪元素则是选择部分内容进行样式改变
+- [`::selection`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/::selection)  选择文档中被用户高亮的部分，处于CSS3中第4级伪元素。
+
+另外还有伪类(pseudo-classes)，CSS伪类是添加到选择器的关键字，指定要选择的元素的特殊状态。伪类数量比较多：
+
+- [`:active`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:active)
+- [`:any`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:any)
+- [`:checked`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:checked)
+- [`:default`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:default)
+- [`:dir()`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:dir)
+- [`:disabled`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:disabled)
+- [`:empty`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:empty)
+- [`:enabled`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:enabled)
+- [`:first`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:first)
+- [`:first-child`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:first-child)
+- [`:first-of-type`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:first-of-type)
+- [`:fullscreen`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:fullscreen)
+- [`:focus`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:focus)
+- [`:hover`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:hover)
+- [`:indeterminate`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:indeterminate)
+- [`:in-range`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:in-range)
+- [`:invalid`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:invalid)
+- [`:lang()`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:lang)
+- [`:last-child`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:last-child)
+- [`:last-of-type`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:last-of-type)
+- [`:left`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:left)
+- [`:link`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:link)
+- [`:not()`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:not)
+- [`:nth-child()`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:nth-child)
+- [`:nth-last-child()`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:nth-last-child)
+- [`:nth-last-of-type()`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:nth-last-of-type)
+- [`:nth-of-type()`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:nth-of-type)
+- [`:only-child`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:only-child)
+- [`:only-of-type`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:only-of-type)
+- [`:optional`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:optional)
+- [`:out-of-range`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:out-of-range)
+- [`:read-only`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:read-only)
+- [`:read-write`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:read-write)
+- [`:required`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:required)
+- [`:right`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:right)
+- [`:root`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:root)
+- [`:scope`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:scope)
+- [`:target`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:target)
+- [`:valid`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:valid)
+- [`:visited`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:visited)
 
 ---
 #### 请解释你对盒模型的理解，以及如何在 CSS 中告诉浏览器使用不同的盒模型来渲染你的布局。
 
+盒模型<sup><a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model">7</a></sup>是CSS呈现内容样式的核心之一，包括margin-border-padding-content。MDN上标准盒模型的图示：
+
+![标准盒模型](https://developer.mozilla.org/files/72/boxmodel%20(1).png)
+
+标准盒模型下，宽高不包括padding和border，元素的背景会延伸到padding和border；外边距在同一BFC中会发生折叠。
+
+但IE的怪异模式下，盒模型宽高会包括padding和borde。
+
+通过`box-sizing`能够更改用于计算元素宽度和高度的默认的 CSS 盒子模型。
+
+* `box-sizing: content-box;` 默认值，元素宽高等于内容区宽高。
+* `box-sizing: border-box;` 元素宽高包括padding、border和content，
+
 ---
+
 #### 请解释 `* { box-sizing: border-box; }` 的作用, 并且说明使用它有什么好处？
+
+参见该文<sup><a href=”https://css-tricks.com/international-box-sizing-awareness-day/“>8</a></sup>
+
+将所有元素的盒模型设置为`border-box`，能够固定实际的宽高，不根据设置的内边距和边框改变，比较适用于固定的列布局。
+
+另一方面，也能解决和IE不一致的问题吧。
 
 ---
 #### 请罗列出你所知道的 display 属性的全部值
 
+如果说我知道的：
+
+* none
+* block
+* inline
+* inline-block
+* table
+* table-cell
+* flex
+* grid
+* inherit
+
+我不知道的：
+
+有很多，就不列举了<sup><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/display">9</a></sup>。
+
 ---
-#### 请解释 inline 和 inline-block 的区别？
+#### 请解释 inline 、 inline-block和block 的区别？
+
+* 块元素
+
+  默认情况宽度与父元素一致，独占一行，前后块元素会换行
+
+  可以设置宽高，内边距和外边距
+
+* 行内元素
+
+  宽度与内容一致，前后没有换行符
+
+  不能设置元素的宽高
+
+  水平方向可以设置外边距和内边距，竖直方向不可以
+
+* 行内块元素
+
+  前后没有换行符，多个行内块在一行显示
+
+  可以设置元素宽高
 
 ---
 #### 请解释 relative、fixed、absolute 和 static 元素的区别
 
+不同定位的区别。
+
+* static
+
+  默认定位，按照文档流的位置来定位
+
+* relative 相对定位
+
+  元素按照本来static定位的位置进行相对位移，位移值为left与top的值
+
+  不脱离文档流，原来的占位存在
+
+* absolute 绝对定位
+
+  元素脱离文档流，相对最近的非static定位父元素进行定位
+
+* fixed 固定定位
+
+  元素脱离文档流，相对整个页面窗口进行定位
+
+  ​
+
 ---
 #### CSS 中字母 'C' 的意思是叠层 (Cascading)。请问在确定样式的过程中优先级是如何决定的 (请举例)？如何有效使用此系统？
+
+* 选择器的优先级<sup><a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/Specificity">10</a></sup>，按以下位数计数法的权重规则排列：
+  * 0 类型选择器
+  * 1 类选择器／属性选择器／伪类
+  * 2 ID选择器
+  * 通用选择器(`*`)／组合选择(`+ > ~ ` )对选择器优先级没有影响
+* 优先级相同时后声明样式优先级高于先声明样式
+* 内联样式优先级高于外部样式
+* `!important` 样式优先级高于任何样式，尽量避免使用
 
 ---
 #### 你在开发或生产环境中使用过哪些 CSS 框架？你觉得应该如何改善他们？
 
+使用过Bootsrtap框架和Materialize-CSS框架。
+
+觉得框架使用浮动实现栅格系统没有flex灵活，毕竟需要清除浮动，容易引入一些布局问题。
+
 ---
 #### 请问你有尝试过 CSS Flexbox 或者 Grid 标准规格吗？
+
+尝试过flex布局，了解过grid布局；
+
+这两个布局都是CSS3引入的display属性，目前还不是全平台兼容性。
+
+曾经引入flex解决固定底部Footer的问题。
 
 ---
 #### 为什么响应式设计 (responsive design) 和自适应设计 (adaptive design) 不同？
 
+* 自适应设计，不同设备／屏幕布局不同，但在每个布局中元素不随窗口大小的调整发生变化
+* 流动式设计，页面元素宽度会随窗口的大小而改变
+* 响应式设计，结合上两者，同时对屏幕进行自适应布局和流式布局
+
 ---
 #### 你有兼容 retina 屏幕的经历吗？如果有，在什么地方使用了何种技术？
 
+没有。参考这篇博文<sup><a href="https://www.cnblogs.com/cench/p/5314044.html">11</a></sup>吧。
+
+retina屏幕属于一种高像素密度的高分屏，在苹果设备上，一个独立的像素会包含几个物理像素，所以网页的像素适配不一样。
+
+对于字体的渲染，苹果设备会使用矢量字体，不会造成像素的模糊或者失真；对于图像，就需要适配大几倍的像素图。
+
+对于普通屏幕与retina屏幕，通过设备查询来适配。
+
 ---
 #### 请问为何要使用 `translate()` 而非 absolute positioning，或反之的理由？为什么？
+
+这个主要涉及浏览器的渲染性能<sup><a href="https://developers.google.com/web/fundamentals/performance/rendering/">12</a></sup>。
+
+浏览器进行页面渲染的步骤是
+
+![浏览器渲染步骤图](BrowserRendering.svg)
+
+* JavaScrit    实现元素的添加／删除／移动等动画
+* 样式计算     根据CSS选择器规则获取所有元素的最终样式
+* 布局    得到元素的样式后开始计算元素的位置和占据的空间大小，最终得到页面的整体布局
+* 绘制   浏览器开始绘制元素的文本、背景、边框和阴影等
+* 合成    由于页面的各部分可能被绘制到多层，由此它们需要按正确顺序绘制到屏幕上，以便正确渲染页面。
+
+渲染的每个步骤都会影响到页面的渲染性能，但是触发的步骤越靠前，后边的步骤都要重新计算。因此，属性的赋值要尽量改变元素靠后步骤的属性，比如改变元素的颜色就要比改变布局计算量小。
+
+也就是说，布局要在页面渲染的时候尽量一次性完成，后边的动画部分用`translate()`性能要优于absolute positioning。
 
 ---
 
@@ -357,3 +575,17 @@ Bootstrap的适配属于渐进增强方式，优先适配小屏设备。
 [4] https://www.cnblogs.com/wmhuang/p/image_change.html
 
 [5] https://css-tricks.com/the-image-replacement-museum/
+
+[6] https://developer.mozilla.org/en-US/docs/Web/SVG
+
+[7] https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model
+
+[8] https://css-tricks.com/international-box-sizing-awareness-day/
+
+[9] https://developer.mozilla.org/en-US/docs/Web/CSS/display
+
+[10] https://developer.mozilla.org/zh-CN/docs/Web/CSS/Specificity
+
+[11] https://www.cnblogs.com/cench/p/5314044.html
+
+[12] https://developers.google.com/web/fundamentals/performance/rendering/
