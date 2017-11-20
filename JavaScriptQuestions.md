@@ -185,34 +185,48 @@ var foo = function f(){}()
 ---
 #### 请指出浏览器特性检测，特性推断和浏览器 UA 字符串嗅探的区别？
 
-浏览器特性检测
+* 浏览器特性检测
 
+  检测浏览器是否支持某一特性
 
+* 浏览器特性推断
+
+  根据特性来判断浏览器
+
+* 浏览器UA字符串嗅探
+
+  根据`navigator.userAgent`判断浏览器
 
 ---
 #### 请尽可能详尽的解释 Ajax 的工作原理。
+
+Asynchronous JavaScript and XML（异步 JavaScript 和 XML）是一种交互式网页开发技术。客户端向服务端发送请求(get/post/delete等)，通过回调接收到服务端返回的响应来进行后续的网页操作。
 
 
 
 ---
 #### 使用 Ajax 都有哪些优劣？
 
-
+该技术使得客户端与服务端不用传送大量重复的网页资源，并能异步执行，降低带宽消耗和提升用户体验。
 
 ---
 #### 请解释 JSONP 的工作原理，以及它为什么不是真正的 Ajax。
 
-
+* JSONP并不是真正的返回数据，而是通过请求url的`callback`返回一个带有数据的函数调用
+* JSONP必须要插入一段JS代码在HTML页面`<head>`内，使得返回的函数调用能够执行，并获取所需的数据
+* 不受Ajax的跨域限制，但只支持get请求方式
 
 ---
 #### 你使用过 JavaScript 模板系统吗？
 
-
+没有，ES6支持模板字符串😊
 
 ---
 #### 如有使用过，请谈谈你都使用过哪些库？
 
+React全家桶吧 React + Redux + React-Router + recompose + redux-form
 
+还有传统的jQuery，但不算很熟悉
 
 ---
 #### 请解释变量声明提升 (hoisting)。
@@ -232,35 +246,71 @@ JS代码的执行分为两个阶段：建立执行上下文 ； 变量赋值／�
 ---
 #### 请描述事件冒泡机制 (event bubbling)。
 
-
+JS中DOM事件处理机制的第三个阶段，子元素上触发的事件会冒泡到父元素上，事件代理的原理就是这个。
 
 ---
 #### "attribute" 和 "property" 的区别是什么？
 
+attribute是DOM对象上的属性
 
+property是JS对象上的属性，更为通用的概念
 
 ---
 #### 为什么扩展 JavaScript 内置对象不是好的做法？
 
-
+可能和某个库或者未来添加的语法发生冲突
 
 ---
 #### 请指出 document load 和 document DOMContentLoaded 两个事件的区别
 
-
+* load事件：当页面完全加载后（包括所有图像、JavaScript 文件、 CSS 文件等外部资源），就会触发 window 上面的 load 事件。
+* DOMContentLoaded是HTML5事件。  load 事件会可能会因为要 加载的外部资源过多而颇费周折。而 DOMContentLoaded 事件则在形成完整的 DOM 树之后就会触发， 不理会图像、JavaScript 文件、CSS 文件或其他资源是否已经下载完毕。 与 load 事件不同， DOMContentLoaded 支持在页面下载的早期添加事件处理程序，这也就意味着用户能够尽早地与页面 进行交互。
 
 ---
 #### `==` 和 `===` 有什么不同？
 
+`==` 非严格相等<sup><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Equality_comparisons_and_sameness">3</a></sup>
 
+* 比较的对象会进行隐式的类型转换，转换成相同类型后再比较，转换规则比较复杂
+
+|        | 被比较值 B    |           |         |                       |                               |                                |                                 |
+| ------ | --------- | --------- | ------- | --------------------- | ----------------------------- | ------------------------------ | ------------------------------- |
+|        |           | Undefined | Null    | Number                | String                        | Boolean                        | Object                          |
+| 被比较值 A | Undefined | `true`    | `true`  | `false`               | `false`                       | `false`                        | `IsFalsy(B)`                    |
+|        | Null      | `true`    | `true`  | `false`               | `false`                       | `false`                        | `IsFalsy(B)`                    |
+|        | Number    | `false`   | `false` | `A === B`             | `A === ToNumber(B)`           | `A=== ToNumber(B)`             | `A=== ToPrimitive(B) `          |
+|        | String    | `false`   | `false` | `ToNumber(A) === B`   | `A === B`                     | `ToNumber(A) === ToNumber(B)`  | `ToPrimitive(B) == A`           |
+|        | Boolean   | `false`   | `false` | `ToNumber(A) === B`   | `ToNumber(A) === ToNumber(B)` | `A === B`                      | `ToNumber(A) == ToPrimitive(B)` |
+|        | Object    | `false`   | `false` | `ToPrimitive(A) == B` | `ToPrimitive(A) == B`         | `ToPrimitive(A) ==ToNumber(B)` | `A === B`                       |
+
+
+
+`===` 严格相等
+
+* 两个被比较的值在比较前都不进行隐式转换。
+* 如果两个被比较的值具有不同的类型，这两个值是不等的。
+* 如果两个被比较的值类型相同，值也相同，并且都不是 number 类型时，两个值全等。
+* 如果两个值都是 number 类型，当两个都不是 NaN，并且数值相同，或是两个值分别为 +0 和 -0 时，两个值被认为是全等的。
+
+一般来说，几乎都是使用严格相等运算符。
 
 ---
 #### 请解释 JavaScript 的同源策略 (same-origin policy)。
 
+同源策略限制从一个源加载的文档或脚本如何与来自另一个源的资源进行交互。这是一个用于隔离潜在恶意文件的关键的安全机制。策略如下：
 
+* 同样的协议 
+* 同样的域名
+* 同样的端口
 
 ---
 #### 如何实现下列代码：`[1,2,3,4,5].duplicator(); // [1,2,3,4,5,1,2,3,4,5]`
+
+```javascript
+Array.prototype.duplicator = function() {
+  return this.concat(this);
+}
+```
 
 
 
@@ -268,12 +318,19 @@ JS代码的执行分为两个阶段：建立执行上下文 ； 变量赋值／�
 
 #### 什么是三元表达式 (Ternary expression)？“三元 (Ternary)” 表示什么意思？
 
+```javascript
+test ? expression1 : expression2
+```
 
+三元表示三个表达式？
 
 ---
 #### 什么是 `"use strict";` ? 使用它的好处和坏处分别是什么？
 
+严格模式的好处
 
+* ​
+* ​
 
 ---
 #### 请实现一个遍历至 100 的 for loop 循环，在能被 3 整除时输出 "fizz"，在能被 5 整除时输出 "buzz"，在能同时被 3 和 5 整除时输出 "fizzbuzz"。
@@ -283,7 +340,7 @@ JS代码的执行分为两个阶段：建立执行上下文 ； 变量赋值／�
 ---
 #### 为何通常会认为保留网站现有的全局作用域 (global scope) 不去改变它，是较好的选择？
 
-
+由于全局作用域能被所有的作用域访问，如果改变，可能会造成冲突
 
 ---
 #### 为何你会使用 load 之类的事件 (event)？此事件有缺点吗？你是否知道其他替代品，以及为何使用它们？
@@ -293,7 +350,7 @@ JS代码的执行分为两个阶段：建立执行上下文 ； 变量赋值／�
 ---
 #### 请解释什么是单页应用 (single page app), 以及如何使其对搜索引擎友好 (SEO-friendly)。
 
-
+SPA就是
 
 ---
 #### 你使用过 Promises 及其 polyfills 吗? 请写出 Promise 的基本用法（ES6）。
@@ -303,22 +360,34 @@ JS代码的执行分为两个阶段：建立执行上下文 ； 变量赋值／�
 ---
 #### 使用 Promises 而非回调 (callbacks) 优缺点是什么？
 
+优点
 
+* ​
+
+缺点
+
+* ​
 
 ---
 #### 使用一种可以编译成 JavaScript 的语言来写 JavaScript 代码有哪些优缺点？
 
+比如TypeScript／CoffeScript，我没有使用过CoffeeScript，印象中是能够提前实现ES6的语法或一些其他的语法糖。
 
+就说TypeScript，作为静态类型的JavaScript，可以在大型页面中，保证代码的可靠性、可读性和可维护性；缺点就是需要大量的函数类型定义，对于小型页面，负担较大，所以个人项目暂时放弃了😢
 
 ---
 #### 你使用哪些工具和技术来调试 JavaScript 代码？
 
+VS Code的调试工具 + Chrome DevTools
 
+技术当然就是 打断点／Debugger／Console.log()等
 
 ---
 #### 你会使用怎样的语言结构来遍历对象属性 (object properties) 和数组内容？
 
-
+* 最直观的 
+* in
+* of
 
 ---
 #### 请解释可变 (mutable) 和不变 (immutable) 对象的区别。
@@ -364,4 +433,6 @@ JS代码的执行分为两个阶段：建立执行上下文 ； 变量赋值／�
 
 [1] http://www.jianshu.com/p/d647aa6d1ae6
 
-[2] JavaScript高级程序设计
+[2] *JavaScript高级程序设计*
+
+[3] https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Equality_comparisons_and_sameness
