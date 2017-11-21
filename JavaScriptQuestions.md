@@ -334,8 +334,8 @@ ECMAScript 5 最早引入了“严格模式”（strict mode）的概念。通�
 * 可以提早知道代码中 存在的错误，及时捕获一些可能导致编程错误的 ECMAScript 行为
 * 规范代码，消除Javascript语法的一些不合理、不严谨之处，减少一些怪异行为
 * \- 消除代码运行的一些不安全之处，保证代码运行的安全
-*  提高编译器效率，增加运行速度
-*  为未来新版本的Javascript做好铺垫
+* 提高编译器效率，增加运行速度
+* 为未来新版本的Javascript做好铺垫
 
 坏处：某些正常模式下能运行的代码严格模式下不能运行。
 
@@ -379,10 +379,36 @@ load与DOMContentLoaded的比较
 
 SPA就是使用单个页面开发的应用，网页的交互通过JavaScript实现，比如DOM的刷新，Ajax获取后端数据。
 
-至于做到SEO友好，可以针对爬虫生成一套静态页面。
+至于做到SEO友好，可以针对爬虫服务端渲染生成一套静态页面。
+
+一套代码，两处运行。
 
 ---
 #### 你使用过 Promises 及其 polyfills 吗? 请写出 Promise 的基本用法（ES6）。
+
+JavaScript已经原生支持Promise。Promise定义：
+
+```javascript
+var promise = new Promise(function(resolve, reject) {
+  // do a thing, possibly async, then…
+  if (/* everything turned out fine */) {
+    resolve("Stuff worked!");
+  }
+  else {
+    reject(Error("It broke"));
+  }
+});
+```
+
+Promise使用
+
+```javascript
+promise.then(function(result) {
+  console.log(result); // "Stuff worked!"
+}, function(err) {
+  console.log(err); // Error: "It broke"
+});
+```
 
 
 
@@ -391,11 +417,20 @@ SPA就是使用单个页面开发的应用，网页的交互通过JavaScript实�
 
 优点
 
-* ​
+* 代码可读性强
 
-缺点
+* 避免在多重回调时陷入回调阱
 
-* ​
+  Promise 可以很好地处理单一异步结果，不适用于<sup><a href="https://github.com/es6-org/exploring-es6/blob/master/md/24.10.md">4</a></sup>（该部分我也暂时没有懂）：
+
+* 多次触发的事件：如果要处理这种情况，可以了解一下响应式编程（ reactive programming ），这是一种很聪明的链式的处理普通事件的方法。
+
+* 数据流：支持此种情形的[标准](https://streams.spec.whatwg.org/)正在制定中。
+
+ECMAScript 6 Promise 缺少两个有时很有用的特性：
+
+- 不能取消执行。
+- 无法获取当前执行的进度信息（比如，要在用户界面展示进度条）。
 
 ---
 #### 使用一种可以编译成 JavaScript 的语言来写 JavaScript 代码有哪些优缺点？
@@ -414,49 +449,109 @@ VS Code的调试工具 + Chrome DevTools
 ---
 #### 你会使用怎样的语言结构来遍历对象属性 (object properties) 和数组内容？
 
-* 最直观的 
-* in
-* of
+很多种方法<sup><a href="http://2ality.com/2011/04/iterating-over-arrays-and-objects-in.html">5</a></sup>。
+
+* 最直接的，`for`循环，适合数组遍历
+
+  ```javascript
+  for ([start]; [condition]; [final-expression])
+    statement
+  ```
+
+* `for in` 不建议对数组使用，因为会遍历索引属性、普通属性和原型属性
+
+  ```javascript
+   > var arr = [ "a", "b", "c" ];
+   > arr.foo = true;
+   > for(var key in arr) { console.log(key); }
+   0
+   1
+   2
+   foo
+  ```
+
+- `for of`对迭代器对象进行遍历，得到的是值而不是属性
+
+
+  ```javascript
+  for (var value of iterable) {
+    statement
+  }
+  ```
+
+- 数组方法
+
+  ```javascript
+  Array.prototype.forEach(callback)
+  Array.prototype.map(callback)
+  ```
+
+
+- Object方法
+
+  ```javascript
+  Object.keys()
+  Object.entries()
+  ```
+  ​
+
 
 ---
 #### 请解释可变 (mutable) 和不变 (immutable) 对象的区别。
 
+由于JS中JS对象是引用型数据，变量的修改都是在原对象的内存中存储数据的修改，这样可以降低内存消耗。
 
+但是这样会带来不可控，一旦某个地方修改了数据，其他使用这个变量的代码都会受到影响。
+
+所以出现了不变对象，JS原生没有这个概念，都是第三方库实现的。**每次修改一个 Immutable 对象时都会创建一个新的不可变的对象**，在新对象上操作并不会影响到原对象的数据。
+
+总结下，不可变对象就是一旦改变了某个变量数据，必须返回一个新的引用地址，与原变量隔离。
 
 ---
 #### 请举出 JavaScript 中一个不变性对象 (immutable object) 的例子？
 
-
+Redux中状态就是不可变对象，还有React中函数组件的更新都是基于传入属性的浅比较；都需要不可变对象实现。
 
 ---
 #### 不变性 (immutability) 有哪些优缺点？
 
-
+优点：修改不可变对象不会对现有程序造成影响
+
+缺点：修改对象会开辟新的内存，内存消耗比较大
 
 ---
 #### 如何用你自己的代码来实现不变性 (immutability)？
 
+用原对象生成新的对象
 
+```javascript
+let obj2 = {...obj1, {property}};
+let obj2 = Object.assign(obj1, {property}); //ES6中对象的操作
+//数组的深拷贝
+let arr2 = arr1.slice();
+let arr2 = arr1.concat();
+```
 
 ---
 #### 请解释同步 (synchronous) 和异步 (asynchronous) 函数的区别。
 
-
-
----
-#### 什么是事件循环 (event loop)？
-
-
+* 同步就是执行完毕后继续执行后面语句
+* 异步就是当前任务不阻塞主线程，主线程继续运行，直到该任务返回结果后通知调用者执行回调函数
 
 ---
-#### 请问调用栈 (call stack) 和任务队列 (task queue) 的区别是什么？
+#### 什么是事件循环 (event loop)？请问调用栈 (call stack) 和任务队列 (task queue) 的区别是什么？
 
+事件循环机制就是JS执行代码和处理异步事件的机制。
 
+JS在创建执行上下文时，会以栈的形式将执行代码压入调用栈，遇到函数会压入栈，直到运行完毕出栈继续执行上层函数，称为调用栈；
+
+由于异步任务的存在，会生成任务队列，JS遇到异步任务时，会将任务交给其他模块处理，处理完后将回调放在任务队列里；主线程调用栈回到全局环境后会按顺序执行任务队列中的代码
 
 ---
 #### 解释 `function foo(){}` 与 `var foo = function() {}` 用法的区别
 
-
+* ` function foo(){}` 是函数声明，JS创建执行上下文环境时，会对函数声明进行提升，即可"先调用后声明"
+*  `var foo = function() {}` 是函数表达式，其后可以直接加括号运行，但没有函数提升
 
 ---
 
@@ -465,3 +560,7 @@ VS Code的调试工具 + Chrome DevTools
 [2] *JavaScript高级程序设计*
 
 [3] https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Equality_comparisons_and_sameness
+
+[4] https://github.com/es6-org/exploring-es6/blob/master/md/24.10.md
+
+[5] http://2ality.com/2011/04/iterating-over-arrays-and-objects-in.html
