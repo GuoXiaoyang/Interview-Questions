@@ -209,6 +209,8 @@ Asynchronous JavaScript and XML（异步 JavaScript 和 XML）是一种交互式
 
 该技术使得客户端与服务端不用传送大量重复的网页资源，并能异步执行，降低带宽消耗和提升用户体验。
 
+坏处：当禁用javaScript后，无法获取想要的数据来刷新页面
+
 ---
 #### 请解释 JSONP 的工作原理，以及它为什么不是真正的 Ajax。
 
@@ -327,13 +329,38 @@ test ? expression1 : expression2
 ---
 #### 什么是 `"use strict";` ? 使用它的好处和坏处分别是什么？
 
-严格模式的好处
+ECMAScript 5 最早引入了“严格模式”（strict mode）的概念。通过严格模式，可以在函数内部 选择进行较为严格的全局或局部的错误条件检测。使用严格模式的好处是
 
-* ​
-* ​
+* 可以提早知道代码中 存在的错误，及时捕获一些可能导致编程错误的 ECMAScript 行为
+* 规范代码，消除Javascript语法的一些不合理、不严谨之处，减少一些怪异行为
+* \- 消除代码运行的一些不安全之处，保证代码运行的安全
+*  提高编译器效率，增加运行速度
+*  为未来新版本的Javascript做好铺垫
+
+坏处：某些正常模式下能运行的代码严格模式下不能运行。
+
+严格模式部分规则：
+
+* 不允许给未声明的变量赋值，变量名不能使用保留的关键字
+* 操作对象更严格，不会静默失败
+* 函数参数必须唯一
+* 全局调用的函数的`this`为`undefined`
+* 没有`with`语句
 
 ---
 #### 请实现一个遍历至 100 的 for loop 循环，在能被 3 整除时输出 "fizz"，在能被 5 整除时输出 "buzz"，在能同时被 3 和 5 整除时输出 "fizzbuzz"。
+
+```javascript
+for(let i = 0; i <= 100; i += 1) {
+  if (i%3 === 0 && i%5 === 0) {
+    console.log('fizzbuzz');
+  } else if (i%3 === 0) {
+    console.log('fizz');
+  } else if (i%5 === 0) {
+    console.log('buzz');
+  }
+}
+```
 
 
 
@@ -345,12 +372,14 @@ test ? expression1 : expression2
 ---
 #### 为何你会使用 load 之类的事件 (event)？此事件有缺点吗？你是否知道其他替代品，以及为何使用它们？
 
-
+load与DOMContentLoaded的比较
 
 ---
 #### 请解释什么是单页应用 (single page app), 以及如何使其对搜索引擎友好 (SEO-friendly)。
 
-SPA就是
+SPA就是使用单个页面开发的应用，网页的交互通过JavaScript实现，比如DOM的刷新，Ajax获取后端数据。
+
+至于做到SEO友好，可以针对爬虫生成一套静态页面。
 
 ---
 #### 你使用过 Promises 及其 polyfills 吗? 请写出 Promise 的基本用法（ES6）。
