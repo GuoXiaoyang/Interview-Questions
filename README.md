@@ -22,3 +22,13 @@
 * [性能相关问题](https://github.com/GuoXiaoyang/Interview-Questions/blob/master/PerformenceQuestions.md)
 * [网络相关问题](https://github.com/GuoXiaoyang/Interview-Questions/blob/master/NetworkQuestions.md)
 * [代码相关问题](https://github.com/GuoXiaoyang/Interview-Questions/blob/master/CodeQuestions.md)
+
+
+
+## 参考
+
+[^1]: [前端面试题目搜集](https://www.kancloud.cn/digest/front-interview/86832)
+[^2]: [技术面试手册](https://github.com/yangshun/tech-interview-handbook)
+[^3]: [前端面试问题及答案](https://github.com/utatti/Front-end-Developer-Interview-Questions-And-Answers/tree/master/answers)
+[^4]: [前端面试问题汇总](https://github.com/khan4019/front-end-Interview-Questions#css-basics-and-tricky-questions)
+[^5]: [前端面试参考Gitbook](https://sunebear.gitbooks.io/frontend-developer-interview-questions-and-answers/content/)

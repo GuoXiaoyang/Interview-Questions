@@ -1,8 +1,6 @@
 ## 代码相关问题
 
-
-
-#### 问题：foo的值是什么？
+#### foo的值是什么？
 
 ```javascript
 var foo = 10 + '20';
@@ -11,7 +9,7 @@ var foo = 10 + '20';
 类型转换，`foo='1020'`
 
 ---
-#### 问题：如何实现以下函数？
+#### 如何实现以下函数？
 
 ```javascript
 add(2, 5); // 7
@@ -27,10 +25,8 @@ const add2 = num1 => {
 };
 ```
 
-
-
 ---
-#### 问题：下面的语句的返回值是什么？
+#### 下面的语句的返回值是什么？
 
 ```javascript
 "i'm a lasagna hog".split("").reverse().join("");
@@ -39,7 +35,7 @@ const add2 = num1 => {
 这不就是个常用的字符串逆转嘛；
 
 ---
-#### 问题：window.foo的值是什么？
+#### window.foo的值是什么？
 
 ```javascript
 ( window.foo || ( window.foo = "bar" ) );
@@ -51,7 +47,7 @@ const add2 = num1 => {
 * 如果` window.foo`为真，则值不会变，因为不会执行后半句
 
 ---
-#### 问题：下面两个 alert 的结果是什么？
+#### 下面两个 alert 的结果是什么？
 
 ```javascript
 var foo = "Hello";
@@ -65,7 +61,7 @@ alert(foo + bar);
 这道题就是考察变量的作用域了，`var`声明的变量是有函数作用域的，所以第一个`alert`输出`Hello World`，第二个 因为`bar`变量不存在会报错(本来以为会输出`Hello undefined`)。
 
 ---
-#### 问题：foo.length的值是什么？
+#### foo.length的值是什么？
 
 ```javascript
 var foo = [];
@@ -76,7 +72,7 @@ foo.push(2);
 额，莫非出题目的是考察数组的常识？2
 
 ---
-#### 问题：foo.x的值是什么？
+#### foo.x的值是什么？
 
 ```javascript
 var foo = {n: 1};
@@ -100,7 +96,7 @@ bar={n:1,x:{n:2}}
 
 
 ---
-#### 问题：下面代码的输出是什么？
+#### 下面代码的输出是什么？
 
 ```javascript
 console.log('one');
@@ -109,4 +105,100 @@ setTimeout(function() {
 }, 0);
 console.log('three');
 ```
-这个就是JS中的事件回调机制了，主线程事件执行完后，再依次执行回调栈里的事件。结果 `one three two`
+这个就是JS中的事件机制了，主线程事件执行完后，再依次执行回调栈里的事件。结果 `one three two`
+
+---
+
+#### 下面代码的输出是什么？
+
+```javascript
+var name = 'World';
+(function(){
+  if(typeof name === 'undefined'){
+    var name = "Jack";
+    console.info('Goodbye '+ name);
+  }else{
+    console.info('Hello ' + name);
+  }
+})();
+
+var arr = [0,1,2];
+arr[10] = 10;
+arr.filter(function(x){return x === undefined});
+```
+
+这道题考察的是`var`变量提升，尽管全局初始化了`name`变量，但在匿名函数里，变量创建的时候会先识别到`if`中的`name`，但此时只是声明了对象，并没有赋值；所以代码会进入`name==='undefined'`分支，最终输出`Goodbye Jack`。
+
+---
+
+#### 实现对象的深拷贝/实现一个函数clone，可以对JavaScript中的5种主要的数据类型（包括Number、String、Object、Array、Boolean）进行值复制。
+
+考察JS中数据的类型判断和对值传递／引用传递的理解。
+
+```javascript
+// 添加原型方法
+Object.prototype.clone = function() {
+  // 由于数值、字符串和布尔类型是基础数据类型，值传递，直接返回即可
+  // 判断类型为Number或者String或者Boolean
+  if(typeof this === 'number' ||  ) {
+    return this;
+  }
+  // 数组判断 ES5中有Array.isArray()方法
+  // 防止该方法不兼容，可使用Object.prototype.toString.call(this)
+  if(Array.isArray(this) || Object.prototype.toString.call(this)){
+  return this.concat();
+  }
+  // 如果为对象类型，如果直接返回实际返回的是引用地址，返回的变量与原变量共享数据，为浅拷贝
+  // 因此需要深度拷贝
+  // JS中深拷贝可以使用JSON.parse(JSON.stringify(source))，但该方法会丢失正则与函数属性
+  if(typeof this === 'object') {
+  	
+  }
+}
+```
+
+
+
+---
+
+#### 判断数字是否为质数
+
+#### 找出数字的所有质数因子
+
+#### 获取第n个斐波那契数
+
+#### 找出两个数的最大公因子
+
+#### 数组去重
+
+#### 合并两个有序序列，使重新有序
+
+#### 不适应临时变量交换两个数
+
+#### 反转字符串
+
+#### 反转句子中的单词
+
+   ​
+
+#### 找出字符串的第一个非重复字符
+
+#### 字符串去重
+
+#### 判断回文字符串
+
+#### 生成5-7之间的随机数
+
+#### 找出1-100间，未排序数组的缺失数字
+
+#### 给定数组，找出是否存在两个元素的和等于指定数
+
+#### 找出数组中最大的两个数
+
+#### 从1-n的整数间，一共存在多少个0
+
+#### 判断字符串subStr是否是字符串str的子字符串
+
+#### 得到字符串的全排列
+
+#### [](http://www.thatjsdude.com/interview/js1.html)
