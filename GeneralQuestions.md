@@ -208,62 +208,6 @@ Chrome:     6
 
 ---
 
-#### 请写一个简单的幻灯效果页面。
-
-一开始想的方案是，数组存储图片的路径，点击切换`<img>`标签的`src`属性。但是这样用户切换图片时，会有加载延迟。所以比较好的方案应该是：
-
-HTML中定义好slide列表，只有当前显示的图片有显示类：
-
-```HTML
-<div class="slide-page">
-  <div class="left"></div>
-  <div class="right"></div>
-  <ul class="slide-list">
-    <li class="slide"><img src="XX1"></li>
-  	<li class="slide show"><img src="XX2"></li>
-  	<li class="slide"><img src="XX3"></li> 
-  </ul>
-</div>
-```
-
-定义样式
-
-```CSS
-.slide-page {
-  position:fixed;
-  top: 0;
-  left: 0;
-}
-.slide {
-  display: none;
-}
-.show {
-  display:block;
-}
-```
-
-为slide框划分左／右方向键区域，分别绑定点击事件，移去当前图片显示类，即将显示的图片添加显示类，另外注意判别边界。
-
-```javascript
-const currentSlideIndex = 0;
-left.addEventListener('click', () => {
-  if(currentSlideIndex > 0) {
-    slideList[currentSlideIndex].classList.remove('show');
-    currentSlideIndex--;
-    slideList[currentSlideIndex].classList.add('show');
-  }
-});
-right.addEventListener('click', () => {
-  if(currentSlideIndex < listLength-1) {
-    slideList[currentSlideIndex].classList.remove('show');
-    currentSlideIndex++;
-    slideList[currentSlideIndex].classList.add('show');
-  }
-});
-```
-
----
-
 #### 如果今年你打算熟练掌握一项新技术，那会是什么？
 
 今年已经年底啦。。作为一个新手，目前还是希望对已学的知识框架打好基础，如果有余力，希望能够把Node原理和MongoDB深入学习下，改变目前对后端停留在框架使用的局面。也很想抽空学习下Vue，毕竟还没有接触过这个框架嘞
@@ -339,7 +283,39 @@ CORS全称Cross-Origin Resource Sharing。
 
 该字段可选。CORS请求时，`XMLHttpRequest`对象的`getResponseHeader()`方法只能拿到6个基本字段：`Cache-Control`、`Content-Language`、`Content-Type`、`Expires`、`Last-Modified`、`Pragma`。如果想拿到其他字段，就必须在`Access-Control-Expose-Headers`里面指定。上面的例子指定，`getResponseHeader('FooBar')`可以返回`FooBar`字段的值。
 
+---
+
+前端需要注意哪些SEO
+
+web开发中会话跟踪的方法有哪些
+
+什么是web语义化,有什么好处
+
+---
+
+你每天必须登录的网站（前端技术相关）是什么？
+
+前端技术方面看过哪些书，有无笔记，都有哪些收获。
+
+收藏了哪些代码片段？
+
+怎么理解前端技术的大趋势？自己再做哪方面的知识储备？
+
+是否了解或精通其他（后端）的编程语言？
+
+做过的项目有没有什么（视觉、交互）美感？什么是美？你觉得让你自己赏心悦目的网站或应用有哪些？
+
+---
+
+#### 用所学的 HTML + CSS 重构 [页面](http://ele.me/place/wtw27pnxv422)
+
+- 要求：重构，说明你的方式为什么是更好的
+- 加分：与原页面有 3 个以上的改进点
+
+---
 
 
-[ 1 ] 跨域：http://www.ruanyifeng.com/blog/2016/04/cors.html
+
+[^ 1 ]: 跨域：http://www.ruanyifeng.com/blog/2016/04/cors.html
+[^2]: https://github.com/ElemeFE/hire
 

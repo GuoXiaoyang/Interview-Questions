@@ -1,6 +1,6 @@
 ## HTML相关问题
 
-#### doctype(文档类型) 的作用是什么？
+#### doctype(文档类型) 的作用是什么？举例常见doctype及特点
 
 声明文档类型，比如HTML或者XHTML；DOCTYPE声明告诉类似的代码校验器或者浏览器应该按照什么规则集解析文档，这些“规则”就是W3C发表的文档类型定义（DTD）中包含的规则<sup><a href="http://www.jianshu.com/p/c3dcdad42e6d">1</a></sup>。
 
@@ -163,6 +163,8 @@ XHTML是XML的子集，相比HTML语法更为严格，比如元素一定要自�
 
 目前来说，只有过Node端使用[Pug](https://www.npmjs.com/package/pug)的体验
 
+
+
 ---
 
 readonly与disabled区别
@@ -177,14 +179,34 @@ src与href区别
 
 ---
 
+<img>的title和alt有什么区别
 
 
 
+---
+
+HTML全局属性(global attribute)有哪些
+
+
+
+---
+
+### 行内元素有哪些？块级元素有哪些？ 空(void)元素有那些？
+
+CSS规范规定，每个元素都有`display`属性，确定该元素的类型，每个元素都有默认的`display`值，如`div`的`display`默认值为`block`，则为块级元素；span默认`display`属性值为`inline`，是行内元素。
+
+  （1）行内元素有：`a b span img input select strong`
+  （2）块级元素有：`div ul ol li dl dt dd h1 h2 h3 h4…p`
+
+  （3）常见的空元素：
+  	`<br> <hr> <img> <input> <link> <meta>`
+  	鲜为人知的是：
+  	`<area> <base> <col> <command> <embed> <keygen> <param> <source> <track> <wbr>`
+
+---
 
 #### 参考资料
 
-[1] http://www.jianshu.com/p/c3dcdad42e6d
-
-[2] https://www.sitepoint.com/differences-html-xhtml/
-
-[3] https://neal.codes/blog/front-end-interview-questions-html#fn:3
+[^ 1]: http://www.jianshu.com/p/c3dcdad42e6d
+[^2]: https://www.sitepoint.com/differences-html-xhtml/
+[^3]: https://neal.codes/blog/front-end-interview-questions-html#fn:3

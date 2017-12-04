@@ -121,10 +121,6 @@ var name = 'World';
     console.info('Hello ' + name);
   }
 })();
-
-var arr = [0,1,2];
-arr[10] = 10;
-arr.filter(function(x){return x === undefined});
 ```
 
 这道题考察的是`var`变量提升，尽管全局初始化了`name`变量，但在匿名函数里，变量创建的时候会先识别到`if`中的`name`，但此时只是声明了对象，并没有赋值；所以代码会进入`name==='undefined'`分支，最终输出`Goodbye Jack`。
@@ -161,44 +157,88 @@ Object.prototype.clone = function() {
 
 ---
 
-#### 判断数字是否为质数
+#### 
 
-#### 找出数字的所有质数因子
+---
 
-#### 获取第n个斐波那契数
+### 继承问题
 
-#### 找出两个数的最大公因子
+小贤是一条可爱的小狗(Dog)，它的叫声很好听(wow)，每次看到主人的时候就会乖乖叫一声(yelp)。从这段描述可以得到以下对象：
 
-#### 数组去重
+```JavaScript
+functionDog(){
+  this.wow=function(){
+    alert(’Wow’);
+  }
+  this.yelp=function(){
+    this.wow();
+  }
+}
+```
 
-#### 合并两个有序序列，使重新有序
+小芒和小贤一样，原来也是一条可爱的小狗，可是突然有一天疯了(MadDog)，一看到人就会每隔半秒叫一声(wow)地不停叫唤(yelp)。请根据描述，按示例的形式用代码来实。（继承，原型，setInterval）
 
-#### 不适应临时变量交换两个数
 
-#### 反转字符串
 
-#### 反转句子中的单词
+---
 
-   ​
+### 下面这个ul，如何点击每一列的时候alert其index?（闭包）
 
-#### 找出字符串的第一个非重复字符
+```html
+<ul id=”test”>
+  <li>这是第一条</li>
+  <li>这是第二条</li>
+  <li>这是第三条</li>
+</ul>
+```
 
-#### 字符串去重
 
-#### 判断回文字符串
 
-#### 生成5-7之间的随机数
+---
 
-#### 找出1-100间，未排序数组的缺失数字
+### 编写一个JavaScript函数，输入指定类型的选择器(仅需支持id，class，tagName三种简单CSS选择器，无需兼容组合选择器)可以返回匹配的DOM节点，需考虑浏览器兼容性和性能。
 
-#### 给定数组，找出是否存在两个元素的和等于指定数
+```javascript
+/** 
+  @param selector {String} 传入的CSS选择器。 
+  @return {Array}
+*/
+```
 
-#### 找出数组中最大的两个数
 
-#### 从1-n的整数间，一共存在多少个0
 
-#### 判断字符串subStr是否是字符串str的子字符串
+---
 
-#### 得到字符串的全排列
+7.给String对象添加一个方法，传入一个string类型的参数，然后将string的每个字符间价格空格返回，例如：
 
-#### [](http://www.thatjsdude.com/interview/js1.html)
+`addSpace(“hello world”) // -> ‘h e l l o  w o r l d’`
+
+
+
+---
+
+8.定义一个log方法，让它可以代理console.log的方法。
+
+
+
+---
+
+9.在Javascript中什么是伪数组？如何将伪数组转化为标准数组？
+
+
+
+---
+
+11.原生JS的window.onload与Jquery的$(document).ready(function(){})有什么不同？如何用原生JS实现Jq的ready方法？
+
+
+
+---
+
+
+
+---
+
+### 参考
+
+[^1]: http://www.thatjsdude.com/interview/js1.html
