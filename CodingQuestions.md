@@ -155,6 +155,8 @@ Object.prototype.clone = function() {
 
 
 
+
+
 ---
 
 #### 
@@ -242,3 +244,4 @@ functionDog(){
 ### 参考
 
 [^1]: http://www.thatjsdude.com/interview/js1.html
+[^2]: [深拷贝与浅拷贝](https://github.com/wengjq/Blog/issues/3)
