@@ -70,6 +70,23 @@ XHTML是XML的子集，相比HTML语法更为严格，比如元素一定要自�
 
 ---
 
+#### iframe的优缺点
+
+**优点：**
+
+1. 解决加载缓慢的第三方内容如图标和广告等的加载问题
+2. iframe无刷新文件上传
+3. iframe跨域通信
+
+**缺点：**
+
+1. iframe会阻塞主页面的Onload事件
+2. 无法被一些搜索引擎索引到
+3. 页面会增加服务器的http请求
+4. 会产生很多页面，不容易管理。
+
+---
+
 #### 如果网页内容需要支持多语言，你会怎么做？
 
 使用utf-8编码，使用`lang`属性来表示网站语言或元素语言；服务端设置`Content-Language`。
@@ -169,25 +186,46 @@ XHTML是XML的子集，相比HTML语法更为严格，比如元素一定要自�
 
 readonly与disabled区别
 
-
-
----
-
-src与href区别
-
-
+* readonly 和disable都会使表单不可编辑
+* readonly 中的值会进行上传
+* ​
 
 ---
 
-<img>的title和alt有什么区别
+#### src与href区别
 
+* src用于替换当前元素；href用于在当前文档和引用资源之间确立联系。
 
+- src是source的缩写，指向外部资源的位置，指向的内容将会嵌入到文档中当前标签所在位置
+- href是Hypertext Reference的缩写，指向网络资源所在位置，建立和当前元素（锚点）或当前文档（链接）之间的链接
 
 ---
 
-HTML全局属性(global attribute)有哪些
+#### `<img>`的title和alt有什么区别
 
+1. `title`是[global attributes](http://www.w3.org/TR/html-markup/global-attributes.html#common.attrs.core)之一，用于为元素提供附加的advisory information。通常当鼠标滑动到元素上的时候显示。
+2. `alt`是`<img>`的特有属性，是图片内容的等价描述，用于图片无法加载时显示、读屏器阅读图片。可提图片高可访问性，除了纯装饰图片外都必须设置有意义的值，搜索引擎会重点分析。
 
+---
+
+#### HTML全局属性(global attribute)有哪些
+
+- accesskey:设置快捷键，提供快速访问元素如aaa在windows下的firefox中按alt + shift + a可激活元素
+- class:为元素设置类标识，多个类名用空格分开，CSS和javascript可通过class属性获取元素
+- contenteditable: 指定元素内容是否可编辑
+- contextmenu: 自定义鼠标右键弹出菜单内容
+- data-*: 为元素增加自定义属性
+- dir: 设置元素文本方向
+- draggable: 设置元素是否可拖拽
+- dropzone: 设置元素拖放类型： copy, move, link
+- hidden: 表示一个元素是否与文档。样式上会导致元素不显示，但是不能用这个属性实现样式效果
+- id: 元素id，文档内唯一
+- lang: 元素内容的的语言
+- spellcheck: 是否启动拼写和语法检查
+- style: 行内css样式
+- tabindex: 设置元素可以获得焦点，通过tab可以导航
+- title: 元素相关的建议信息
+- translate: 元素和子孙节点内容是否需要本地化
 
 ---
 
@@ -202,6 +240,53 @@ CSS规范规定，每个元素都有`display`属性，确定该元素的类型�
   	`<br> <hr> <img> <input> <link> <meta>`
   	鲜为人知的是：
   	`<area> <base> <col> <command> <embed> <keygen> <param> <source> <track> <wbr>`
+
+---
+
+#### 页面编码和被请求的资源编码如果不一致如何处理？
+
+
+
+---
+
+#### HTML生成公钥
+
+```Html
+<keygen name="name" challenge="challenge string" keytype="type" keyparams="pqg-params">
+```
+
+#### 改变html文本方向
+
+```html
+<!-- Switch text direction -->
+<p><bdo dir="rtl">This text will go right to left.</bdo></p>
+```
+
+#### 高亮文本
+
+```html
+<p>Some part of this paragraph is <mark>highlighted</mark> by using mark element.</p>
+```
+
+对局部html使用CSS属性
+
+
+
+---
+
+#### 下面HTML会触发http请求吗？
+
+```html
+<img src="mypic.jpg" style="visibility: hidden" alt="My photo">
+```
+
+**Answer:** yes
+
+```html
+<div style="display: none;">
+  <img src="mypic.jpg" alt="My photo">
+</div>
+```
 
 ---
 

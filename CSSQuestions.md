@@ -67,7 +67,7 @@
 
 #### 列举不同的清除浮动的技巧，并指出它们各自适用的使用场景。
 
-这篇博文<sup><a href="http://kayosite.com/remove-floating-style-in-detail.html">3</a></sup>总结得非常专业。貌似CSS的每个问题都可以开一篇博文来详细分析啊，可能CSS比较需要`show me the code, show me the result`吧。
+这篇博文<sup><a href="http://kayosite.com/remove-floating-style-in-detail.html">3</a></sup>总结得非常专业。貌似CSS的每个问题都可以开一篇博文来详细分析啊，可能CSS比较需要`show me the code， show me the result`吧。
 
 浮动引起的问题主要是父元素内容高度不会被撑开，导致高度塌陷。清除浮动主要两种方案：`clear`和BFC元素(上个问题提到的能够包含浮动元素)。
 
@@ -83,13 +83,24 @@ BFC元素根据上一个问题有几种方法，比如`overflow`，父元素设�
 
 #### 请解释 CSS sprites，以及你要如何在页面或网站中实现它。
 
-雪碧图，合并图片到一张大图，然后通过来`background-position`定位需要的图像；减少http请求次数。
+概念：将多个小图片拼接到一个图片中。通过`background-position`和元素尺寸调节需要显示的背景图案。
+
+优点：
+
+1. 减少HTTP请求数，极大地提高页面加载速度
+2. 增加图片信息重复度，提高压缩比，减少图片大小
+3. 更换风格方便，只需在一张或几张图片上修改颜色或样式即可实现
+
+缺点：
+
+1. 图片合并麻烦
+2. 维护麻烦，修改一个图片可能需要从新布局整个图片，样式
 
 ---
 
 ####   页面导入样式时，使用link和@import有什么区别？
 
-* link属于XHTML标签，除了加载CSS外，还能用于定义RSS, 定义rel连接属性等作用；而@import是CSS提供的，只能用于加载CSS;
+* link属于XHTML标签，除了加载CSS外，还能用于定义RSS， 定义rel连接属性等作用；而@import是CSS提供的，只能用于加载CSS;
 * 页面被加载的时，link导入的样式可以并行加载，而@import会等引用的样式加载完后继续加载后部分样式;
 * link方式的样式的权重 高于@import的权重
 
@@ -271,6 +282,15 @@ h3.levin span {
 
 隐藏的方法包括但不限于：缩进或位置不可见／被其他内容覆盖／`display:hidden`／`overflow:hidden`隐藏溢出的内容
 
+1. visibility: hidden；这个属性只是简单的隐藏某个元素，但是元素占用的空间任然存在。
+2. opacity: 0；一个CSS3属性，设置0可以使一个元素完全透明，制作出和visibility一样的效果。与visibility相比，它可以被transition和animate
+3. position: absolute；使元素脱离文档流，处于普通文档之上，给它设置一个很大的left负值定位，使元素定位在可见区域之外。
+4. display: none；元素会变得不可见，并且不会再占用文档的空间。
+5. transform: scale(0)；将一个元素设置为无限小，这个元素将不可见。这个元素原来所在的位置将被保留。
+6. HTML5 hidden attribute；hidden属性的效果和display:none;相同，这个属性用于记录一个元素的状态
+7. height: 0; overflow: hidden；将元素在垂直方向上收缩为0,使元素消失。只要元素没有可见的边框，该技术就可以正常工作。
+8. filter: blur(0)；将一个元素的模糊度设置为0，从而使这个元素“消失”在页面中。
+
 ---
 #### 你用过栅格系统 (grid system) 吗？如果使用过，你最喜欢哪种？
 
@@ -430,7 +450,7 @@ Bootstrap的适配属于渐进增强方式，优先适配小屏设备。
 
 ---
 
-#### 请解释 `* { box-sizing: border-box; }` 的作用, 并且说明使用它有什么好处？
+#### 请解释 `* { box-sizing: border-box; }` 的作用， 并且说明使用它有什么好处？
 
 参见该文<sup><a href=”https://css-tricks.com/international-box-sizing-awareness-day/“>8</a></sup>
 
@@ -572,41 +592,464 @@ retina屏幕属于一种高像素密度的高分屏，在苹果设备上，一�
 
 ---
 
+#### 如何居中div
+
+- 水平居中：给div设置一个宽度，然后添加margin:0 auto属性
+
+  ```css
+   div{
+   	width:200px;
+   	margin:0 auto;
+    }
+
+  ```
+
+- 让绝对定位的div居中
+
+  ```css
+  div {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    margin: auto;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+  }
+
+  ```
+
+- 水平垂直居中一
+
+  ```css
+  // 已知确定容器的宽高 宽500 高300
+  // 设置层的外边距
+
+  div {
+    position: relative;		/* 相对定位或绝对定位均可 */
+    width:500px;
+    height:300px;
+    top: 50%;
+    left: 50%;
+    margin: -150px 0 0 -250px;     	/* 外边距为自身宽高的一半 */
+  }
+
+  ```
+
+- 水平垂直居中二
+
+  ```css
+   // 未知容器的宽高，利用transform属性
+
+   div {
+   	position: absolute;		/* 相对定位或绝对定位均可 */
+   	top: 50%;
+   	left: 50%;
+   	transform: translate(-50%， -50%);
+   }
+
+  ```
+
+- 水平垂直居中三
+
+  ```css
+   // 利用 flex 布局
+   // 实际使用时应考虑兼容性
+
+   .container {
+   	display: flex;
+   	align-items: center; 		/* 垂直居中 */
+   	justify-content: center;	/* 水平居中 */
+   }
+   .container div {
+   	width: 100px;
+   	height: 100px;
+   }  
+  ```
+
+---
+
+#### CSS3有哪些新特性？
+
+- 新增各种CSS选择器	（: not(.input)：所有 class 不是“input”的节点）
+- 圆角		    （border-radius:8px）
+- 多列布局	    （multi-column layout）
+- 阴影和反射	（Shadow\Reflect）
+- 文字特效		（text-shadow）
+- 文字渲染		（text-decoration）
+- 线性渐变		（gradient）
+- 变形如旋转、缩放、移动、倾斜等	（transform）
+
+---
+
+#### 多种方法实现两列布局
+
+---
+
+#### 品字布局
+
+上面的div宽100%，
+下面的两个div分别宽50%，
+然后用float或者inline使其不换行即可
+
+---
+
+#### 常见的CSS hack
+
+三角形
+
+```css
+#demo {
+  width: 0;
+  height: 0;
+  border-width: 20px;
+  border-style: solid;
+  border-color: transparent transparent red transparent;
+}
+```
+
+
+
 
 
 ---
 
-多种方法实现两列布局
+#### 哪些属性可继承？哪些不可？
 
 
 
 ---
 
-常见的CSS hack
+#### css多列等高如何实现？
+
+* 利用padding-bottom|margin-bottom正负值相抵；
+
+设置父容器设置超出隐藏（overflow:hidden），这样子父容器的高度就还是它里面的列没有设定padding-bottom时的高度，当它里面的任 一列高度增加了，则父容器的高度被撑到里面最高那列的高度，其他比这列矮的列会用它们的padding-bottom补偿这部分高度差。
+
+```css
+.container{
+  margin:0 auto; 
+  width:600px; 
+  border:3px solid #00C;
+  overflow:hidden;
+ /*这个超出隐藏的声明在IE6里不写也是可以的*/
+}
+.left{
+  float:left; 
+  width:150px; 
+  background:#B0B0B0;
+  padding-bottom:2000px;
+  margin-bottom:-2000px;
+}
+.right{
+  float:left; 
+  width:450px; 
+  background:#6CC;
+  padding-bottom:2000px;
+  margin-bottom:-2000px;
+}
+```
+
+- 假等高列：使用背景图片，在列的父元素上使用这个背景图进行Y轴的铺放，从而实现一种等高列的假像
+- 给容器div使用单独的背景色（[固定布局](http://codepen.io/strick/pen/ZbZYoW)）（[流体布局](http://codepen.io/strick/pen/WQWOPK)）：用元素中的最大高度撑大其他的容器高度
+- 创建[带边框的两列](http://codepen.io/strick/pen/bVJRQv)等高布局：用border-left来做，只能使用两列。
+- 使用[正padding和负margin](http://codepen.io/strick/pen/qOwXEN)对冲实现多列布局方法：在所有列中使用正的上、下padding和负的上、下margin，并在所有列外面加上一个容器，设置overflow:hiden把溢出背景切掉
+- 使用[边框和定位模拟](http://codepen.io/strick/pen/XmQabJ)列等高：但不能使用在多列
+- [模仿表格布局](http://codepen.io/strick/pen/ZbZJGg)等高列效果：兼容性不好，在ie6-7无法正常运行
+
+---
+
+#### Flex布局与Grid布局
 
 
 
 ---
 
-哪些属性可继承？哪些不可？
+#### rgba()和opacity的透明效果有什么不同
+
+答案：
+
+rgba()和opacity都能实现透明效果，但最大的不同是opacity作用于元素，以及元素内的所有内容的透明度，
+
+而rgba()只作用于元素的颜色或其背景色。（设置rgba透明的元素的子元素不会继承透明效果！）
+
+---
+
+### 如何确定一个元素的包含块(containing block)
+
+1. 根元素的包含块叫做初始包含块，在连续媒体中他的尺寸与viewport相同并且anchored at the canvas origin；对于paged media，它的尺寸等于page area。初始包含块的direction属性与根元素相同。
+
+2. `position`为`relative`或者`static`的元素，它的包含块由最近的块级（`display`为`block`,`list-item`, `table`）祖先元素的**内容框**组成
+
+3. 如果元素`position`为`fixed`。对于连续媒体，它的包含块为viewport；对于paged media，包含块为page area
+
+4. 如果元素`position`为`absolute`，它的包含块由祖先元素中最近一个`position`为`relative`,`absolute`或者`fixed`的元素产生，规则如下：
+
+   - 如果祖先元素为行内元素，the containing block is the bounding box around the **padding boxes** of the first and the last inline boxes generated for that element.
+   - 其他情况下包含块由祖先节点的**padding edge**组成
+
+   如果找不到定位的祖先元素，包含块为**初始包含块**
+
+---
+
+#### absolute的containing block(容器块)计算方式跟正常流有什么不同
+
+  无论属于哪种，都要先找到其祖先元素中最近的 position 值不为 static 的元素，然后再判断：
+  1、若此元素为 inline 元素，则 containing block 为能够包含这个元素生成的第一个和最后一个 inline box 的 padding box (除 margin， border 外的区域) 的最小矩形；
+  2、否则，则由这个祖先元素的 padding box 构成。
+  如果都找不到，则为 initial containing block。
+
+  补充：
+    1. static(默认的)/relative：简单说就是它的父元素的内容框（即去掉padding的部分）
+    2. absolute: 向上找最近的定位为absolute/relative的元素
+    3. fixed: 它的containing block一律为根元素(html/body)，根元素也是initial containing block
+
+---
+
+#### CSS里的visibility属性有个collapse属性值是干嘛用的？在不同浏览器下以后什么区别
+
+对于普通元素`visibility:collapse`会将元素完全隐藏，不占据页面布局空间，与`display:none`表现相同。如果目标元素为table，`visibility:collapse`将table隐藏，但是会占据页面布局空间。 仅在Firefox下起作用，IE会显示元素，Chrome会将元素隐藏，但是占据空间。
+
+---
+
+#### position跟display、float这些特性相互叠加后会怎么样？
+
+如果元素`display:none`，那么元素不被渲染，`position，float`不起作用
+
+如果元素拥有`position:absolute`或者`position:fixed`属性那么元素将为绝对定位，float不起作用。
+
+如果元素float属性不是none，元素会脱离文档流，根据float属性值来显示。有浮动，绝对定位，inline-block属性的元素，margin不会和垂直方向上的其他元素margin折叠。
+
+---
+
+#### `display: none;`与`visibility: hidden;`的区别
+
+联系：它们都能让元素不可见
+
+区别：
+
+1. display:none;会让元素完全从渲染树中消失，渲染的时候不占据任何空间；visibility: hidden;不会让元素从渲染树消失，渲染师元素继续占据空间，只是内容不可见
+2. display: none;是非继承属性，子孙节点消失由于元素从渲染树消失造成，通过修改子孙节点属性无法显示；visibility: hidden;是继承属性，子孙节点消失由于继承了hidden，通过设置visibility: visible;可以让子孙节点显式
+3. 修改常规流中元素的display通常会造成文档重排。修改visibility属性只会造成本元素的重绘。
+4. 读屏器不会读取display: none;元素内容；会读取visibility: hidden;元素内容
+
+---
+
+#### specified value,computed value,used value计算方法
+
+- specified value: 计算方法如下：
+  1. 如果样式表设置了一个值，使用这个值
+  2. 如果没有设置值，这个属性是继承属性，从父元素继承
+  3. 如果没设置，并且不是继承属性，使用css规范指定的初始值
+- computed value: 以specified value根据规范定义的行为进行计算，通常将相对值计算为绝对值，例如em根据font-size进行计算。一些使用百分数并且需要布局来决定最终值的属性，如width，margin。百分数就直接作为computed value。line-height的无单位值也直接作为computed value。这些值将在计算used value时得到绝对值。**computed value的主要作用是用于继承**
+- used value：属性计算后的最终值，对于大多数属性可以通过window.getComputedStyle获得，尺寸值单位为像素。以下属性依赖于布局，
+  - background-position
+  - bottom, left, right, top
+  - height, width
+  - margin-bottom, margin-left, margin-right, margin-top
+  - min-height, min-width
+  - padding-bottom, padding-left, padding-right, padding-top
+  - text-indent
+
+---
+
+#### CSS有哪些继承属性
+
+- 关于文字排版的属性如：
+  - [font](https://developer.mozilla.org/en-US/docs/Web/CSS/font)
+  - [word-break](https://developer.mozilla.org/en-US/docs/Web/CSS/word-break)
+  - [letter-spacing](https://developer.mozilla.org/en-US/docs/Web/CSS/letter-spacing)
+  - [text-align](https://developer.mozilla.org/en-US/docs/Web/CSS/text-align)
+  - [text-rendering](https://developer.mozilla.org/en-US/docs/Web/CSS/text-rendering)
+  - [word-spacing](https://developer.mozilla.org/en-US/docs/Web/CSS/word-spacing)
+  - [white-space](https://developer.mozilla.org/en-US/docs/Web/CSS/white-space)
+  - [text-indent](https://developer.mozilla.org/en-US/docs/Web/CSS/text-indent)
+  - [text-transform](https://developer.mozilla.org/en-US/docs/Web/CSS/text-transform)
+  - [text-shadow](https://developer.mozilla.org/en-US/docs/Web/CSS/text-shadow)
+- [line-height](https://developer.mozilla.org/en-US/docs/Web/CSS/line-height)
+- [color](https://developer.mozilla.org/en-US/docs/Web/CSS/color)
+- [visibility](https://developer.mozilla.org/en-US/docs/Web/CSS/visibility)
+- [cursor](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor)
+- 列表相关 `list-style-image，list-style-position，list-style-type， list-style`
+
+---
+
+#### 抽离样式模块怎么写
+
+---
+
+#### css属性content有什么作用？有什么应用？
+
+css的content属性专门应用在 before/after 伪元素上，用于来插入生成内容。
+
+可以配合自定义字体显示特殊符号。
+
+---
+
+#### 元素竖向的百分比设定是相对于容器的高度吗
 
 
 
 ---
 
-Flex布局与Grid布局
+#### 在CSS样式中常使用px、em、rem，各有什么优劣，在表现上有什么区别？
+
+px是相对长度单位，相对于显示器屏幕分辨率而言的。
+
+em是相对长度单位，相对于当前对象内文本的字体尺寸。
+
+px定义的字体，无法用浏览器字体放大功能。
+
+em的值并不是固定的，会继承父级元素的字体大小，1 ÷ 父元素的font-size × 需要转换的像素值 = em值。
+
+rem
+
+---
+
+#### 全屏滚动的原理是什么，用到了CSS的那些属性
 
 
 
 ---
 
-**9.rgba()和opacity的透明效果有什么不同？**
+#### 让页面里的字体变清晰，变细用CSS怎么做？
 
-　　答案：
+  `-webkit-font-smoothing: antialiased;`
 
-　　rgba()和opacity都能实现透明效果，但最大的不同是opacity作用于元素，以及元素内的所有内容的透明度，
+---
 
-　　而rgba()只作用于元素的颜色或其背景色。（设置rgba透明的元素的子元素不会继承透明效果！）
+#### overflow: scroll时不能平滑滚动的问题怎么处理
+
+
+
+---
+
+#### 有一个高度自适应的div，里面有两个div，一个高度100px，希望另一个填满剩下的高度。
+
+
+
+---
+
+#### png、jpg、gif 这些图片格式解释一下，分别什么时候用。有没有了解过webp
+
+**GIF**:
+
+1. 8位像素，256色
+2. 无损压缩
+3. 支持简单动画
+4. 支持boolean透明
+5. 适合简单动画
+
+**JPEG**：
+
+1. 颜色限于256
+2. 有损压缩
+3. 可控制压缩质量
+4. 不支持透明
+5. 适合照片
+
+**PNG**：
+
+1. 有PNG8和truecolor PNG
+2. PNG8类似GIF颜色上限为256，文件小，支持alpha透明度，无动画
+3. 适合图标、背景、按钮
+
+**Webp**：
+
+谷歌（google）开发的一种旨在加快图片加载速度的图片格式。图片压缩体积大约只有JPEG的2/3，并能节省大量的服务器带宽资源和数据空间。Facebook Ebay等知名网站已经开始测试并使用WebP格式。
+
+**Apng**：
+
+全称是“Animated Portable Network Graphics”, 是PNG的位图动画扩展，可以实现png格式的动态图片效果。04年诞生，但一直得不到各大浏览器厂商的支持，直到日前得到 iOS safari 8的支持，有望代替GIF成为下一代动态图标准。
+
+---
+
+#### style标签写在body后与body前有什么区别？
+
+
+
+---
+
+### CSS选择器有哪些
+
+1. ***通用选择器**：选择所有元素，**不参与计算优先级**，兼容性IE6+
+2. **#X id选择器**：选择id值为X的元素，兼容性：IE6+
+3. **.X 类选择器**： 选择class包含X的元素，兼容性：IE6+
+4. **X Y后代选择器**： 选择满足X选择器的后代节点中满足Y选择器的元素，兼容性：IE6+
+5. **X 元素选择器**： 选择标所有签为X的元素，兼容性：IE6+
+6. **:link，：visited，：focus，：hover，：active链接状态**： 选择特定状态的链接元素，顺序LoVe HAte，兼容性: IE4+
+7. **X + Y直接兄弟选择器**：在**X之后第一个兄弟节点**中选择满足Y选择器的元素，兼容性： IE7+
+8. **X > Y子选择器**： 选择X的子元素中满足Y选择器的元素，兼容性： IE7+
+9. **X ~ Y兄弟**： 选择**X之后所有兄弟节点**中满足Y选择器的元素，兼容性： IE7+
+10. **[attr]**：选择所有设置了attr属性的元素，兼容性IE7+
+11. **[attr=value]**：选择属性值刚好为value的元素
+12. **[attr~=value]**：选择属性值为空白符分隔，其中一个的值刚好是value的元素
+13. **[attr|=value]**：选择属性值刚好为value或者value-开头的元素
+14. **[attr^=value]**：选择属性值以value开头的元素
+15. **[attr$=value]**：选择属性值以value结尾的元素
+16. *[attr=value]**：选择属性值中包含value的元素
+17. **[:checked]**：选择单选框，复选框，下拉框中选中状态下的元素，兼容性：IE9+
+18. **X:after, X::after**：after伪元素，选择元素虚拟子元素（元素的最后一个子元素），CSS3中::表示伪元素。兼容性:after为IE8+，::after为IE9+
+19. **:hover**：鼠标移入状态的元素，兼容性a标签IE4+， 所有元素IE7+
+20. **:not(selector)**：选择不符合selector的元素。**不参与计算优先级**，兼容性：IE9+
+21. **::first-letter**：伪元素，选择块元素第一行的第一个字母，兼容性IE5.5+
+22. **::first-line**：伪元素，选择块元素的第一行，兼容性IE5.5+
+23. **:nth-child(an + b)**：伪类，选择前面有an + b - 1个兄弟节点的元素，其中n >= 0， 兼容性IE9+
+24. **:nth-last-child(an + b)**：伪类，选择后面有an + b - 1个兄弟节点的元素 其中n >= 0，兼容性IE9+
+25. **X:nth-of-type(an+b)**：伪类，X为选择器，**解析得到元素标签**，选择**前面**有an + b - 1个**相同标签**兄弟节点的元素。兼容性IE9+
+26. **X:nth-last-of-type(an+b)**：伪类，X为选择器，解析得到元素标签，选择**后面**有an+b-1个相同**标签**兄弟节点的元素。兼容性IE9+
+27. **X:first-child**：伪类，选择满足X选择器的元素，且这个元素是其父节点的第一个子元素。兼容性IE7+
+28. **X:last-child**：伪类，选择满足X选择器的元素，且这个元素是其父节点的最后一个子元素。兼容性IE9+
+29. **X:only-child**：伪类，选择满足X选择器的元素，且这个元素是其父元素的唯一子元素。兼容性IE9+
+30. **X:only-of-type**：伪类，选择X选择的元素，**解析得到元素标签**，如果该元素没有相同类型的兄弟节点时选中它。兼容性IE9+
+31. **X:first-of-type**：伪类，选择X选择的元素，**解析得到元素标签**，如果该元素 是此此类型元素的第一个兄弟。选中它。兼容性IE9+
+
+---
+
+#### **获得一个DOM元素的绝对位置**
+
+[offsetTop](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLElement/offsetTop)：返回当前元素相对于其 [offsetParent](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLElement/offsetParent) 元素的顶部的距离
+
+[offsetLeft](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLElement/offsetLeft)：返回当前元素相对于其 [offsetParent](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLElement/offsetParent) 元素的左边的距离
+
+[getBoundingClientRect()](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/getBoundingClientRect)：返回值是一个[DOMRect](https://developer.mozilla.org/zh-CN/docs/Mozilla/Tech/XPCOM/Reference/Interface/nsIDOMClientRect)对象，它包含了一组用于描述边框的只读属性——left、top、right和bottom，属性单位为像素
+
+参考《[JavaScript中尺寸、坐标](http://www.cnblogs.com/strick/p/4826273.html)》，[查看在线代码](http://codepen.io/strick/pen/XmQaaX)。
+
+---
+
+#### 如何利用JS生成一个table
+
+首先是用[createElement](https://developer.mozilla.org/zh-CN/docs/Web/API/Document/createElement)创建一个table，再用[setAttribute](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/setAttribute)设置table的属性，
+
+然后用for循环设置tr和td的内容，用[appendChild](https://developer.mozilla.org/zh-CN/docs/Web/API/Node/appendChild)拼接内容，设置td的时候还用到[innerHTML](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/innerHTML)和[style](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Properties_Reference).padding。
+
+[查看在线代码](http://codepen.io/strick/pen/wKZqpR)。参考《[JavaScript要点归档：DOM表格](http://myweb.jowai.info/javascript-main-points-archive-dom-table/)》《[JavaScript要点归档：DOM](http://myweb.jowai.info/javascript-main-points-archive-dom/)》
+
+---
+
+#### 实现预加载一张图片，加载完成后显示在网页中并设定其高度为50px，宽度为50px
+
+先new [Image](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLImageElement/Image)()获取一个图片对象，然后在图片对象的onload中设置宽度和高度。[查看在线代码](http://codepen.io/strick/pen/vNMJVr)。
+
+#### 假设有一个4行tr的table，将table里面tr顺序颠倒
+
+先是通过table.tBodies[0].rows获取到当前tbody中的行，接下来是两种方法处理。获取到的行没有[reverse](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/reverse)这个方法。
+
+第一种是将这些行push到另外一个数组中
+
+第二种是用Array.prototype.[slice](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/slice).call()将那些行变成数组，
+
+接着用reverse倒叙，table再appendChild。[查看在线代码](http://codepen.io/strick/pen/VvNzqX)。
+
+这里我有个疑问，就是在appendChild的时候，并不是在最后把列加上，而是做了替换操作？
+
+#### 模拟一个HashTable类，一个类上注册四个方法：包含有add、remove、contains、length方法
+
+先是在构造函数中定义一个数组，然后用push模拟add，splice模拟remove。
+
+四个方法都放在了[prototype](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/prototype)上面。[查看在线代码](http://codepen.io/strick/pen/VvNBom)。
 
 ---
 
