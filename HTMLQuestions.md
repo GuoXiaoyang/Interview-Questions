@@ -346,7 +346,7 @@ CSS规范规定，每个元素都有`display`属性，确定该元素的类型�
 
 **reason:** you can save some byte and reduce bytes needs to be downloaded in a html file.
 
-```
+```html
 <p>Some text
 <p>Some more text
 <ul>
@@ -358,7 +358,7 @@ CSS规范规定，每个元素都有`display`属性，确定该元素的类型�
 
 the above html will be parsed as the following blocks.
 
-```
+```html
 <p>Some text</p>
 <p>Some more text</p>
 <ul>
@@ -367,6 +367,12 @@ the above html will be parsed as the following blocks.
 </ul>
   
 ```
+
+#### 你熟悉 SVG 样式的书写吗？
+
+直接使用比较多，特别是矢量图标。大致看过MDN的文档<sup><a href="https://developer.mozilla.org/en-US/docs/Web/SVG">6</a></sup>，通过标签属性中的特定指令进行绘图，与canvas绘图方法差别较大。
+
+---
 
 #### 参考资料
 
