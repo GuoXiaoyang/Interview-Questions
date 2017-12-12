@@ -246,7 +246,7 @@ right.addEventListener('click', () => {
 
 ---
 
-评价以下代码并给出改进意见。
+#### 评价以下代码并给出改进意见。
 
 ```javascript
 if(window.addEventListener){
@@ -265,15 +265,23 @@ else if(document.all){
 
 
 
-延伸：写一个React轮播组件
+#### 延伸：写一个React轮播组件
 
 
 
 ---
 
-12.（设计题）想实现一个对页面某个节点的拖曳？如何做？（使用原生JS）
+#### 想实现一个对页面某个节点的拖曳？如何做？（使用原生JS）
 
 
+
+---
+
+#### Shadow DOM 是什么？
+
+[ShadowDOM](https://developers.google.cn/web/fundamentals/web-components/shadowdom)主要解决一个文档中可能需要大量交互的多个DOM树建立和维护各自功能边界的问题。最大的用处应该是隔离外部环境用于封装组件。
+
+目前浏览器没有完全支持
 
 ---
 
