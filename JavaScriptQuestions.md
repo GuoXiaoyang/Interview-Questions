@@ -70,6 +70,36 @@ JS中面向对象的设计，原型继承是重要的组成部分。
 当访问实例对象的属性时，先查找其自身属性，如果没有该属性，则通过`__proto__`查找原型对象上的属性，如果再没有则层层递进查找，由此实现原型继承。
 
 ---
+
+#### 原型链
+
+当从一个对象那里调取属性或方法时，如果该对象自身不存在这样的属性或方法，就会去自己关联的`prototype`对象那里寻找，如果prototype没有，就会去prototype关联的前辈prototype那里寻找，如果再没有则继续查找`Prototype.Prototype`引用的对象，依次类推，直到Prototype.….Prototype为undefined（Object的Prototype就是undefined）从而形成了所谓的“原型链”。
+
+其中foo是Function对象的实例。而Function的原型对象同时又是Object的实例。这样就构成了一条原型链。
+
+#### instanceof 确定原型和实例之间的关系
+
+用来判断某个构造函数的prototype属性是否存在另外一个要检测对象的原型链上
+
+对象的`__proto__`指向自己构造函数的prototype。`obj.__proto__.__proto__...`的原型链由此产生，包括我们的操作符instanceof正是通过探测`obj.__proto__.__proto__... === Constructor.prototype`来验证obj是否是Constructor的实例。
+
+```javascript
+function C(){}
+
+var o = new C(){}
+//true 因为Object.getPrototypeOf(o) === C.prototype
+o instanceof C
+```
+
+instanceof只能用来判断对象和函数，不能用来判断字符串和数字
+
+#### isPrototypeOf
+
+用于测试一个对象是否存在于另一个对象的原型链上。
+
+判断父级对象 可检查整个原型链
+
+---
 #### 你怎么看 AMD vs. CommonJS？
 
 JS中不同的模块加载机制。大概梳理JS模块化的发展吧。
@@ -163,6 +193,13 @@ var foo = function f(){}()
 立即执行匿名函数模拟块级作用域，上文中提到的。
 
 ---
+#### 解释 “JavaScript 模块模式” 以及你在何时使用它。
+
+- 如果有提到无污染的命名空间，可以考虑加分。
+- 如果你的模块没有自己的命名空间会怎么样？
+
+---
+
 #### 你是如何组织自己的代码？是使用模块模式，还是使用经典继承的方法？
 
 最近使用React偏多，两者都有吧。如果可能的话，尽量跳出框架用原生JS写几个项目。
@@ -219,17 +256,43 @@ var foo = function f(){}()
 
 Asynchronous JavaScript and XML（异步 JavaScript 和 XML）是一种交互式网页开发技术。客户端向服务端发送请求(get/post/delete等)，通过回调接收到服务端返回的响应来进行后续的网页操作。
 
-(1)创建XMLHttpRequest对象,也就是创建一个异步调用对象.
+1. 创建XMLHttpRequest对象,也就是创建一个异步调用对象.
+2. 创建一个新的HTTP请求,并指定该HTTP请求的方法、URL及验证信息.
+3. 设置响应HTTP请求状态变化的函数.
+4. 发送HTTP请求.
+5. 获取异步调用返回的数据.
+6. 使用JavaScript和DOM实现局部刷新.
 
-(2)创建一个新的HTTP请求,并指定该HTTP请求的方法、URL及验证信息.
 
-(3)设置响应HTTP请求状态变化的函数.
 
-(4)发送HTTP请求.
+#### ajax请求和原理
 
-(5)获取异步调用返回的数据.
+```
+var xhr = new XMLHTTPRequest();
+// 请求 method 和 URI
+xhr.open('GET', url);
+// 请求内容
+xhr.send();
+// 响应状态
+xhr.status
+// xhr 对象的事件响应
+xhr.onreadystatechange = function() {}
+xhr.readyState
+// 响应内容
+xhr.responseText
+```
 
-(6)使用JavaScript和DOM实现局部刷新.
+- AJAX的工作原理
+
+Ajax的工作原理相当于在用户和服务器之间加了—个中间层(AJAX引擎),使用户操作与服务器响应异步化。　Ajax的原理简单来说通过XmlHttpRequest对象来向服务器发异步请求，从服务器获得数据，然后用javascript来操作DOM而更新页面。
+
+- ajax优缺点
+
+优点：无刷新更新数据 异步与服务器通信 前后端负载均衡
+
+缺点：
+
+1）ajax干掉了Back和history功能，对浏览器机制的破坏 2）对搜索引擎支持较弱 3）违背了URI和资源定位的初衷
 
 ---
 #### 使用 Ajax 都有哪些优劣？
@@ -499,7 +562,6 @@ VS Code的调试工具 + Chrome DevTools
 
 - `for of`对迭代器对象进行遍历，得到的是值而不是属性
 
-
   ```javascript
   for (var value of iterable) {
     statement
@@ -746,6 +808,25 @@ Base.call(obj);
 10. `setRequestHeader(name, value)`:设置HTTP报头
 11. `send(body)`:对服务器请求进行初始化。参数body包含请求的主体部分，对于POST请求为键值对字符串；对于GET请求，为null
 
+
+
+#### fetch和Ajax有什么不同
+
+`XMLHttpRequest` 是一个设计粗糙的 API，不符合关注分离（Separation of Concerns）的原则，配置和调用方式非常混乱，而且基于事件的异步模型写起来也没有现代的 Promise，`generator/yield`，`async/await` 友好。
+
+fetch 是浏览器提供的一个新的 web API，它用来代替 Ajax（XMLHttpRequest），其提供了更优雅的接口，更灵活强大的功能。 Fetch 优点主要有：
+
+- 语法简洁，更加语义化
+- 基于标准 Promise 实现，支持 `async/await`
+
+```javascript
+fetch(url).then(response => response.json())
+  .then(data => console.log(data))
+  .catch(e => console.log("Oops, error", e))
+```
+
+
+
 ---
 
 #### focus/blur与focusin/focusout的区别与联系
@@ -826,7 +907,20 @@ function mouseoutHandler(e) {
 - 内部服务器代理请求跨域url，然后返回数据
 - 跨域请求数据，现代浏览器可使用HTML5规范的CORS功能，只要目标服务器返回HTTP头部**`Access-Control-Allow-Origin: *`**即可像普通ajax一样访问跨域资源
 
-### javascript有哪几种数据类型
+script、image、iframe的src都不受同源策略的影响。
+
+1. JSONP,回调函数+数据就是 JSON With Padding，简单、易部署。（做法：动态插入script标签，设置其src属性指向提供JSONP服务的URL地址，查询字符串中加入 callback 指定回调函数，返回的 JSON 被包裹在回调函数中以字符串的形式被返回，需将script标签插入body底部）。缺点是只支持GET，不支持POST（原因是通过地址栏传参所以只能使用GET）
+2. document.domain 跨子域 （ 例如a.qq.com嵌套一个b.qq.com的iframe ，如果a.qq.com设置document.domain为qq.com 。b.qq.com设置document.domain为qq.com， 那么他俩就能互相通信了，不受跨域限制了。 注意：只能跨子域）
+3. window.name + iframe ==> [http://www.tuicool.com/articles/viMFbqV，支持跨主域。不支持POST](http://www.tuicool.com/articles/viMFbqV%EF%BC%8C%E6%94%AF%E6%8C%81%E8%B7%A8%E4%B8%BB%E5%9F%9F%E3%80%82%E4%B8%8D%E6%94%AF%E6%8C%81POST)
+4. HTML5的postMessage()方法允许来自不同源的脚本采用异步方式进行有限的通信，可以实现跨文本档、多窗口、跨域消息传递。适用于不同窗口iframe之间的跨域
+5. CORS（Cross Origin Resource Share）对方服务端设置响应头
+6. 服务端代理 在浏览器客户端不能跨域访问，而服务器端调用HTTP接口只是使用HTTP协议，不会执行JS脚本，不需要同源策略，也就没有跨越问题。简单地说，就是浏览器不能跨域，后台服务器可以跨域。（一种是通过http-proxy-middleware插件设置后端代理；另一种是通过使用http模块发出请求）
+
+CORS请求默认不发送Cookie和HTTP认证信息。如果要把Cookie发到服务器，一方面要服务器同意，指定`Access-Control-Allow-Credentials`字段。
+
+---
+
+#### javascript有哪几种数据类型
 
 六种基本数据类型
 
@@ -854,7 +948,7 @@ function mouseoutHandler(e) {
 
 ---
 
-### 应用程序存储和离线web应用
+#### 应用程序存储和离线web应用
 
 HTML5新增应用程序缓存，允许web应用将应用程序自身保存到用户浏览器中，用户离线状态也能访问。 1.为html元素设置manifest属性:`<html manifest="myapp.appcache">`，其中后缀名只是一个约定，真正识别方式是通过`text/cache-manifest`作为MIME类型。所以需要配置服务器保证设置正确 2.manifest文件首行为`CACHE MANIFEST`，其余就是要缓存的URL列表，每个一行，相对路径都相对于manifest文件的url。注释以#开头 3.url分为三种类型：`CACHE`:为默认类型。`NETWORK`：表示资源从不缓存。 `FALLBACK`:每行包含两个url，第二个URL是指需要加载和存储在缓存中的资源， 第一个URL是一个前缀。任何匹配该前缀的URL都不会缓存，如果从网络中载入这样的URL失败的话，就会用第二个URL指定的缓存资源来替代。以下是一个文件例子：
 
@@ -1157,8 +1251,328 @@ function create(obj) {
     f.prototype = obj;
     return new f();
 }
-
 ```
+
+#### 说说你对作用域链的理解
+
+作用域链的作用是保证执行环境里有权访问的变量和函数是有序的，作用域链的变量只能向上访问，变量访问到window对象即被终止，作用域链向下访问变量是不被允许的。
+
+#### js继承方式及其优缺点
+
+- 原型链继承的缺点
+
+一是字面量重写原型会中断关系，使用引用类型的原型，并且子类型还无法给超类型传递参数。
+
+- 借用构造函数（类式继承）
+
+借用构造函数虽然解决了刚才两种问题，但没有原型，则复用无从谈起。所以我们需要原型链+借用构造函数的模式，这种模式称为组合继承
+
+- 组合式继承
+
+组合式继承是比较常用的一种继承方法，其背后的思路是 使用原型链实现对原型属性和方法的继承，而通过借用构造函数来实现对实例属性的继承。这样，既通过在原型上定义方法实现了函数复用，又保证每个实例都有它自己的属性。
+
+[JavaScript继承方式详解](https://segmentfault.com/a/1190000002440502)
+
+---
+
+#### **获得一个DOM元素的绝对位置**
+
+[offsetTop](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLElement/offsetTop)：返回当前元素相对于其 [offsetParent](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLElement/offsetParent) 元素的顶部的距离
+
+[offsetLeft](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLElement/offsetLeft)：返回当前元素相对于其 [offsetParent](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLElement/offsetParent) 元素的左边的距离
+
+[getBoundingClientRect()](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/getBoundingClientRect)：返回值是一个[DOMRect](https://developer.mozilla.org/zh-CN/docs/Mozilla/Tech/XPCOM/Reference/Interface/nsIDOMClientRect)对象，它包含了一组用于描述边框的只读属性——left、top、right和bottom，属性单位为像素
+
+参考《[JavaScript中尺寸、坐标](http://www.cnblogs.com/strick/p/4826273.html)》，[查看在线代码](http://codepen.io/strick/pen/XmQaaX)。
+
+------
+
+#### 如何利用JS生成一个table
+
+首先是用[createElement](https://developer.mozilla.org/zh-CN/docs/Web/API/Document/createElement)创建一个table，再用[setAttribute](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/setAttribute)设置table的属性，
+
+然后用for循环设置tr和td的内容，用[appendChild](https://developer.mozilla.org/zh-CN/docs/Web/API/Node/appendChild)拼接内容，设置td的时候还用到[innerHTML](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/innerHTML)和[style](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Properties_Reference).padding。
+
+[查看在线代码](http://codepen.io/strick/pen/wKZqpR)。参考《[JavaScript要点归档：DOM表格](http://myweb.jowai.info/javascript-main-points-archive-dom-table/)》《[JavaScript要点归档：DOM](http://myweb.jowai.info/javascript-main-points-archive-dom/)》
+
+------
+
+#### 实现预加载一张图片，加载完成后显示在网页中并设定其高度为50px，宽度为50px
+
+先new [Image](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLImageElement/Image)()获取一个图片对象，然后在图片对象的onload中设置宽度和高度。[查看在线代码](http://codepen.io/strick/pen/vNMJVr)。
+
+---
+
+#### 假设有一个4行tr的table，将table里面tr顺序颠倒
+
+先是通过table.tBodies[0].rows获取到当前tbody中的行，接下来是两种方法处理。获取到的行没有[reverse](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/reverse)这个方法。
+
+第一种是将这些行push到另外一个数组中
+
+第二种是用Array.prototype.[slice](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/slice).call()将那些行变成数组，
+
+接着用reverse倒叙，table再appendChild。[查看在线代码](http://codepen.io/strick/pen/VvNzqX)。
+
+这里我有个疑问，就是在appendChild的时候，并不是在最后把列加上，而是做了替换操作？
+
+---
+
+#### 模拟一个HashTable类，一个类上注册四个方法：包含有add、remove、contains、length方法
+
+先是在构造函数中定义一个数组，然后用push模拟add，splice模拟remove。
+
+四个方法都放在了[prototype](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/prototype)上面。[查看在线代码](http://codepen.io/strick/pen/VvNBom)。
+
+---
+
+#### ES6相关
+
+#### 谈一谈let与var和const的区别？
+
+- let为ES6新添加申明变量的命令，它类似于var，但是有以下不同：
+- let命令不存在变量提升，如果在let前使用，会导致报错
+- 暂时性死区的本质，其实还是块级作用域必须“先声明后使用”的性质。
+- let，const和class声明的全局变量不是全局对象的属性。
+
+const声明的变量与let声明的变量类似，它们的不同之处在于，const声明的变量只可以在声明时赋值，不可随意修改，否则会导致SyntaxError（语法错误）。
+
+const只是保证变量名指向的地址不变，并不保证该地址的数据不变。const可以在多个模块间共享 let 暂时性死区的原因：var 会变量提升，let 不会。
+
+#### 箭头函数
+
+箭头函数不属于普通的 function，所以没有独立的上下文。箭头函数体内的this对象，就是定义时所在的对象，而不是使用时所在的对象。 由于箭头函数没有自己的this，函数对象中的call、apply、bind三个方法，无法"覆盖"箭头函数中的this值。 箭头函数没有原本(传统)的函数有的隐藏arguments对象。 箭头函数不能当作generators使用，使用yield会产生错误。
+
+在以下场景中不要使用箭头函数去定义：
+
+- 定义对象方法、定义原型方法、定义构造函数、定义事件回调函数。
+- 箭头函数里不但没有 this，也没有 arguments, super ……
+
+#### Symbol，Map和Set
+
+Map 对象保存键值对。一个对象的键只能是字符串或者 Symbols，但一个 Map 的键可以是任意值。 Set 对象允许你存储任何类型的唯一值，Set对象是值的集合，Set中的元素只会出现一次 Symbol 是一种特殊的、不可变的数据类型，可以作为对象属性的标识符使用(Symbol([description]) )
+
+```javascript
+let mySet = new Set()
+mySet.add(1)
+mySet.add('hello')
+mySet.add('hello')
+console.log(mySet.size);//2
+console.log(mySet);//Set {1,'hello'}
+
+//Map保存键值对也不能有重复的
+let myMap = new Map();
+let key1 = 'China',key2 = 'America';
+myMap.set(key1,'welcome')
+myMap.set(key2,'gold bless you')
+console.log(myMap);//Map { 'China' => 'welcome', 'America' => 'gold bless you' }
+console.log(myMap.get(key1));//welcome
+console.log(myMap.get(key2));//gold bless you
+
+let mySymbol = Symbol('symbol1');
+let mySymbol2 = Symbol('symbol1');
+console.log(mySymbol == mySymbol2);//false
+//Symbols 在 for...in 迭代中不可枚举。
+let obj = {}
+obj['c'] = 'c'
+obj.d ='d'
+obj[Symbol('a')] = 'a'
+obj[Symbol.for('b')] = 'b'
+for(let k in obj){
+    console.log(k);//logs 'c' and 'd'
+}
+```
+
+`for...of`可以用来遍历数组，类数组对象，argument，字符串，Map和Set，`for...in`用来遍历对象
+
+---
+
+#### ES6 module和require/exports/module.exports的区别
+
+ES6 Module 中导入模块的属性或者方法是强绑定的，包括基础类型；而 CommonJS 则是普通的值传递或者引用传递。
+
+CommonJS模块是运行时的，导入导出是通过值的复制来达成的。ES6的模块是静态的，导入导出实际上是建立符号的映射
+
+import必须放在文件最顶部，require不需要；import最终会被babel编译为require
+
+---
+
+#### babel的原理
+
+使用 babylon 解析器对输入的源代码字符串进行解析并生成初始 AST 遍历 AST 树并应用各 transformers（plugin） 生成变换后的 AST 树 利用 babel-generator 将 AST 树输出为转码后的代码字符串 分为三个阶段：
+
+解析：将代码字符串解析成抽象语法树 变换：对抽象语法树进行变换操作 再建：根据变换后的抽象语法树再生成代码字符串
+
+---
+
+#### Promise的原理
+
+现在回顾下Promise的实现过程，其主要使用了设计模式中的观察者模式：
+
+- 通过`Promise.prototype.then`和`Promise.prototype.catch`方法将观察者方法注册到被观察者Promise对象中，同时返回一个新的Promise对象，以便可以链式调用。
+- 被观察者管理内部pending、fulfilled和rejected的状态转变，同时通过构造函数中传递的resolve和reject方法以主动触发状态转变和通知观察者。
+
+`Promise.then()`是异步调用的，这也是Promise设计上规定的，其原因在于同步调用和异步调用同时存在会导致混乱。
+
+为了暂停当前的 promise，或者要它等待另一个 promise 完成，只需要简单地在 then() 函数中返回另一个 promise。
+
+Promise 也有一些缺点。首先，无法取消 Promise，一旦新建它就会立即执行，无法中途取消。其次，如果不设置回调函数，Promise 内部抛出的错误，不会反应到外部。第三，当处于 Pending 状态时，无法得知目前进展到哪一个阶段（刚刚开始还是即将完成）。
+
+一般来说，不要在then方法里面定义Reject状态的回调函数（即then的第二个参数），总是使用catch方法，理由是更接近同步的写法。 then的第二个函数参数和catch等价
+
+- Promise.all和Promise.race的区别？
+
+Promise.all 把多个promise实例当成一个promise实例,当这些实例的状态都发生改变时才会返回一个新的promise实例，才会执行then方法。 Promise.race 只要该数组中的 Promise 对象的状态发生变化（无论是resolve还是reject）该方法都会返回。
+
+---
+
+1.什么是类数组对象，如何将类数组对象转为真正的数组
+
+拥有length属性和若干索引属性的对象, 类数组只有索引值和长度，没有数组的各种方法，所以如果要类数组调用数组的方法，就需要使用 Array.prototype.method.call 来实现。
+
+```javascript
+var arrayLike = {0: 'name', 1: 'age', 2: 'sex', length: 3 }
+// 1. slice
+Array.prototype.slice.call(arrayLike); // ["name", "age", "sex"]
+// 2. splice
+Array.prototype.splice.call(arrayLike, 0); // ["name", "age", "sex"]
+// 3. ES6 Array.from
+Array.from(arrayLike); // ["name", "age", "sex"]
+// 4. apply
+Array.prototype.concat.apply([], arrayLike)
+```
+
+
+
+4.bind返回什么
+
+bind() 方法会返回一个新函数, 又叫绑定函数, 当调用这个绑定函数时, 绑定函数会以创建它时传入 bind() 方法的第一个参数作为当前的上下文, 即this, 传入 bind() 方法的第二个及之后的参数加上绑定函数运行时自身的参数按照顺序作为原函数的参数来调用原函数.
+
+```javascript
+var x = 8;
+var o = {
+  x: 10,
+  getX: function(){
+      console.log(this.x);
+  }
+};
+var f = o.getX;
+f();//8, 由于没有绑定执行时的上下文, this默认指向window, 打印了全局变量x的值
+var g = f.bind(o);
+g();//10, 绑定this后, 成功的打印了o对象的x属性的值.
+```
+
+#### apply, call和bind有什么区别?
+
+参考答案：三者都可以把一个函数应用到其他对象上，call、apply是修改函数的作用域（修改this指向），并且立即执行，而bind是返回了一个新的函数，不是立即执行．apply和call的区别是apply接受数组作为参数，而call是接受逗号分隔的无限多个参数列表，
+
+```javascript
+Array.prototype.slice.call(null, args)
+
+function getMax(arr){
+  return Math.max.apply(null, arr);
+}
+//call
+function foo() {
+  console.log(this);//{id: 42}
+}
+
+foo.call({ id: 42 });
+```
+
+如果该方法是非严格模式代码中的函数，则null和undefined将替换为全局对象，并且原始值将被包装。 当你调用apply传递给它null时，就像是调用函数而不提供任何对象
+
+
+
+6.箭头函数 箭头函数没有它自己的this值，箭头函数内的this值继承自外围作用域
+
+箭头函数不能用作构造器，不能和new一起使用 箭头函数没有原型属性 yield关键字不能在箭头函数使用 在以下场景中不要使用箭头函数去定义：
+
+- 定义对象方法、定义原型方法、定义构造函数、定义事件回调函数。
+
+#### new操作符具体做了什么
+
+1、创建一个空对象，并且this变量引用该对象，同时继承了该函数的原型（实例对象通过`__proto__`属性指向原型对象；`obj.__proto__ = Base.prototype;`） 2、属性和方法被加入到 this 引用的对象中。
+
+```javascript
+function Animal(name) {
+    this.name = name;
+}
+
+Animal.prototype.run = function() {
+    console.log(this.name + 'can run...');
+}
+
+var cat = new Animal('cat');
+//模拟过程
+new Animal('cat')=function(){
+    let obj={};  //创建一个空对象
+    obj.__proto__=Animal.prototype;
+    //把该对象的原型指向构造函数的原型对象，就建立起原型了：obj->Animal.prototype->Object.prototype->null
+    return Animal.call(obj,'cat');// 绑定this到实例化的对象上
+}
+```
+
+- ​
+
+---
+
+### 原生DOM操作和事件相关
+
+- 如需替换 HTML DOM 中的元素，请使用`replaceChild(newnode,oldnode)`方法
+- 从父元素中删除子元素 `parent.removeChild(child)`;
+- `insertBefore(newItem,existingItem)` 在指定的已有子节点之前插入新的子节点
+- `appendChild(newListItem`向元素添加新的子节点，作为最后一个子节点 document.documentElement - 全部文档 document.body - 文档的主体
+
+<http://www.w3school.com.cn/jsref/dom_obj_all.asp>
+
+- JS事件：target与currentTarget区别
+
+target在事件流的目标阶段；currentTarget在事件流的捕获，目标及冒泡阶段。只有当事件流处在目标阶段的时候，两个的指向才是一样的， 而当处于捕获和冒泡阶段的时候，target指向被单击的对象而currentTarget指向当前事件活动的对象（一般为父级）。
+
+#### 事件模型
+
+事件捕捉阶段：事件开始由顶层对象触发，然后逐级向下传播，直到目标的元素； 处于目标阶段：处在绑定事件的元素上； 事件冒泡阶段：事件由具体的元素先接收，然后逐级向上传播，直到不具体的元素；
+
+- 阻止 冒泡／捕获 `event.stopPropagation()`和IE的`event.cancelBubble=true`
+- DOM事件绑定 1.绑定事件监听函数：addEventListener和attchEvent 2.在JavaScript代码中绑定：获取DOM元素 `dom.onlick = fn` 3.在DOM元素中直接绑定：`<div onclick = 'fn()'>`
+
+DOM事件流包括三个阶段：事件捕获阶段、处于目标阶段、事件冒泡阶段。首先发生的事件捕获，为截获事件提供机会。然后是实际的目标接受事件。最后一个阶段是时间冒泡阶段，可以在这个阶段对事件做出响应。
+
+#### 事件委托
+
+因为事件具有冒泡机制，因此我们可以利用冒泡的原理，把事件加到父级上，触发执行效果。这样做的好处当然就是提高性能了
+
+最重要的是通过`event.target.nodeName`判断子元素
+
+```javascript
+<div>
+  <ul id = "bubble">
+    <li>1</li>
+<li>2</li>
+<li>3</li>
+<li>4</li>
+</ul>
+</div>
+
+window.onload = function () {
+  var aUl = document.getElementsById("bubble");
+  var aLi = aUl.getElementsByTagName("li");
+
+  //不管在哪个事件中，只要你操作的那个元素就是事件源。
+  // ie：window.event.srcElement
+  // 标准下:event.target
+  aUl.onmouseover = function (ev) {
+    var ev = ev || window.event;
+    var target = ev.target || ev.srcElement;
+
+    if(target.nodeName.toLowerCase() == "li"){
+      target.style.background = "blue";
+    }
+  };
+};
+```
+
+
 
 ---
 

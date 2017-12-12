@@ -20,6 +20,31 @@
 9. 文档树建立，根据标记请求所需指定MIME类型的文件（比如css、js）,同时设置了cookie;
 10. 页面开始渲染DOM，JS根据DOM API操作DOM,执行事件绑定等，页面显示完成。
 
+详细版2:
+
+HTTP是一个基于请求与响应，无状态的，应用层的协议，常基于TCP/IP协议传输数据。
+
+1.域名解析，查找缓存
+
+- 查找浏览器缓存（DNS缓存）
+- 查找操作系统缓存（如果浏览器缓存没有，浏览器会从hosts文件查找是否有DNS信息）
+- 查找路由器缓存
+- 查找ISP缓存
+
+2.浏览器获得对应的ip地址后，浏览器与远程`Web`服务器通过`TCP`三次握手协商来建立一个`TCP/IP`连接。 3.TCP/IP连接建立起来后，浏览器就可以向服务器发送HTTP请求 4.服务器处理请求，返回资源（MVC设计模式） 5.浏览器处理（加载，解析，渲染）
+
+- HTML页面加载顺序从上而下
+- 解析文档为有意义的结构，DOM树；解析css文件为样式表对象
+- 渲染。将DOM树进行可视化表示
+
+6.绘制网页
+
+- 浏览器根据HTML和CSS计算得到渲染数，最终绘制到屏幕上
+
+一个完整HTTP请求的过程为： DNS Resolving -> TCP handshake -> HTTP Request -> Server -> HTTP Response -> TCP shutdown
+
+
+
 简洁版：
 
 1. 浏览器根据请求的URL交给DNS域名解析，找到真实IP，向服务器发起请求；
@@ -99,31 +124,72 @@
 #### HTTP缓存相关字段
 
 * If-Modified-*
+
 * Etag
+
+  当发送一个服务器请求时，浏览器首先会进行缓存过期判断。浏览器根据缓存过期时间判断缓存文件是否过期。
+
+  情景一：若没有过期，则不向服务器发送请求，直接使用缓存中的结果，此时我们在浏览器控制台中可以看到 `200 OK`(from cache) ，此时的情况就是完全使用缓存，浏览器和服务器没有任何交互的。
+
+  情景二：若已过期，则向服务器发送请求，此时请求中会带上①中设置的文件修改时间，和`Etag`
+
+  然后，进行资源更新判断。服务器根据浏览器传过来的文件修改时间，判断自浏览器上一次请求之后，文件是不是没有被修改过；根据`Etag`，判断文件内容自上一次请求之后，有没有发生变化
+
+  情形一：若两种判断的结论都是文件没有被修改过，则服务器就不给浏览器发`index.html`的内容了，直接告诉它，文件没有被修改过，你用你那边的缓存吧—— `304 Not Modified`，此时浏览器就会从本地缓存中获取`index.html`的内容。此时的情况叫协议缓存，浏览器和服务器之间有一次请求交互。
+
+  情形二：若修改时间和文件内容判断有任意一个没有通过，则服务器会受理此次请求，之后的操作同①
+
+  ① 只有get请求会被缓存，post请求不会
+
+  `Etag`由服务器端生成，客户端通过`If-Match`或者说`If-None-Match`这个条件判断请求来验证资源是否修改。常见的是使用`If-None-Match`。请求一个文件的流程可能如下：
+
+  ====第一次请求===
+
+  ```
+  1.客户端发起 HTTP GET 请求一个文件；
+  2.服务器处理请求，返回文件内容和一堆Header，当然包括Etag(例如"2e681a-6-5d044840")(假设服务器支持Etag生成和已经开启了Etag).状态码200
+  ```
+
+  ====第二次请求===
+
+  ```
+  客户端发起 HTTP GET 请求一个文件，注意这个时候客户端同时发送一个If-None-Match头，这个头的内容就是第一次请求时服务器返回的Etag：2e681a-6-5d0448402.服务器判断发送过来的Etag和计算出来的Etag匹配，因此If-None-Match为False，不返回200，返回304，客户端继续使用本地缓存；流程很简单，问题是，如果服务器又设置了Cache-Control:max-age和Expires呢，怎么办
+
+  ```
+
+  答案是同时使用，也就是说在完全匹配`If-Modified-Since`和`If-None-Match`即检查完修改时间和`Etag`之后，
+
+  服务器才能返回304.(不要陷入到底使用谁的问题怪圈)
+
+  为什么使用Etag请求头?
+
+  +
+
+  Etag 主要为了解决 `Last-Modified` 无法解决的一些问题。
+
 * Do Not Track
-* Cache-Control
 
-
-  网页的缓存是由HTTP消息头中的“Cache-control”来控制的，常见的取值有private、no-cache、max-age、must-revalidate等，默认为private。
 
 * Expires 头部字段提供一个日期和时间，响应在该日期和时间后被认为失效。允许客户端在这个时间之前不去检查（发请求），等同max-age的效果。但是如果同时存在，则被Cache-Control的max-age覆盖。
 
   Expires = "Expires" ":" HTTP-date
-  例如
+  例如 Expires: Thu, 01 Dec 1994 16:00:00 GMT （必须是GMT格式）
 
-  Expires: Thu, 01 Dec 1994 16:00:00 GMT （必须是GMT格式）
-  如果把它设置为-1，则表示立即过期
+    如果把它设置为-1，则表示立即过期
+
+* Cache-Control
+
+  网页的缓存是由HTTP消息头中的“Cache-control”来控制的，常见的取值有private、no-cache、max-age、must-revalidate等，默认为private。`Expires`要求客户端和服务端的时钟严格同步。`HTTP1.1`引入`Cache-Control`来克服Expires头的限制。如果max-age和Expires同时出现，则max-age有更高的优先级。
 
   Expires和max-age都可以用来指定文档的过期时间，但是二者有一些细微差别
 
-    1. Expires在HTTP/1.0中已经定义，Cache-Control:max-age在HTTP/1.1中才有定义，为了向下兼容，仅使用max-age不够；
-    2. Expires指定一个绝对的过期时间(GMT格式),这么做会导致至少2个问题：1)客户端和服务器时间不同步导致Expires的配置出现问题。 2）很容易在配置后忘记具体的过期时间，导致过期来临出现浪涌现象；
-    3. max-age 指定的是从文档被访问后的存活时间，这个时间是个相对值(比如:3600s),相对的是文档第一次被请求时服务器记录的Request_time(请求时间)
-    4. Expires指定的时间可以是相对文件的最后访问时间(Atime)或者修改时间(MTime),而max-age相对对的是文档的请求时间(Atime)
+      1. Expires在HTTP/1.0中已经定义，Cache-Control:max-age在HTTP/1.1中才有定义，为了向下兼容，仅使用max-age不够；
+      2. Expires指定一个绝对的过期时间(GMT格式),这么做会导致至少2个问题：1)客户端和服务器时间不同步导致Expires的配置出现问题。 2）很容易在配置后忘记具体的过期时间，导致过期来临出现浪涌现象；
+      3. max-age 指定的是从文档被访问后的存活时间，这个时间是个相对值(比如:3600s),相对的是文档第一次被请求时服务器记录的Request_time(请求时间)
+      4. Expires指定的时间可以是相对文件的最后访问时间(Atime)或者修改时间(MTime),而max-age相对对的是文档的请求时间(Atime)
        如果值为no-cache,那么每次都会访问服务器。如果值为max-age,则在过期之前不会重复访问服务器。
 
 * Transfer-Encoding
-* ETag
 * X-Frame-Options
 
 
@@ -139,6 +205,21 @@
 6. **TRACE**会在目的服务器端发起一个环回诊断，最后一站的服务器会弹回一个TRACE响应并在响应主体中携带它收到的原始请求报文。TRACE方法主要用于诊断，用于验证请求是否如愿穿过了请求/响应链。
 7. **OPTIONS**方法请求web服务器告知其支持的各种功能。可以查询服务器支持哪些方法或者对某些特殊资源支持哪些方法。
 8. **DELETE**请求服务器删除请求URL指定的资源
+
+#### GET,POST,PUT,DELETE
+
+1. GET请求会向数据库获取信息，只是用来查询数据，不会修改，增加数据。使用URL传递参数，对所发送的数量有限制，一般在2000字符
+2. POST向服务器发送数据，会改变数据的种类等资源，就像insert操作一样，会创建新的内容，大小一般没有限制，POST安全性高，POST不会被缓存
+3. PUT请求就像数据库的update操作一样，用来修改数据内容，不会增加数据种类
+4. Delete用来删除操作
+
+#### GET和POST的区别
+
+1. GET使用URL或Cookie传参，而POST将数据放在BODY中，这个是因为HTTP协议用法的约定。并非它们的本身区别。
+2. GET方式提交的数据有长度限制，则POST的数据则可以非常大，这个是因为它们使用的操作系统和浏览器设置的不同引起的区别。也不是GET和POST本身的区别。
+3. POST比GET安全，因为数据在地址栏上不可见，这个说法没毛病，但依然不是GET和POST本身的区别。
+
+GET和POST最大的区别主要是GET请求是幂等性的，POST请求不是。（幂等性：对同一URL的多个请求应该返回同样的结果。）因为get请求是幂等的，在网络不好的隧道中会尝试重试。如果用get请求增数据，会有重复操作的风险，而这种重复操作可能会导致副作用
 
 ---
 
@@ -168,6 +249,49 @@
 -   ActiveX HTMLFile (IE) 
 -   基于 multipart 编码发送 XHR 
 -   基于长轮询的 XHR
+
+---
+
+#### Web Worker 
+
+#### worker主线程:
+
+```
+1.通过 worker = new Worker( url ) 加载一个JS文件来创建一个worker，同时返回一个worker实例。
+2.通过worker.postMessage( data ) 方法来向worker发送数据。
+3.绑定worker.onmessage方法来接收worker发送过来的数据。
+4.可以使用 worker.terminate() 来终止一个worker的执行。
+```
+
+---
+
+#### WebSocket
+
+`WebSocket`是`Web`应用程序的传输协议，它提供了双向的，按序到达的数据流。他是一个`HTML5`协议，`WebSocket`的连接是持久的，他通过在客户端和服务器之间保持双工连接，服务器的更新可以被及时推送给客户端，而不需要客户端以一定时间间隔去轮询。
+
+WebSocket 使用ws或wss协议，是一个持久化的协议，相对于HTTP这种非持久的协议来说。WebSocket API最伟大之处在于服务器和客户端可以在给定的时间范围内的任意时刻，相互推送信息。WebSocket并不限于以Ajax(或XHR)方式通信，因为Ajax技术需要客户端发起请求，而WebSocket服务器和客户端可以彼此相互推送信息；XHR受到域的限制，而WebSocket允许跨域通信。
+
+```Javascript
+// 创建一个Socket实例
+var socket = new WebSocket('ws://localhost:8080');
+// 打开Socket
+socket.onopen = function(event) {
+  // 发送一个初始化消息
+  socket.send('I am the client and I\'m listening!');
+  // 监听消息
+  socket.onmessage = function(event) {
+    console.log('Client received a message',event);
+  };
+  // 监听Socket的关闭
+  socket.onclose = function(event) {
+    console.log('Client notified socket has closed',event);
+  };
+  // 关闭Socket....
+  //socket.close()
+};
+```
+
+
 
 ---
 
@@ -223,6 +347,58 @@
 - 服务器负载是什么概念? 如何查看负载? [[more\]](https://github.com/ElemeFE/node-interview/blob/master/sections/zh-cn/os.md#%E8%B4%9F%E8%BD%BD)
 - ulimit 是用来干什么的? [[more\]
 
+
+---
+
+#### HTTP和HTTPS
+
+`HTTP`协议通常承载于TCP协议之上，有时也承载于`TLS`或`SSL`协议层之上，这个时候，就成了我们常说的HTTPS。
+
+默认HTTP的端口号为80，`HTTPS`的端口号为443。
+
+### 为什么`HTTPS`安全
+
+因为网络请求需要中间有很多的服务器路由器的转发。中间的节点都可能篡改信息，而如果使用`HTTPS`，密钥在你和终点站才有。`https`之所以比`http`安全，是因为他利用`ssl/tls`协议传输。它包含证书，卸载，流量转发，负载均衡，页面适配，浏览器适配，refer传递等。保障了传输过程的安全性
+
+#### 关于Http 2.0 你知道多少？
+
+`HTTP/2`引入了“服务端推（server push）”的概念，它允许服务端在客户端需要数据之前就主动地将数据发送到客户端缓存中，从而提高性能。
+
+`HTTP/2`提供更多的加密支持
+
+`HTTP/2`使用多路技术，允许多个消息在一个连接上同时交差。
+
+它增加了头压缩（header compression），因此即使非常小的请求，其请求和响应的`header`都只会占用很小比例的带宽。
+
+#### http2.0和https
+
+与HTTP/1相比，主要区别包括
+
+- HTTP/2采用二进制格式而非文本格式（二进制协议解析起来更高效）
+- HTTP/2是完全多路复用的，即一个TCP连接上同时跑多个HTTP请求
+- 使用报头压缩，HTTP/2降低了开销
+- HTTP/2让服务器可以将响应主动“推送”到客户端缓存中，支持服务端推送（就是服务器可以对一个客户端请求发送多个响应）
+
+HTTPS协议是由SSL+HTTP协议构建的可进行加密传输、身份认证的网络协议，TLS/SSL中使用 了非对称加密，对称加密以及HASH算法。比http协议安全。
+
+- HTTPS的工作原理
+
+HTTPS 在传输数据之前需要客户端（浏览器）与服务端（网站）之间进行一次握手，在握手过程中将确立双方加密传输数据的密码信息
+
+- 什么是keep-alive模式 （持久连接，连接重用）
+
+keep-alive使客户端到服务端的连接持久有效，当出现对服务器的后继请求时，keep-alive功能避免了建立或者重新连接
+
+不需要重新建立tcp的三次握手，就是说不释放连接
+
+http1.0默认关闭，http1.1默认启用
+
+优点：更高效，性能更高。因为避免了建立/释放连接的开销
+
+3.http1.0和http1.1区别：
+
+- 缓存处理，在HTTP1.0中主要使用header里的If-Modified-Since，Expires来做为缓存判断的标准，HTTP1.1则引入更多缓存控制策略，例如Entity tag,If-Match,If-None-Match等
+- Http1.1支持长连接和请求的流水线（pipeline）处理，在一个TCP连接上可以传送多个HTTP请求和响应，减少了建立和关闭连接的消耗和延迟，默认开启Connection:keep-alive
 
 ---
 
@@ -382,7 +558,62 @@ HTTP 503：由于超载或停机维护，服务器目前无法使用，一段时
 
 ---
 
-* ​
+#### ​Restful
+
+REST（Representational State Transfer） REST的意思是表征状态转移，是一种基于HTTP协议的网络应用接口风格，充分利用HTTP的方法实现统一风格接口的服务，HTTP定义了以下8种标准的方法：
+
+GET：请求获取指定资源
+HEAD：请求指定资源的响应头
+PUT ：请求服务器存储一个资源 根据REST设计模式，这四种方法通常分别用于实现以下功能： GET（获取），POST（新增），PUT（更新），DELETE（删除）
+
+---
+
+#### 代理和反向代理
+
+正向代理： 用浏览器访问时，被残忍的block，于是你可以在国外搭建一台代理服务器，让代理帮我去请求google.com，代理把请求返回的相应结构再返回给我。
+
+反向代理：反向代理服务器会帮我们把请求转发到真实的服务器那里去。Nginx就是性能非常好的反向代理服务器，用来做负载均衡。 正向代理的对象是客户端，反向代理的对象是服务端
+
+#### CDN工作原理
+
+CDN做了两件事，一是让用户访问最近的节点，二是从缓存或者源站获取资源
+
+CDN的工作原理：通过dns服务器来实现优质节点的选择，通过缓存来减少源站的压力。
+
+#### 网络优化/性能优化
+
+使用CDN，让用户访问最近的资源，减少来回传输时间 合并压缩CSS、js、图片、静态资源，服务器开启GZIP css放顶部，js放底部（css可以并行下载，而js加载之后会造成阻塞） 图片预加载和首屏图片之外的做懒加载 做HTTP缓存（添加Expires头和配置Etag）用户可以重复使用本地缓存，减少对服务器压力 大小超过 10KB 的 css/img 建议外联引用，以细化缓存粒度 小于 10k 的图片 base64 DNS 预解析 DNS-Prefetch 预连接 Preconnect
+
+- 代码层面优化
+
+少用全局变量，减少作用域链查找，缓存DOM查找结果，避免使用with（with会创建自己的作用域，会增加作用域链长度）；多个变量声明合并；减少DOM操作次数；尽量避免在HTML标签中写style属性
+
+避免使用css3渐变阴影效果，尽量使用css3动画，开启硬件加速，不滥用float；避免使用CSS表达式；使用`<link>`来代替`@import`
+
+- 图片预加载原理
+
+提前加载图片，当用户需要查看时可直接从本地缓存中渲染
+
+```
+var imgArr=["1.jpg","2.jpg"];
+loadImage(imgArr,callback);
+function loadImage(imgArr, callback) {
+    var imgNum=imgArr.length,count=0;
+    for(var i=0;i<imgNum;i++){
+      var img = new Image(); //创建一个Image对象，实现图片的预下载
+      img.src = imgArr[i];
+      if (img.complete) { // 如果图片已经存在于浏览器缓存，直接调用回调函数
+          if(count==imgNum){
+          callback();// 直接返回，不用再处理onload事件
+         }
+ } count++; img.onload=function () { if(count==imgNum){ callback(); } } }//for循环结束}
+```
+
+#### [说说TCP传输的三次握手四次挥手策略](http://hawx1993.github.io/Front-end-Interview-Questions/#/?id=%e8%af%b4%e8%af%b4tcp%e4%bc%a0%e8%be%93%e7%9a%84%e4%b8%89%e6%ac%a1%e6%8f%a1%e6%89%8b%e5%9b%9b%e6%ac%a1%e6%8c%a5%e6%89%8b%e7%ad%96%e7%95%a5)
+
+为了准确无误地把数据送达目标处，TCP协议采用了三次握手策略。用TCP协议把数据包送出去后，TCP不会对传送 后的情况置之不理，它一定会向对方确认是否成功送达。握手过程中使用了TCP的标志：SYN和ACK
+
+发送端首先发送一个带SYN标志的数据包给对方。接收端收到后，回传一个带有SYN/ACK标志的数据包以示传达确认信息。 最后，发送端再回传一个带ACK标志的数据包，代表“握手”结束。 若在握手过程中某个阶段莫名中断，TCP协议会再次以相同的顺序发送相同的数据包。
 
 ---
 

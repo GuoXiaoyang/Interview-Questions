@@ -504,6 +504,58 @@ async.filter(['file1','file2','file3'], fs.exists, function(results){
 
 ---
 
+#### 异步相关
+
+#### async，Promise，Generator函数，co函数库区别
+
+`async...await`写法最简洁，最符合语义。async/await让异步代码看起来、表现起来更像同步代码，这正是其威力所在。async 函数就是 Generator 函数的语法糖，只不过async内置了自动执行器。async 函数就是将 Generator 函数的星号（*）替换成 async，将 yield 替换成 await
+
+#### async函数优点
+
+1） Generator 函数必须靠执行器，所以才有CO函数库，async函数自带执行器 2）更好的语义 3）更广的适用性。co函数库yield后面只能是Thunk函数或者Promise对象，await后面可以跟Promise对象和原始类型值（等同于同步操作）
+
+Generator 函数：可以把它理解成一个函数的内部状态的遍历器，Generator重点在解决异步回调金字塔问题，巧妙的使用它可以写出看起来同步的代码。
+
+#### co函数库
+
+co可以说是给generator增加了promise实现。co是利用Generator的方式实现了`async/await`（co返回Promise对象，async也返回Promise对象，co内部的generator函数即async，yield相当于await）
+
+co 函数库其实就是将两种自动执行器（Thunk 函数和 Promise 对象），包装成一个库。
+
+co函数接收一个Generator生成器函数作为参数。执行co函数的时候，生成器函数内部的逻辑像async函数调用时一样被执行。不同之处只是这里的await变成了yield（产出）。
+
+```javascript
+co(function* () {
+  var result = yield Promise.resolve(true);
+  return result;
+}).then(function (value) {
+  console.log(value);
+}, function (err) {
+  console.error(err.stack);
+});
+```
+
+Promise 是异步编程的一种解决方案，比传统的解决方案——回调函数和事件监听——更合理和更强大。 promise catch函数和then第二个函数参数：
+
+```javascript
+promise.catch();
+// 等价于
+promise.then(null, function(reason){});
+```
+
+有许多场景是异步的： 1.事件监听，如click，onload等事件 2.定时器 setTimeout和setInterval 3.ajax请求
+
+js异步编程模型（es5）：
+
+- 回调函数（callback）陷入回调地狱，解耦程度特别低
+- 事件监听（Listener）JS 和浏览器提供的原生方法基本都是基于事件触发机制的
+- 发布/订阅（观察者模式）把事件全部交给控制器管理，可以完全掌握事件被订阅的次数，以及订阅者的信息，管理起来特别方便。
+- Promise 对象实现方式
+
+async函数与Promise、Generator函数一样，是用来取代回调函数、解决异步操作的一种方法。它本质上是Generator函数的语法糖。 Promise，generator/yield，await/async 都是现在和未来 JS 解决异步的标准做法
+
+---
+
 #### express项目的目录大致是什么样子的
 
 参考答案: app.js, package.json, bin/www, public, routes, views.
@@ -527,6 +579,14 @@ res.render() 渲染模板
 res.send() 返回多种形式数据
 res.sendFile 返回文件
 res.sendStatus() 返回状态
+
+---
+
+### 什么是同构
+
+同构(isomorphic/universal)就是使前后端运行同一套代码的意思，后端一般是指 NodeJS 环境。
+
+### 
 
 ---
 
@@ -629,6 +689,90 @@ res.sendStatus() 返回状态
 - 如何递归获取某个文件夹下所有的文件名? [[more\]](https://github.com/ElemeFE/node-interview/blob/master/sections/zh-cn/util.md#q-traversal)
 
 
+---
+
+- 核心模块：EventEmitter, Stream, FS, Net和全局对象
+- 全局对象：process, console, Buffer和exports
+- `exports`和`module.exports`区别
+
+`exports` 是 `module.exports` 的一个引用 module.exports 初始值为一个空对象 {}，所以 exports 初始值也是 {} require 引用模块后，返回的是 module.exports 而不是 exports
+
+#### 单线程优点
+
+Node.js依托于v8引擎，都是以单线程为基础的。单线程资源占用小。单线程避免了传统PHP那样频繁创建、切换线程的开销，使执行速度更加迅速
+
+#### Node.js是如何做到I/O的异步和非阻塞的呢
+
+其实Node在底层访问I/O还是多线程的。Node可以借助livuv来来实现多线程。
+
+如果我们非要让Node.js支持多线程，还是提倡使用官方的做法，利用libuv库来实现。
+
+cluster可以用来让Node.js充分利用多核cpu的性能
+
+#### 并行与并发，进程与线程
+
+并发 (Concurrent) = 2 队列对应 1 咖啡机.
+
+并行 (Parallel) = 2 队列对应 2 咖啡机.
+
+线程是进程下的执行者，一个进程至少会开启一个线程（主线程），也可以开启多个线程。
+
+#### 谈谈Nodejs优缺点
+
+> 优点：
+
+1. 事件驱动，异步编程，占用内存少
+2. npm设计得好
+
+> 缺点：
+
+1. Debug 很困难。没有 stack trace，出了问题很难查找问题的原因；
+2. 如果设计不好，很容易让代码充满 callback，代码不优雅；
+3. 可靠性低；
+4. 单进程，单线程，只支持单核CPU，不能充分的利用多核CPU服务器。
+
+
+
+- 事件循环
+
+浏览器中, js引擎线程会循环从 任务队列 中读取事件并且执行, 这种运行机制称作 Event Loop (事件循环).
+
+每个浏览器环境，至多有一个event loop。 一个event loop可以有1个或多个task queue(任务队列)
+
+先执行同步的代码，然后js会跑去消息队列中执行异步的代码，异步完成后，再轮到回调函数，然后是去下个事件循环中执行setTimeout
+
+它从script(整体代码)开始第一次循环。之后全局上下文进入函数调用栈。直到调用栈清空(只剩全局)，然后执行所有的micro-task。当所有可执行的micro-task执行完毕之后。循环再次从macro-task开始，找到其中一个任务队列执行完毕，然后再执行所有的micro-task，这样一直循环下去。
+
+从规范上来讲，setTimeout有一个4ms的最短时间，也就是说不管你设定多少，反正最少都要间隔4ms才运行里面的回调。而Promise的异步没有这个问题。Promise所在的那个异步队列优先级要高一些 Promise是异步的，是指他的then()和catch()方法，Promise本身还是同步的 Promise的任务会在当前事件循环末尾中执行，而setTimeout中的任务是在下一次事件循环执行
+
+```javascript
+//依次输出 12354
+setTimeout(function(){
+  console.log(4)
+  },0);
+new Promise(function(resolve){
+  console.log(1)
+  for( var i=0 ; i<10000 ; i++ ){
+    i===9999 && resolve()
+  }
+  console.log(2)
+}).then(function(){
+  console.log(5)
+});
+console.log(3);
+```
+
+---
+
+#### 线程与进程的区别
+
+一个程序至少有一个进程,一个进程至少有一个线程. 
+线程的划分尺度小于进程，使得多线程程序的并发性高。 
+另外，进程在执行过程中拥有独立的内存单元，而多个线程共享内存，从而极大地提高了程序的运行效率。 
+线程在执行过程中与进程还是有区别的。每个独立的线程有一个程序运行的入口、顺序执行序列和程序的出口。但是线程不能够独立执行，必须依存在应用程序中，由应用程序提供多个线程执行控制。 
+从逻辑角度来看，多线程的意义在于一个应用程序中，有多个执行部分可以同时执行。但操作系统并没有将多个线程看做多个独立的应用，来实现进程的调度和管理以及资源分配。这就是进程和线程的重要区别。
+
+---
 
 ### 参考
 

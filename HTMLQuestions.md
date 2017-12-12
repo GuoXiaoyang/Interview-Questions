@@ -268,9 +268,32 @@ CSS规范规定，每个元素都有`display`属性，确定该元素的类型�
 <p>Some part of this paragraph is <mark>highlighted</mark> by using mark element.</p>
 ```
 
-对局部html使用CSS属性
+#### 对局部html使用CSS属性
+
+一直以来，文档上的STYLE元素通常都是作用域全局的，选择器按照全局的CSS优先规则来设置的。要实现局部的选择需要先选到容器元素，再用后代选择器来实现。scoped属性可以让STYLE元素不再作用于全局，而从当前STYLE元素所在的容器开始选择后代。
+比如下面这个测试
+
+```html
+<div>
+  <style scoped>
+    span {color:red;}
+  </style>
+  <span>我是第1个DIV内的SPAN</span>
+</div>
+<div>
+  <style scoped>
+    span {color:green;}
+  </style>
+  <span>我是第2个DIV内的SPAN</span>
+</div>
+<div>
+  <span>我是第3个DIV内的SPAN</span>
+</div>
+```
 
 
+
+![img](https://www.web-tinker.com/pictures/1ed9962835b06d4fc1be8c49da0fefc9.png)
 
 ---
 
@@ -290,8 +313,64 @@ CSS规范规定，每个元素都有`display`属性，确定该元素的类型�
 
 ---
 
+#### 加载顺序
+
+```html
+<head>
+  <link href="style1.css" rel="stylesheet">
+  <link href="style2.css" rel="stylesheet">
+</head>
+  
+```
+
+`style1.css`与`style2.css`并行加载，没有先后区别
+
+```html
+<head>
+  <link href="style1.css" rel="stylesheet">
+</head>
+<body>
+  <p>Paragraph 1</p>
+  <p>Paragraph 2</p>
+  <link href="style2.css" rel="stylesheet">
+</body>
+```
+
+`style1.css在前，style2.css在后`
+
+---
+
+**Question:** What are optional closing tag? and why would u use it?
+
+**Answer:** p, li, td, tr, th, html, body, etc. you don't have to provide end tag. Whenever browser hits a new tag it automatically ends the previous tag. However, you have to be careful to escape it.
+
+**reason:** you can save some byte and reduce bytes needs to be downloaded in a html file.
+
+```
+<p>Some text
+<p>Some more text
+<ul>
+ <li>A list item
+ <li>Another list item
+</ul>
+  
+```
+
+the above html will be parsed as the following blocks.
+
+```
+<p>Some text</p>
+<p>Some more text</p>
+<ul>
+ <li>A list item</li>
+ <li>Another list item</li>
+</ul>
+  
+```
+
 #### 参考资料
 
 [^ 1]: http://www.jianshu.com/p/c3dcdad42e6d
 [^2]: https://www.sitepoint.com/differences-html-xhtml/
 [^3]: https://neal.codes/blog/front-end-interview-questions-html#fn:3
+[^4]: https://github.com/johnpolacek/Front-end-Developer-Interview-Questions/blob/master/README.md

@@ -432,6 +432,22 @@ Bootstrap的适配属于渐进增强方式，优先适配小屏设备。
 - [`:valid`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:valid)
 - [`:visited`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:visited)
 
+#### 伪类与伪元素的区别
+
+CSS 伪类：逻辑上存在但在文档树中却无须标识的“幽灵”分类 CSS 伪元素（`:first-letter，:first-line,:after,:before`）代表了某个元素的子元素，这个子元素虽然在逻辑上存在，但却并不实际存在于文档树中。 CSS3标准要求伪元素使用双冒号
+
+伪类用于当已有元素处于的某个状态时，为其添加对应的样式，这个状态是根据用户行为而动态变化的。
+
+```
+a:link
+:first-child
+:nth-child
+:focus
+:visited
+```
+
+伪元素代表了某个元素的子元素，这个子元素虽然在逻辑上存在，但却并不实际存在于文档树中。
+
 ---
 #### 请解释你对盒模型的理解，以及如何在 CSS 中告诉浏览器使用不同的盒模型来渲染你的布局。
 
@@ -893,7 +909,7 @@ css的content属性专门应用在 before/after 伪元素上，用于来插入�
 
 ---
 
-#### 在CSS样式中常使用px、em、rem，各有什么优劣，在表现上有什么区别？
+#### 在CSS样式中常使用px、pt、%、em、rem，各有什么优劣，在表现上有什么区别？
 
 px是相对长度单位，相对于显示器屏幕分辨率而言的。
 
@@ -1007,49 +1023,383 @@ rem
 
 ---
 
-#### **获得一个DOM元素的绝对位置**
+#### 有哪些多屏适配方案
 
-[offsetTop](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLElement/offsetTop)：返回当前元素相对于其 [offsetParent](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLElement/offsetParent) 元素的顶部的距离
-
-[offsetLeft](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLElement/offsetLeft)：返回当前元素相对于其 [offsetParent](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLElement/offsetParent) 元素的左边的距离
-
-[getBoundingClientRect()](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/getBoundingClientRect)：返回值是一个[DOMRect](https://developer.mozilla.org/zh-CN/docs/Mozilla/Tech/XPCOM/Reference/Interface/nsIDOMClientRect)对象，它包含了一组用于描述边框的只读属性——left、top、right和bottom，属性单位为像素
-
-参考《[JavaScript中尺寸、坐标](http://www.cnblogs.com/strick/p/4826273.html)》，[查看在线代码](http://codepen.io/strick/pen/XmQaaX)。
+- media query + rem
+- flex
+- 弹性布局
+- flexiable 整体缩放（动态设置缩放系数的方式， 让layout viewport与设计图对应，极大地方便了重构，同时也避免了1px的问题）
 
 ---
 
-#### 如何利用JS生成一个table
+CSS属性区分大小写吗**
 
-首先是用[createElement](https://developer.mozilla.org/zh-CN/docs/Web/API/Document/createElement)创建一个table，再用[setAttribute](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/setAttribute)设置table的属性，
+不区分
 
-然后用for循环设置tr和td的内容，用[appendChild](https://developer.mozilla.org/zh-CN/docs/Web/API/Node/appendChild)拼接内容，设置td的时候还用到[innerHTML](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/innerHTML)和[style](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Properties_Reference).padding。
+**为什么切换大小写后CSS不生效**
 
-[查看在线代码](http://codepen.io/strick/pen/wKZqpR)。参考《[JavaScript要点归档：DOM表格](http://myweb.jowai.info/javascript-main-points-archive-dom-table/)》《[JavaScript要点归档：DOM](http://myweb.jowai.info/javascript-main-points-archive-dom/)》
+因为HTML元素区分大小写
+
+如果` <p>`元素设置` font-size: 10rem`，页面在改变大小时字体大小会变吗
+
+不会
+
+**伪元素`:root`指向`<html>`**
+
+对
+
+`translate`函数可以使元素在z轴上移动
+
+不对
+
+What is shadow DOM?
+
+**Answer:** encapsulate part of a DOM. hide subtree. you can have same ID in different shadow DOM. Polymers uses it. This way your DOM becomes reusable. if interviewer is not happy with your answer give him the links and tell him to spend a weekend on reading.
+
+ref: [W3: shadow-DOM](https://www.w3.org/TR/shadow-dom/#introduction), [html5rock: shadow DOM](https://www.html5rocks.com/en/tutorials/webcomponents/shadowdom/)
+
+What are the different css filter you can use?
+
+**Answer:** css filter allows u to render DOM element, image, or video. u can choose from: grayscale, blur, opacity, brightness, contrast.
+
+ref: [Understanding css filter effect](https://www.html5rocks.com/en/tutorials/filters/understanding-css/)
 
 ---
 
-#### 实现预加载一张图片，加载完成后显示在网页中并设定其高度为50px，宽度为50px
+#### 实战
 
-先new [Image](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLImageElement/Image)()获取一个图片对象，然后在图片对象的onload中设置宽度和高度。[查看在线代码](http://codepen.io/strick/pen/vNMJVr)。
+"I am awesome"的颜色
 
-#### 假设有一个4行tr的table，将table里面tr顺序颠倒
+```html
+<ul class="shopping-list" id="awesome">
+  <li><span>Milk</span></li>
+  <li class="favorite" id="must-buy"><span class="highlight">I am awesome</span></li>
+</ul>
+```
 
-先是通过table.tBodies[0].rows获取到当前tbody中的行，接下来是两种方法处理。获取到的行没有[reverse](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/reverse)这个方法。
+a.
 
-第一种是将这些行push到另外一个数组中
+```Html
+<style>
+  ul#awesome {
+    color: red;
+  }
+  ul.shopping-list li.favorite span {
+    color: blue;
+  }
+</style>
+```
 
-第二种是用Array.prototype.[slice](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/slice).call()将那些行变成数组，
+蓝色
 
-接着用reverse倒叙，table再appendChild。[查看在线代码](http://codepen.io/strick/pen/VvNzqX)。
+b.
 
-这里我有个疑问，就是在appendChild的时候，并不是在最后把列加上，而是做了替换操作？
+```Css
+<style>
+ ul#awesome #must-buy {
+    color: red;
+ }
+ .favorite span {
+    color: blue!important;
+ }
+</style>
+```
 
-#### 模拟一个HashTable类，一个类上注册四个方法：包含有add、remove、contains、length方法
+**Answer:** blue
 
-先是在构造函数中定义一个数组，然后用push模拟add，splice模拟remove。
+c.
 
-四个方法都放在了[prototype](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/prototype)上面。[查看在线代码](http://codepen.io/strick/pen/VvNBom)。
+```Css
+<style>
+  ul.shopping-list li .highlight {
+    color: red;
+  }
+  ul.shopping-list li .highlight:nth-of-type(odd) {
+    color: blue;
+  }
+</style>
+
+
+```
+
+**Answer:** blue
+
+d.
+
+```css
+<style>
+  #awesome .favorite:not(#awesome) .highlight {
+    color: red;
+  }
+  #awesome .highlight:nth-of-type(1):nth-last-of-type(1) {
+    color: blue;
+  }
+</style>
+
+```
+
+**Answer:** red
+
+#### Position related
+
+**Question:** What will happen to the position of #myDude?
+
+```css
+<style>
+  #myDude {
+    margin-bottom: -5px;
+  }
+</style>
+<p id="myDude">Dude</p>
+  
+```
+
+**Answer:** All elements succeeding #myDude will move 5px updward.
+
+**reason:** .
+
+```css
+<style>
+  #myDude {
+    margin-left: -5px;
+  }
+</style>
+<p id="myDude">Dude</p>
+  
+```
+
+**Answer:** #myDude will move 5px left.
+
+#### download resources
+
+**Question:** On page load, will mypic.jpg get downloaded by the browser?.
+
+```css
+<style>
+  #test2 {
+    background-image: url('mypic.jpg');
+    display: none;
+  }
+</style>
+<div id="test1">
+    <span id="test2"></span>
+</div>
+  
+```
+
+**Answer:** yes.
+
+**Question:** On page load, will mypic.jpg get downloaded by the browser?
+
+```css
+<style>
+  #test1 {
+    display: none;
+  }
+  #test2 {
+    background-image: url('mypic.jpg');
+    visibility: hidden;
+  }
+</style>
+<div id="test1">
+    <span id="test2"></span>
+</div>
+  
+```
+
+**Answer:** No.
+
+#### read selector
+
+**Question:** What will this selector do?
+
+```css
+[role=navigation] > ul a:not([href^=mailto]) {
+
+}
+  
+```
+
+**Answer:** This selects anchor links that are not email links that are decedents of an unordered list that is the direct child of any element with a role attribute of 'navigation'. this answer copied from [css tricks](https://css-tricks.com/interview-questions-css/)
+
+ 
+
+David Shariff: quiz
+
+**Need more:** **HTML Interview Questions**, **JavaScript Beginners Algorithm**
+
+[12 little known css facts](http://www.sitepoint.com/12-little-known-css-facts/)
+
+[css shapes 101](http://alistapart.com/article/css-shapes-101)
+
+---
+
+#### box-sizing盒模型
+
+![img](http://hawx1993.github.io/Front-end-Interview-Questions/box-size.jpeg)
+
+box-sizing属性主要用来控制元素的盒模型的解析模式。默认值是content-box。
+
+- content-box：让元素维持W3C的标准盒模型。元素的宽度/高度由border + padding + content的宽度/高度决定，设置width/height属性指的是content部分的宽/高
+- border-box：让元素维持IE传统盒模型（IE6以下版本和IE6~7的怪异模式）。设置width/height属性指的是border + padding + content
+- 应用场景：统一风格的表单元素 表单中有一些input元素其实还是展现的是传统IE盒模型，带有一些默认的样式，而且在不同平台或者浏览器下的表现不一，造成了表单展现的差异。此时我们可以通过box-sizing属性来构建一个风格统一的表单元素。
+
+#### 水平垂直居中的方法
+
+> 行内布局
+
+line-height + text-align vertical-align + text-align
+
+> 块布局
+
+position absolute + margin auto position absolute + negative margin position absolute + translate(-50%, -50%)
+
+##### [父容器子容器不确定宽高的块级元素，做上下居中](http://hawx1993.github.io/Front-end-Interview-Questions/#/?id=%e7%88%b6%e5%ae%b9%e5%99%a8%e5%ad%90%e5%ae%b9%e5%99%a8%e4%b8%8d%e7%a1%ae%e5%ae%9a%e5%ae%bd%e9%ab%98%e7%9a%84%e5%9d%97%e7%ba%a7%e5%85%83%e7%b4%a0%ef%bc%8c%e5%81%9a%e4%b8%8a%e4%b8%8b%e5%b1%85%e4%b8%ad)
+
+1.flex
+
+```
+#wrap{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+```
+
+2.tabel
+
+```
+.parent {
+   text-align: center;//水平居中
+   display: table-cell;
+   vertical-align: middle;//垂直居中
+}
+.child {
+    display: inline-block;//防止块级元素宽度独占一行，内联元素可不设置
+}
+```
+
+3.absolute+transform 水平垂直居中
+
+```
+<div class="parent">
+  <div class="child">Demo</div>
+</div>
+
+<style>
+  .parent {
+    position: relative;
+  }
+  .child {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+</style>
+```
+
+4.webkit-box
+
+```
+//对父级元素设置
+position: relative;
+display: -webkit-box;
+-webkit-box-align: center;
+-webkit-box-pack: center;
+```
+
+> for detail: <https://github.com/hawx1993/tech-blog/issues/12>
+
+#### 实现左边定宽右边自适应效果
+
+1.table(父级元素)与tabel-cell（两个子集元素）
+
+2.flex(父级元素)+flex :1（右边子元素）
+
+3.左边定宽，并且左浮动；右边设置距离左边的宽度
+
+4.左边定宽，左边设置position:absolute；右边设置距离左边的宽度
+
+#### 三列布局（中间固定两边自适应宽度）
+
+1. 采用浮动布局（左边左浮动，右边右浮动，中间margin：0 宽度值）
+2. 绝对定位方式（左右绝对定位，左边left0右边right0，中间上同）
+
+#### BFC（Block Formatting Contexts）块级格式化上下文
+
+块格式化上下文（block formatting context） 是页面上的一个独立的渲染区域，容器里面的子元素不会在布局上影响到外面的元素。它是决定块盒子的布局及浮动元素相互影响的一个因素。
+
+下列情况将创建一个块格式化上下文：
+
+① float
+
+② overflow
+
+③ display（display为inline-block、table-cell）
+
+④ position（absolute 或 fixed）
+
+#### BFC的作用
+
+1.清除内部浮动：对子元素设置浮动后，父元素会发生高度塌陷，也就是父元素的高度变为0。解决这个问题，只需要把把父元素变成一个BFC就行了。常用的办法是给父元素设置overflow:hidden。
+
+2.上下margin重合问题，可以通过触发BFC来解决
+
+#### 清除浮动元素的方法和各自的优缺点
+
+清除浮动，实际上是清除父元素的高度塌陷。因为子元素脱离了父元素的文档流，所以，父元素失去了高度，导致了塌陷。要解决这个问题，就是让父元素具有高度。
+
+浮动元素的特性： 在正常布局中位于该浮动元素之下的内容，此时会围绕着浮动元素，填满其右侧的空间。浮动到右侧的元素，其他内容将从左侧环绕它（浮动元素影响的不仅是自己，它会影响周围的元素对其进行环绕。float仍会占据其位置，`position:absolute`不占用页面空间 会有重叠问题 ）
+
+1.在浮动元素末尾添加空标签清除浮动 clear:both （缺点：增加无意义标签）
+
+```
+<div style="clear:both;"></div>
+```
+
+2.给父元素设置 overflow:auto属性 3.after伪元素
+
+#### 动画
+
+用js来实现动画，我们一般是借助setTimeout或setInterval这两个函数，以及新的requestAnimationFrame
+
+```
+<div id="demo" style="position:absolute; width:100px; height:100px; background:#ccc; left:0; top:0;"></div>
+
+<script>
+  var demo = document.getElementById('demo');
+  function rander(){
+    demo.style.left = parseInt(demo.style.left) + 1 + 'px'; //每一帧向右移动1px
+  }
+  requestAnimationFrame(function(){
+    rander();
+    //当超过300px后才停止
+    if(parseInt(demo.style.left)<=300) requestAnimationFrame(arguments.callee);
+  });
+</script>
+```
+
+css3使用
+
+- @keyframes 结合animation
+- transition：property duration timing-function delay
+
+#### css实现自适应正方形
+
+- 方案一：CSS3 vw 单位
+- 方案二：设置垂直方向的padding撑开容器
+- 方案三：利用伪元素的 margin(padding)-top 撑开容器
+
+#### position的值
+
+- absolute :生成绝对定位的元素， 相对于最近一级的 定位不是 static 的父元素来进行定位。
+- fixed （老IE不支持）生成绝对定位的元素，通常相对于浏览器窗口或 frame 进行定位。
+- relative 生成相对定位的元素，相对于其在普通流中的位置进行定位。
+- static 默认值。没有定位，元素出现在正常的流中
+- sticky 生成粘性定位的元素，容器的位置根据正常文档流计算得出
+
+
 
 ---
 
