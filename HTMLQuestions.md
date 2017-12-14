@@ -160,9 +160,9 @@ XHTML是XML的子集，相比HTML语法更为严格，比如元素一定要自�
 
 #### readonly与disabled区别
 
-* readonly 和disable都会使表单不可编辑
-* readonly 中的值会进行上传
-* ​
+* readonly 和disable都会使表单元素不可编辑
+* Readonly只针对input(text / password)和textarea有效，而disabled对于所有的表单元素都有效，包括select, radio, checkbox, button等。
+* 表单元素在使用了disabled后，当我们将表单以POST或GET的方式提交的话，这个元素的值不会被传递出去，而readonly会将该值传递出去。
 
 ---
 
@@ -294,7 +294,7 @@ CSS规范规定，每个元素都有`display`属性，确定该元素的类型�
 </div>
 ```
 
----
+会
 
 #### 加载顺序
 
