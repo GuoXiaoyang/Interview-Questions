@@ -4,8 +4,6 @@
 
 声明文档类型，比如HTML或者XHTML；DOCTYPE声明告诉类似的代码校验器或者浏览器应该按照什么规则集解析文档，这些“规则”就是W3C发表的文档类型定义（DTD）中包含的规则<sup><a href="http://www.jianshu.com/p/c3dcdad42e6d">1</a></sup>。
 
----
-
 #### 浏览器标准模式 (standards mode) 、几乎标准模式（almost standards mode）和怪异模式 (quirks mode) 之间的区别是什么？
 
 由于常用Chrome，所以总是在标准模式下。
@@ -13,8 +11,6 @@
 模式是浏览器渲染页面使用的规则，由DOCTYPE指定。当微软开始产生与标准兼容的浏览器时，他们希望确保向后兼容性。为了实现这一点，他们IE6.0以后的版本在浏览器内嵌了两种表现模式： Standards Mode（标准模式或Strict Mode）和Quirks mode（怪异模式或兼容模式Compatibility Mode）。在标准模式中，浏览器根据W3C所定的规范来显示页面；而在怪异模式中，页面将以IE5，甚至IE4的显示页面的方式来表现，以保持以前的网 页能正常显示。
 
 怪异模式主要体现在盒模型与W3C标准非一致。
-
----
 
 #### HTML 和 XHTML 有什么区别？
 
@@ -39,8 +35,6 @@ XHTML是XML的子集，相比HTML语法更为严格，比如元素一定要自�
 > - 属性必须使用双引号
 > - 属性不能有空值
 > - 特殊字符需要转义
-
----
 
 #### 如果页面使用 'application/xhtml+xml' 会有什么问题吗？
 
@@ -93,8 +87,6 @@ XHTML是XML的子集，相比HTML语法更为严格，比如元素一定要自�
 
 之前用React-Intl时，需要在JS中先导入所需语言，然后配置翻译文件，按需加载。
 
----
-
 #### 在设计和开发多语言网站时，有哪些问题你必须要考虑？
 
 * 首先还是设计多语言的架构，如何将不同语言的内容套用到HTML内
@@ -128,24 +120,6 @@ XHTML是XML的子集，相比HTML语法更为严格，比如元素一定要自�
 - `<output>`
 - `<section>`
 - `<video>`
-
----
-
-#### 请描述 cookies、sessionStorage 和 localStorage 的区别。
-
-三者都是浏览器存储用户数据的方式。
-
-* cookies
-
-  大小有限，一般4kb；会过期；每次请求都会被客户端发送给服务端；偏向存储用户与服务端的会话数据
-
-* sessionStorage
-
-  存储空间2.5M+；浏览器不会主动将数据发送到服务端；只与当前页面相关，关闭页面则数据清除
-
-* localStorage
-
-  基本与sessionStorage一致，但数据与网站相关，同源页面共享数据，关闭页面不会清除数据
 
 ---
 
@@ -184,7 +158,7 @@ XHTML是XML的子集，相比HTML语法更为严格，比如元素一定要自�
 
 ---
 
-readonly与disabled区别
+#### readonly与disabled区别
 
 * readonly 和disable都会使表单不可编辑
 * readonly 中的值会进行上传
@@ -194,10 +168,19 @@ readonly与disabled区别
 
 #### src与href区别
 
-* src用于替换当前元素；href用于在当前文档和引用资源之间确立联系。
+　　src用于替换当前元素，href用于在当前文档和引用资源之间确立联系。
 
-- src是source的缩写，指向外部资源的位置，指向的内容将会嵌入到文档中当前标签所在位置
-- href是Hypertext Reference的缩写，指向网络资源所在位置，建立和当前元素（锚点）或当前文档（链接）之间的链接
+　　src是source的缩写，指向外部资源的位置，指向的内容将会嵌入到文档中当前标签所在位置；在请求src资源时会将其指向的资源下载并应用到文档内，例如js脚本，img图片和frame等元素。
+
+　　`<script src ="js.js"></script>`
+
+　　当浏览器解析到该元素时，会暂停其他资源的下载和处理，直到将该资源加载、编译、执行完毕，图片和框架等元素也如此，类似于将所指向资源嵌入当前标签内。这也是为什么将js脚本放在底部而不是头部。
+
+　　href是Hypertext Reference的缩写，指向网络资源所在位置，建立和当前元素（锚点）或当前文档（链接）之间的链接，如果我们在文档中添加
+
+　　`<link href="common.css" rel="stylesheet"/>`
+
+　　那么浏览器会识别该文档为css文件，就会并行下载资源并且不会停止对当前文档的处理。这也是为什么建议使用link方式来加载css，而不是使用@import方式。
 
 ---
 
@@ -303,7 +286,7 @@ CSS规范规定，每个元素都有`display`属性，确定该元素的类型�
 <img src="mypic.jpg" style="visibility: hidden" alt="My photo">
 ```
 
-**Answer:** yes
+会
 
 ```html
 <div style="display: none;">
@@ -340,37 +323,32 @@ CSS规范规定，每个元素都有`display`属性，确定该元素的类型�
 
 ---
 
-**Question:** What are optional closing tag? and why would u use it?
-
-**Answer:** p, li, td, tr, th, html, body, etc. you don't have to provide end tag. Whenever browser hits a new tag it automatically ends the previous tag. However, you have to be careful to escape it.
-
-**reason:** you can save some byte and reduce bytes needs to be downloaded in a html file.
-
-```html
-<p>Some text
-<p>Some more text
-<ul>
- <li>A list item
- <li>Another list item
-</ul>
-  
-```
-
-the above html will be parsed as the following blocks.
-
-```html
-<p>Some text</p>
-<p>Some more text</p>
-<ul>
- <li>A list item</li>
- <li>Another list item</li>
-</ul>
-  
-```
-
 #### 你熟悉 SVG 样式的书写吗？
 
 直接使用比较多，特别是矢量图标。大致看过MDN的文档<sup><a href="https://developer.mozilla.org/en-US/docs/Web/SVG">6</a></sup>，通过标签属性中的特定指令进行绘图，与canvas绘图方法差别较大。
+
+#### 什么是 FOUC (无样式内容闪烁)？你如何来避免 FOUC？
+
+浏览器在加载完DOM后如果继续加载样式(比如CSS中的`import`或者JS脚本中加载样式)，那么浏览器会先以默认样式呈现内容，然后渲染新的样式，总归是个容易分散用户注意力和显得不太专业的用户体验。
+
+避免方式就是在`<head>`标签内尽量一次性引入样式文件。
+
+#### 请解释什么是 ARIA 和屏幕阅读器 (screenreaders)，以及如何使网站实现无障碍访问 (accessible)。
+
+老实说我了解得不多，对目前国内网页的无障碍实现情况真心没有接触过。Google搜索了一番也没有介绍国内网站对无障碍访问的支持力度，所以顺手在知乎上提出该[问题](https://www.zhihu.com/question/68265768?guide=1)。
+
+> ARIA 是一个为残疾人士等提供无障碍访问动态、可交互 Web 内容的技术规范，为浏览器、媒体播放器、辅助技术的开发人员以及 Web 内容开发者定义了可以获得更广泛跨平台可访问性的方法。
+>
+> 屏幕阅读器是一种可将文字、图形以及电脑接口的其他部分（借文字转语音技术）转换成语音及/或点字的软件。
+
+简单说下个人理解的一些常用方法来实现无障碍访问：
+
+- 合理的HTML语义化，帮助屏幕阅读器进行转化
+
+
+- 添加必要属性，比如`alt`属性，`role`属性
+
+
 
 ---
 

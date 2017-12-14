@@ -1,47 +1,6 @@
-### React相关问题
+## React相关问题
 
-
-
-#### 生命周期
-
-初始加载过程<sup><a href="https://github.com/Bogdan-Lyashenko/Under-the-hood-ReactJS">1</a></sup>：
-
-![加载过程](加载过程.svg)
-
-更新过程<sup><a href="https://github.com/Bogdan-Lyashenko/Under-the-hood-ReactJS">1</a></sup>：
-
-![更新过程](更新过程.svg)
-
-卸载过程：`componentWillUnmount()`
-
-catch error过程：
-
-另一个简化版流程图<sup><a href="https://zhuanlan.zhihu.com/p/28697362">2</a></sup>：
-
-![简化流程](https://pic2.zhimg.com/50/v2-203bfc5510eb197d8117e53f75dbbae5_hd.jpg)
-
-
-
----
-
-#### react和vue的区别
-
-相同点：
-
-- 都支持服务端渲染
-- 都有Virtual DOM，组件化开发，通过props参数进行父子组件数据的传递，都实现webComponents规范
-- 数据驱动视图
-- 都有支持native的方案，React的React native，Vue的weex
-
-不同点：
-
-- React严格上只针对MVC的view层，Vue则是MVVM模式
-- virtual DOM 不一样 vue会跟踪每一个组件的依赖关系，不需要重新渲染整个组件树。而对于React而言，每当应用的状态被改变时，全部子组件都会重新渲染。当然，这可以通过shouldComponentUpdate这个生命周期方法来进行控制，
-- 组件写法不一样 React 推荐的做法是 JSX + inline style，也就是把 HTML 和 CSS 全都写进 JavaScript 了，即”all in js” Vue 推荐的是使用 `webpack + vue-loader` 的单文件组件格式，即html,css,js写在同一个文件；
-- 数据绑定：Vue有实现了双向数据绑定，React数据流动是单向的
-- state对象在react应用中是不可变的，需要使用setState方法更新状态；在Vue中，state对象并不是必须的，数据由data属性在Vue对象中进行管理。
-
----
+### 基础
 
 #### react的优缺点
 
@@ -59,13 +18,48 @@ catch error过程：
 - jsx的一个问题是，渲染函数常常包含大量逻辑，最终看着更像是程序片段，而不是视觉呈现。后期如果发生需求更改，维护起来工作量将是巨大的
 - 大而全，上手有难度
 
----
-
 #### jsx的优缺点
 
 允许使用熟悉的语法来定义HTML元素树 JSX 让小组件更加简单、明了、直观。 更加语义化且易懂的标签 JSX 本质是对JavaScript语法的一个扩展，看起来像是某种模板语言，但其实不是。但正因为形似HTML，描述UI就更直观了，也极大地方便了开发； 在React中babel会将JSX转换为`React.createElement`函数调用，然后将JSX转换为正确的JSON对象（VDOM 也是一个“树”形的结构） React/JSX乍看之下，觉得非常啰嗦，但使用JavaScript而不是模板语法来开发（模板语法比较有局限性），赋予了开发者许多编程能力。
 
 ---
+
+#### 生命周期
+
+初始加载过程<sup><a href="https://github.com/Bogdan-Lyashenko/Under-the-hood-ReactJS">1</a></sup>：
+
+![加载过程](images/加载过程.svg)
+
+更新过程<sup><a href="https://github.com/Bogdan-Lyashenko/Under-the-hood-ReactJS">1</a></sup>：
+
+![更新过程](images/更新过程.svg)
+
+卸载过程：`componentWillUnmount()`
+
+catch error过程：
+
+另一个简化版流程图<sup><a href="https://zhuanlan.zhihu.com/p/28697362">2</a></sup>：
+
+![简化流程](images/react_lifecycle.jpg)
+
+#### react组件生命周期
+
+![img](images/lifecycle.jpeg)
+
+react组件更新过程：
+
+- props/state change：
+
+1. `componentWillReceiveProps(nextProps)`
+
+只要是父组件的render被调用，在render中被渲染的子组件就会经历更新的过程。不管父组件传给子组件的props有没有改变，都会触发子组件的此函数被调用。注意：通过setState方法触发的更新不会调用此函数
+
+1. `shouldComponentUpdate(nextProps,nextState)`
+2. `componentWillUpdate 4.render 5.componentDidUpdate`
+
+---
+
+### 实现原理
 
 #### dom diff算法和虚拟DOM
 
@@ -83,7 +77,7 @@ dom diff采用的是增量更新的方式，类似于打补丁。React 需要为
 
 为了解决频繁操作DOM导致Web应用效率下降的问题，React提出了“虚拟DOM”（virtual DOM）的概念。Virtual DOM是使用JavaScript对象模拟DOM的一种对象结构。DOM树中所有的信息都可以用JavaScript表述出来，例如：
 
-```Html
+```html
 <ul>
   <li>Item 1</li>
   <li>Item 2</li>
@@ -108,13 +102,21 @@ dom diff采用的是增量更新的方式，类似于打补丁。React 需要为
 
 这样可以避免直接频繁地操作DOM，只需要在js对象模拟的虚拟DOM进行比对，再将更改的部分应用到真实的DOM树上
 
+#### react事件和传统事件有什么区别吗
+
+React 实现了一个“合成事件”层（synthetic event system），这个事件模型保证了和 W3C 标准保持一致，所以不用担心有什么诡异的用法，并且这个事件层消除了 IE 与 W3C 标准实现之间的兼容问题。
+
+“合成事件”还提供了额外的好处：
+
+- 事件委托
+
+“合成事件”会以事件委托（event delegation）的方式绑定到组件最上层，并且在组件卸载（unmount）的时候自动销毁绑定的事件。
+
+
+
 ---
 
-#### react组件性能优化
-
-使用PureRenderMixin、shouldComponentUpdate来避免不必要的虚拟DOM diff，在render内部优化虚拟DOM的diff速度，以及让diff结果最小化。
-
----
+### 组件
 
 #### react组件间的数据传递
 
@@ -138,10 +140,8 @@ render(){
 }
 ```
 
-3. 非父子组件间的通信：可以使用全局事件来实现组件间的沟通，React中可以引入eventProxy模块，利用`eventProxy.trigger()`方法发布消息，`eventProxy.on()`方法监听并接收消息。
-4. 组件间层级太深，可以使用上下文方式，让子组件直接访问祖先的数据或函数，通过`this.context.xx`
-
----
+1. 非父子组件间的通信：可以使用全局事件来实现组件间的沟通，React中可以引入eventProxy模块，利用`eventProxy.trigger()`方法发布消息，`eventProxy.on()`方法监听并接收消息。
+2. 组件间层级太深，可以使用上下文方式，让子组件直接访问祖先的数据或函数，通过`this.context.xx`
 
 #### 无状态组件
 
@@ -205,34 +205,32 @@ const HOC = (WrappedComponent) =>
 
 ---
 
-#### react事件和传统事件有什么区别吗
+### 性能优化
 
-React 实现了一个“合成事件”层（synthetic event system），这个事件模型保证了和 W3C 标准保持一致，所以不用担心有什么诡异的用法，并且这个事件层消除了 IE 与 W3C 标准实现之间的兼容问题。
+#### react组件性能优化
 
-“合成事件”还提供了额外的好处：
-
-- 事件委托
-
-“合成事件”会以事件委托（event delegation）的方式绑定到组件最上层，并且在组件卸载（unmount）的时候自动销毁绑定的事件。
-
-#### [react组件生命周期](http://hawx1993.github.io/Front-end-Interview-Questions/#/?id=react%e7%bb%84%e4%bb%b6%e7%94%9f%e5%91%bd%e5%91%a8%e6%9c%9f)
-
-![img](lifecycle.jpeg)
-
-react组件更新过程：
-
-- props/state change：
-
-1. `componentWillReceiveProps(nextProps)`
-
-只要是父组件的render被调用，在render中被渲染的子组件就会经历更新的过程。不管父组件传给子组件的props有没有改变，都会触发子组件的此函数被调用。注意：通过setState方法触发的更新不会调用此函数
-
-2. `shouldComponentUpdate(nextProps,nextState)`
-3. `componentWillUpdate 4.render 5.componentDidUpdate`
+使用PureRenderMixin、shouldComponentUpdate来避免不必要的虚拟DOM diff，在render内部优化虚拟DOM的diff速度，以及让diff结果最小化。
 
 ---
 
-### vue 相关
+### vue
+
+#### react和vue的区别
+
+相同点：
+
+- 都支持服务端渲染
+- 都有Virtual DOM，组件化开发，通过props参数进行父子组件数据的传递，都实现webComponents规范
+- 数据驱动视图
+- 都有支持native的方案，React的React native，Vue的weex
+
+不同点：
+
+- React严格上只针对MVC的view层，Vue则是MVVM模式
+- virtual DOM 不一样 vue会跟踪每一个组件的依赖关系，不需要重新渲染整个组件树。而对于React而言，每当应用的状态被改变时，全部子组件都会重新渲染。当然，这可以通过shouldComponentUpdate这个生命周期方法来进行控制，
+- 组件写法不一样 React 推荐的做法是 JSX + inline style，也就是把 HTML 和 CSS 全都写进 JavaScript 了，即”all in js” Vue 推荐的是使用 `webpack + vue-loader` 的单文件组件格式，即html,css,js写在同一个文件；
+- 数据绑定：Vue有实现了双向数据绑定，React数据流动是单向的
+- state对象在react应用中是不可变的，需要使用setState方法更新状态；在Vue中，state对象并不是必须的，数据由data属性在Vue对象中进行管理。
 
 #### vue 双向绑定底层实现原理
 
@@ -240,21 +238,15 @@ vue.js 采用数据劫持的方式，结合发布者-订阅者模式，通过`Ob
 
 <https://github.com/hawx1993/tech-blog/issues/11>
 
----
-
 #### vue 虚拟DOM和react 虚拟DOM的区别
 
 在渲染过程中，会跟踪每一个组件的依赖关系，不需要重新渲染整个组件树。而对于React而言，每当应用的状态被改变时，全部子组件都会重新渲染。 在 React 应用中，当某个组件的状态发生变化时，它会以该组件为根，重新渲染整个组件子树。 如要避免不必要的子组件的重新渲染，你需要在所有可能的地方使用 PureComponent，或是手动实现`shouldComponentUpdate` 方法
 
 在React中，数据流是自上而下单向的从父节点传递到子节点，所以组件是简单且容易把握的，子组件只需要从父节点提供的props中获取数据并渲染即可。如果顶层组件的某个prop改变了，React会递归地向下遍历整棵组件树，重新渲染所有使用这个属性的组件。
 
----
-
 #### v-show和v-if区别
 
 与v-if不同的是，无论v-show的值为true或false，元素都会存在于HTML代码中；而只有当v-if的值为true，元素才会存在于HTML代码中
-
----
 
 #### vue组件通信
 
@@ -263,8 +255,6 @@ vue.js 采用数据劫持的方式，结合发布者-订阅者模式，通过`Ob
 父传子: `this.$refs.xxx` 子传父: `this.$parent.xxx`
 
 还可以通过`$emit`方法出发一个消息，然后`$on`接收这个消息
-
----
 
 #### 你如何评价vue
 
@@ -276,16 +266,6 @@ vue专注于MVVM中的viewModel层，通过双向数据绑定，把view层和Mod
 
 缺点：指令太多，自带模板扩展不方便； 组件的属性传递没有react的直观和明显
 
----
-
-#### 说说你对MVVM的理解
-
-Model层代表数据模型，可以在Model中定义数据修改和操作业务逻辑； view 代表UI组件。负责将数据模型转换成UI展现出来 ViewModel 是一个同步View和Model的对象
-
-用户操作view层，view数据变化会同步到Model，Model数据变化会立即反应到view中。viewModel通过双向数据绑定把view层和Model层连接了起来
-
----
-
 #### 为什么选择vue
 
 reactjs 的全家桶方式，实在太过强势，而自己定义的 JSX 规范，揉和在 JS 的组件框架里，导致如果后期发生页面改版工作，工作量将会巨大。
@@ -294,8 +274,6 @@ vue的核心：数据绑定 和 视图组件。
 
 - Vue的数据驱动：数据改变驱动了视图的自动更新，传统的做法你得手动改变DOM来改变视图，vuejs只需要改变数据，就会自动改变视图，一个字：爽。再也不用你去操心DOM的更新了，这就是MVVM思想的实现。
 - 视图组件化：把整一个网页的拆分成一个个区块，每个区块我们可以看作成一个组件。网页由多个组件拼接或者嵌套组成
-
----
 
 #### vue中mixin与extend区别
 
@@ -307,7 +285,17 @@ vue的核心：数据绑定 和 视图组件。
 
 `methods`，`components`，`directives`将被混为同一个对象。两个对象的键名（方法名，属性名）冲突时，取组件（而非mixin）对象的键值对
 
+
+
 ---
+
+### 框架模式
+
+#### 说说你对MVVM的理解
+
+Model层代表数据模型，可以在Model中定义数据修改和操作业务逻辑； view 代表UI组件。负责将数据模型转换成UI展现出来 ViewModel 是一个同步View和Model的对象
+
+用户操作view层，view数据变化会同步到Model，Model数据变化会立即反应到view中。viewModel通过双向数据绑定把view层和Model层连接了起来
 
 #### 双向绑定和单向数据绑定的优缺点
 
@@ -335,7 +323,7 @@ Vue 虽然通过 v-model 支持双向绑定，但是如果引入了类似redux�
 
 ---
 
-#### 前端路由实现方式
+### 前端路由
 
 #### 两种实现前端路由的方式
 
@@ -364,61 +352,25 @@ window.history.pushState(stateObject, title, URL)
 window.history.replaceState(stateObject, title, URL)
 ```
 
----
-
-#### 受控组件是什么
-
-
-
----
-
-#### 分析过源码吗？
-
-
-
----
-
-#### 怎么优化React性能？
-
-
-
----
-
-#### Redux是什么？
-
-
-
-
-
----
-
 #### react-router 路由系统的实现原理？
 
-
-
----
-
-#### React中如何解决第三方类库的问题?
+#### 
 
 
 
 ---
+
+### 其他常用相关库
+
+#### Redux
 
 #### recompose
 
-
-
----
-
 #### Redux-Thunk vs Redux-Saga
-
-
-
----
 
 #### React UI框架
 
-
+#### React中如何解决第三方类库的问题?
 
 ---
 

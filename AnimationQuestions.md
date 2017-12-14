@@ -4,8 +4,6 @@
 
 #### 请解释 CSS 动画和 JavaScript 动画的优缺点。
 
-动画这块目前也写得很少，大概总结下：
-
 - CSS动画
 
   优点在于使用GPU计算，不占用JS资源；缺点是相对难掌控，因为逻辑性要差一些，旧版浏览器不支持
@@ -16,7 +14,7 @@
 
 ---
 
-用js来实现动画，我们一般是借助setTimeout或setInterval这两个函数，以及新的requestAnimationFrame
+#### 用JavaScript来实现动画，我们一般是借助setTimeout或setInterval这两个函数，以及新的requestAnimationFrame
 
 ```javascript
 <div id="demo" style="position:absolute; width:100px; height:100px; background:#ccc; left:0; top:0;"></div>
@@ -42,6 +40,26 @@ CSS3使用
 ---
 
 #### 实现某个动画？
+
+moveLeft动画
+
+```javascript
+function moveLeft(elem, distance) {
+  var left = 0;
+
+  function frame() {
+    left++;
+    elem.style.left = left + 'px';
+
+    if (left == distance)
+      clearInterval(timeId)
+  }
+
+  var timeId = setInterval(frame, 10); // draw every 10ms
+}
+```
+
+
 
 ---
 

@@ -18,11 +18,28 @@
 * [HTML相关问题](https://github.com/GuoXiaoyang/Interview-Questions/blob/master/HTMLQuestions.md)
 * [CSS问题](https://github.com/GuoXiaoyang/Interview-Questions/blob/master/CSSQuestions.md)
 * [JS问题](https://github.com/GuoXiaoyang/Interview-Questions/blob/master/JavaScriptQuestions.md)
+* [BOM相关问题](https://github.com/GuoXiaoyang/Interview-Questions/blob/master/BOMQuestions.md)
+* [DOM相关问题](https://github.com/GuoXiaoyang/Interview-Questions/blob/master/DOMQuestions.md)
+* [动画相关问题](https://github.com/GuoXiaoyang/Interview-Questions/blob/master/AnimationQuestions.md)
 * [测试相关问题](https://github.com/GuoXiaoyang/Interview-Questions/blob/master/TestQuestions.md)
 * [性能相关问题](https://github.com/GuoXiaoyang/Interview-Questions/blob/master/PerformenceQuestions.md)
 * [网络相关问题](https://github.com/GuoXiaoyang/Interview-Questions/blob/master/NetworkQuestions.md)
-* [代码相关问题](https://github.com/GuoXiaoyang/Interview-Questions/blob/master/CodeQuestions.md)
+* [代码相关问题](https://github.com/GuoXiaoyang/Interview-Questions/blob/master/CodingQuestions.md)
+* [缓存相关问题](https://github.com/GuoXiaoyang/Interview-Questions/blob/master/CacheQuestions.md)
+* [数据结构／算法相关问题](https://github.com/GuoXiaoyang/Interview-Questions/blob/master/DataStructure.md)
+* [设计模式相关问题](https://github.com/GuoXiaoyang/Interview-Questions/blob/master/DesignPatternQuestions.md)
+* [移动设备相关问题](https://github.com/GuoXiaoyang/Interview-Questions/blob/master/MobileQuestions.md)
+* [数据库相关问题](https://github.com/GuoXiaoyang/Interview-Questions/blob/master/MongoDBQuestions.md)
+* [Node相关问题](https://github.com/GuoXiaoyang/Interview-Questions/blob/master/NodeQuestions.md)
+* [React相关问题](https://github.com/GuoXiaoyang/Interview-Questions/blob/master/ReactQuestions.md)
+* [安全问题](https://github.com/GuoXiaoyang/Interview-Questions/blob/master/SecurityQuestions.md)
+* [趣味问题](https://github.com/GuoXiaoyang/Interview-Questions/blob/master/FunQuestions.md)
+* [其他问题](https://github.com/GuoXiaoyang/Interview-Questions/blob/master/OtherQuestions.md)
 
+
+
+
+实际上到后期由于问题实在是比较多，已经整理不过来了，很多转载和引用也不记得原地址了。如果没有注明，请[通知我](mailto:guoxiaoyang0925@gmail.com)
 
 
 ## 参考

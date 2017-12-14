@@ -370,10 +370,10 @@ rem
 
 区别：
 
-1. display:none;会让元素完全从渲染树中消失，渲染的时候不占据任何空间；visibility: hidden;不会让元素从渲染树消失，渲染师元素继续占据空间，只是内容不可见
-2. display: none;是非继承属性，子孙节点消失由于元素从渲染树消失造成，通过修改子孙节点属性无法显示；visibility: hidden;是继承属性，子孙节点消失由于继承了hidden，通过设置visibility: visible;可以让子孙节点显式
+1. `display:none`会让元素完全从渲染树中消失，渲染的时候不占据任何空间；`visibility: hidden`不会让元素从渲染树消失，渲染师元素继续占据空间，只是内容不可见
+2. `display: none`是非继承属性，子孙节点消失由于元素从渲染树消失造成，通过修改子孙节点属性无法显示；`visibility: hidden`是继承属性，子孙节点消失由于继承了hidden，通过设置`visibility: visible`可以让子孙节点显式
 3. 修改常规流中元素的display通常会造成文档重排。修改visibility属性只会造成本元素的重绘。
-4. 读屏器不会读取display: none;元素内容；会读取visibility: hidden;元素内容
+4. 读屏器不会读取`display: none`元素内容；会读取`visibility: hidden`元素内容
 
 
 
@@ -385,7 +385,7 @@ rem
 
 盒模型<sup><a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model">7</a></sup>是CSS呈现内容样式的核心之一，包括margin-border-padding-content。MDN上标准盒模型的图示：
 
-![标准盒模型](https://developer.mozilla.org/files/72/boxmodel%20(1).png)
+![标准盒模型](images/boxmodel.png)
 
 标准盒模型下，宽高不包括padding和border，元素的背景会延伸到padding和border；外边距在同一BFC中会发生折叠。
 
@@ -406,7 +406,7 @@ rem
 
 
 
-![img](http://hawx1993.github.io/Front-end-Interview-Questions/box-size.jpeg)
+![img](images/box-size.jpeg)
 
 box-sizing属性主要用来控制元素的盒模型的解析模式。默认值是content-box。
 

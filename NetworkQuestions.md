@@ -221,6 +221,19 @@ HTTP是一个基于请求与响应，无状态的，应用层的协议，常基�
 
 GET和POST最大的区别主要是GET请求是幂等性的，POST请求不是。（幂等性：对同一URL的多个请求应该返回同样的结果。）因为get请求是幂等的，在网络不好的隧道中会尝试重试。如果用get请求增数据，会有重复操作的风险，而这种重复操作可能会导致副作用
 
+#### get与post请求的区别
+
+GET：一般用于信息获取，使用URL传递参数，对所发送信息的数量也有限制，一般在2000个字符
+POST：一般用于修改服务器上的资源，对所发送的信息没有限制。
+
+GET方式需要使用Request.QueryString来取得变量的值，而POST方式通过Request.Form来获取变量的值，
+也就是说Get是通过地址栏来传值，而Post是通过提交表单来传值。
+
+然而，在以下情况中，请使用 POST 请求：
+无法使用缓存文件（更新服务器上的文件或数据库）
+向服务器发送大量数据（POST 没有数据量限制）
+发送包含未知字符的用户输入时，POST 比 GET 更稳定也更可靠
+
 ---
 
 #### Web应用从服务器主动推送Data到客户端有哪些方式
@@ -594,26 +607,37 @@ CDN的工作原理：通过dns服务器来实现优质节点的选择，通过�
 
 提前加载图片，当用户需要查看时可直接从本地缓存中渲染
 
-```
+```javascript
 var imgArr=["1.jpg","2.jpg"];
 loadImage(imgArr,callback);
 function loadImage(imgArr, callback) {
-    var imgNum=imgArr.length,count=0;
-    for(var i=0;i<imgNum;i++){
-      var img = new Image(); //创建一个Image对象，实现图片的预下载
-      img.src = imgArr[i];
-      if (img.complete) { // 如果图片已经存在于浏览器缓存，直接调用回调函数
-          if(count==imgNum){
-          callback();// 直接返回，不用再处理onload事件
-         }
- } count++; img.onload=function () { if(count==imgNum){ callback(); } } }//for循环结束}
+  var imgNum=imgArr.length,count=0;
+  for(var i=0;i<imgNum;i++){
+    var img = new Image(); //创建一个Image对象，实现图片的预下载
+    img.src = imgArr[i];
+    if (img.complete) { // 如果图片已经存在于浏览器缓存，直接调用回调函数
+      if(count==imgNum){
+        callback();// 直接返回，不用再处理onload事件
+      }
+    } 
+    count++; 
+    img.onload=function () { if(count==imgNum){ callback(); } } 
+  }//for循环结束}
 ```
 
-#### [说说TCP传输的三次握手四次挥手策略](http://hawx1993.github.io/Front-end-Interview-Questions/#/?id=%e8%af%b4%e8%af%b4tcp%e4%bc%a0%e8%be%93%e7%9a%84%e4%b8%89%e6%ac%a1%e6%8f%a1%e6%89%8b%e5%9b%9b%e6%ac%a1%e6%8c%a5%e6%89%8b%e7%ad%96%e7%95%a5)
+#### 说说TCP传输的三次握手四次挥手策略
 
 为了准确无误地把数据送达目标处，TCP协议采用了三次握手策略。用TCP协议把数据包送出去后，TCP不会对传送 后的情况置之不理，它一定会向对方确认是否成功送达。握手过程中使用了TCP的标志：SYN和ACK
 
 发送端首先发送一个带SYN标志的数据包给对方。接收端收到后，回传一个带有SYN/ACK标志的数据包以示传达确认信息。 最后，发送端再回传一个带ACK标志的数据包，代表“握手”结束。 若在握手过程中某个阶段莫名中断，TCP协议会再次以相同的顺序发送相同的数据包。
+
+---
+
+#### apache,nginx有什么区别?
+
+参考答案: 二者都是代理服务器，功能类似．apache应用简单，相当广泛．nginx在分布式，静态转发方面比较有优势．
+
+
 
 ---
 
