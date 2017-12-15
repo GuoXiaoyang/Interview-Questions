@@ -12,6 +12,10 @@
 
   与CSS动画相反，占用主线程资源但能够精细控制
 
+#### 如果需要手动写动画，你认为最小时间间隔是多久，为什么？
+
+ 多数显示器默认频率是60Hz，即1秒刷新60次，所以理论上最小间隔为1/60＊1000ms ＝ 16.7ms
+
 ---
 
 #### 用JavaScript来实现动画，我们一般是借助setTimeout或setInterval这两个函数，以及新的requestAnimationFrame
@@ -39,9 +43,9 @@ CSS3使用
 
 ---
 
-#### 实现某个动画？
+### 实现某个动画
 
-moveLeft动画
+#### moveLeft动画
 
 ```javascript
 function moveLeft(elem, distance) {
@@ -59,6 +63,8 @@ function moveLeft(elem, distance) {
 }
 ```
 
+#### 全屏滚动动画
+
 
 
 ---
@@ -67,11 +73,7 @@ function moveLeft(elem, distance) {
 
 
 
----
 
-#### 如果需要手动写动画，你认为最小时间间隔是多久，为什么？（阿里）
-
- 多数显示器默认频率是60Hz，即1秒刷新60次，所以理论上最小间隔为1/60＊1000ms ＝ 16.7ms
 
 ---
 

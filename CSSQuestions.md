@@ -24,22 +24,21 @@
 13. **[attr|=value]**：选择属性值刚好为value或者value-开头的元素
 14. **[attr^=value]**：选择属性值以value开头的元素
 15. **[attr$=value]**：选择属性值以value结尾的元素
-16. *[attr=value]**：选择属性值中包含value的元素
+16. **[attr=value]**：选择属性值中包含value的元素
 17. **[:checked]**：选择单选框，复选框，下拉框中选中状态下的元素，兼容性：IE9+
-18. **X:after, X::after**：after伪元素，选择元素虚拟子元素（元素的最后一个子元素），CSS3中::表示伪元素。兼容性:after为IE8+，::after为IE9+
-19. **:hover**：鼠标移入状态的元素，兼容性a标签IE4+， 所有元素IE7+
-20. **:not(selector)**：选择不符合selector的元素。**不参与计算优先级**，兼容性：IE9+
-21. **::first-letter**：伪元素，选择块元素第一行的第一个字母，兼容性IE5.5+
-22. **::first-line**：伪元素，选择块元素的第一行，兼容性IE5.5+
-23. **:nth-child(an + b)**：伪类，选择前面有an + b - 1个兄弟节点的元素，其中n >= 0， 兼容性IE9+
-24. **:nth-last-child(an + b)**：伪类，选择后面有an + b - 1个兄弟节点的元素 其中n >= 0，兼容性IE9+
-25. **X:nth-of-type(an+b)**：伪类，X为选择器，**解析得到元素标签**，选择**前面**有an + b - 1个**相同标签**兄弟节点的元素。兼容性IE9+
-26. **X:nth-last-of-type(an+b)**：伪类，X为选择器，解析得到元素标签，选择**后面**有an+b-1个相同**标签**兄弟节点的元素。兼容性IE9+
-27. **X:first-child**：伪类，选择满足X选择器的元素，且这个元素是其父节点的第一个子元素。兼容性IE7+
-28. **X:last-child**：伪类，选择满足X选择器的元素，且这个元素是其父节点的最后一个子元素。兼容性IE9+
-29. **X:only-child**：伪类，选择满足X选择器的元素，且这个元素是其父元素的唯一子元素。兼容性IE9+
-30. **X:only-of-type**：伪类，选择X选择的元素，**解析得到元素标签**，如果该元素没有相同类型的兄弟节点时选中它。兼容性IE9+
-31. **X:first-of-type**：伪类，选择X选择的元素，**解析得到元素标签**，如果该元素 是此此类型元素的第一个兄弟。选中它。兼容性IE9+
+18. **X::before, X::after**：after伪元素，选择元素虚拟子元素（元素的最后一个子元素），CSS3中::表示伪元素。兼容性:after为IE8+，::after为IE9+
+19. **:not(selector)**：选择不符合selector的元素。**不参与计算优先级**，兼容性：IE9+
+20. **::first-letter**：伪元素，选择块元素第一行的第一个字母，兼容性IE5.5+
+21. **::first-line**：伪元素，选择块元素的第一行，兼容性IE5.5+
+22. **:nth-child(an + b)**：伪类，选择前面有an + b - 1个兄弟节点的元素，其中n >= 0， 兼容性IE9+
+23. **:nth-last-child(an + b)**：伪类，选择后面有an + b - 1个兄弟节点的元素 其中n >= 0，兼容性IE9+
+24. **X:nth-of-type(an+b)**：伪类，X为选择器，**解析得到元素标签**，选择**前面**有an + b - 1个**相同标签**兄弟节点的元素。兼容性IE9+
+25. **X:nth-last-of-type(an+b)**：伪类，X为选择器，解析得到元素标签，选择**后面**有an+b-1个相同**标签**兄弟节点的元素。兼容性IE9+
+26. **X:first-child**：伪类，选择满足X选择器的元素，且这个元素是其父节点的第一个子元素。兼容性IE7+
+27. **X:last-child**：伪类，选择满足X选择器的元素，且这个元素是其父节点的最后一个子元素。兼容性IE9+
+28. **X:only-child**：伪类，选择满足X选择器的元素，且这个元素是其父元素的唯一子元素。兼容性IE9+
+29. **X:only-of-type**：伪类，选择X选择的元素，**解析得到元素标签**，如果该元素没有相同类型的兄弟节点时选中它。兼容性IE9+
+30. **X:first-of-type**：伪类，选择X选择的元素，**解析得到元素标签**，如果该元素 是此此类型元素的第一个兄弟。选中它。兼容性IE9+
 
 #### 请解释浏览器是如何判断元素是否匹配某个 CSS 选择器？
 
@@ -100,7 +99,7 @@
 
 #### 伪类与伪元素的区别
 
-CSS 伪类：逻辑上存在但在文档树中却无须标识的“幽灵”分类 CSS 伪元素（`:first-letter，:first-line,:after,:before`）代表了某个元素的子元素，这个子元素虽然在逻辑上存在，但却并不实际存在于文档树中。 CSS3标准要求伪元素使用双冒号
+CSS 伪元素：逻辑上存在但在文档树中却无须标识的“幽灵”分类 CSS 伪元素（`:first-letter，:first-line,:after,:before`）代表了某个元素的子元素，这个子元素虽然在逻辑上存在，但却并不实际存在于文档树中。 CSS3标准要求伪元素使用双冒号
 
 伪类用于当已有元素处于的某个状态时，为其添加对应的样式，这个状态是根据用户行为而动态变化的。
 
@@ -112,7 +111,7 @@ a:link
 :visited
 ```
 
-伪元素代表了某个元素的子元素，这个子元素虽然在逻辑上存在，但却并不实际存在于文档树中。
+
 
 #### CSS 中字母 'C' 的意思是叠层 (Cascading)。请问在确定样式的过程中优先级是如何决定的 (请举例)？如何有效使用此系统？
 
@@ -162,12 +161,12 @@ css的content属性专门应用在 before/after 伪元素上，用于来插入�
 
 #### specified value,computed value,used value计算方法
 
-- specified value: 计算方法如下：
+- specified value，计算方法如下：
   1. 如果样式表设置了一个值，使用这个值
   2. 如果没有设置值，这个属性是继承属性，从父元素继承
   3. 如果没设置，并且不是继承属性，使用css规范指定的初始值
-- computed value: 以specified value根据规范定义的行为进行计算，通常将相对值计算为绝对值，例如em根据font-size进行计算。一些使用百分数并且需要布局来决定最终值的属性，如width，margin。百分数就直接作为computed value。line-height的无单位值也直接作为computed value。这些值将在计算used value时得到绝对值。**computed value的主要作用是用于继承**
-- used value：属性计算后的最终值，对于大多数属性可以通过`window.getComputedStyle`获得，尺寸值单位为像素。以下属性依赖于布局，
+- computed value: 以specified value根据规范定义的行为进行计算，通常将相对值计算为绝对值，例如em根据font-size进行计算。一些使用百分数并且需要布局来决定最终值的属性，如width，margin。百分数就直接作为computed value。line-height的无单位值也直接作为computed value。这些值将在计算used value时得到绝对值。定义值经过层叠（cascade）计算就是计算值。注意，计算值绝对不需要浏览器渲染文档（也就是计算值是在浏览器渲染文档之前产生的）。
+- used value：计算值并不依赖与文档的渲染，但是有些属性比如width:50% 必须要在渲染文档之后才能确定。因此，当浏览器渲染文档时，把计算值和它对其他元素的依赖综合起来就是使用值。对于大多数属性可以通过`window.getComputedStyle`获得，尺寸值单位为像素。以下属性依赖于布局，
   - background-position
   - bottom, left, right, top
   - height, width
@@ -175,6 +174,10 @@ css的content属性专门应用在 before/after 伪元素上，用于来插入�
   - min-height, min-width
   - padding-bottom, padding-left, padding-right, padding-top
   - text-indent
+
+* actual value
+  使用值已经可以合法的用来渲染了，但是某些情况下浏览器可能依然会有其他的限制，比如只能border宽度只能是整数，比如色弱模式下必须显示高对比颜色，使用值加上这些限制计算出来的就是实际值。
+  实际值是最终应用在元素属性上的。
 
 #### CSS3有哪些新特性？
 
@@ -206,9 +209,21 @@ rgba()和opacity都能实现透明效果，但最大的不同是opacity作用于
 
 #### 全屏滚动的原理是什么，用到了CSS的那些属性
 
+利用定位和页面高度来移动单屏，可能用到的属性
+
+```css
+overflow: hidden;
+position: relative;
+height: 100vh;
+```
+
+
+
 #### overflow: scroll时不能平滑滚动的问题怎么处理
 
+大概了解了下，主要是iOS可能遇到这样的问题
 
+`-webkit-overflow-scrolling: touch;`，是因为这行代码启用了硬件加速特性，所以滑动很流畅。
 
 #### CSS属性区分大小写吗
 
@@ -374,7 +389,6 @@ rem
 2. `display: none`是非继承属性，子孙节点消失由于元素从渲染树消失造成，通过修改子孙节点属性无法显示；`visibility: hidden`是继承属性，子孙节点消失由于继承了hidden，通过设置`visibility: visible`可以让子孙节点显式
 3. 修改常规流中元素的display通常会造成文档重排。修改visibility属性只会造成本元素的重绘。
 4. 读屏器不会读取`display: none`元素内容；会读取`visibility: hidden`元素内容
-
 
 
 ---
@@ -1020,7 +1034,7 @@ h3.levin span {
 
 浏览器进行页面渲染的步骤是
 
-![浏览器渲染步骤图](BrowserRendering.svg)
+![浏览器渲染步骤图](images/BrowserRendering.svg)
 
 - JavaScrit    实现元素的添加／删除／移动等动画
 - 样式计算     根据CSS选择器规则获取所有元素的最终样式
