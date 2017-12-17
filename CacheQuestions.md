@@ -40,7 +40,7 @@ cookie的属性：
 
 其中Expires和cache-control属于强缓存，last-modified和etag属于协商缓存 强缓存与协商缓存区别：强缓存不发请求到服务器，协商缓存会发请求到服务器。
 
-![img](images/cache.jpeg)
+![img](images/networkCache.jpeg)
 
 
 

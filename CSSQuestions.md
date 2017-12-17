@@ -457,7 +457,7 @@ height: 100vh;
 
 盒模型<sup><a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model">7</a></sup>是CSS呈现内容样式的核心之一，包括margin-border-padding-content。MDN上标准盒模型的图示：
 
-![标准盒模型](images/boxmodel.png)
+![标准盒模型](images/boxModel.png)
 
 标准盒模型下，宽高不包括padding和border，元素的背景会延伸到padding和border；外边距在同一BFC中会发生折叠。
 
@@ -478,7 +478,7 @@ height: 100vh;
 
 
 
-![img](images/box-size.jpeg)
+![img](images/boxSize.jpeg)
 
 box-sizing属性主要用来控制元素的盒模型的解析模式。默认值是content-box。
 

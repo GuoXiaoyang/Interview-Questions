@@ -28,11 +28,11 @@
 
 初始加载过程<sup><a href="https://github.com/Bogdan-Lyashenko/Under-the-hood-ReactJS">1</a></sup>：
 
-![加载过程](images/加载过程.svg)
+![加载过程](images/reactLoadProcess.svg)
 
 更新过程<sup><a href="https://github.com/Bogdan-Lyashenko/Under-the-hood-ReactJS">1</a></sup>：
 
-![更新过程](images/更新过程.svg)
+![更新过程](images/reactUpdateProcess.svg)
 
 卸载过程：`componentWillUnmount()`
 
@@ -40,7 +40,7 @@ catch error过程：
 
 另一个简化版流程图<sup><a href="https://zhuanlan.zhihu.com/p/28697362">2</a></sup>：
 
-![简化流程](images/react_lifecycle.jpg)
+![简化流程](images/reactLifecycle.jpg)
 
 #### react组件生命周期
 

@@ -726,7 +726,7 @@ var EventUtil = {
 
 [Measuring Element Dimension and Location with CSSOM in Windows Internet Explorer 9](http://msdn.microsoft.com/en-us/library/ie/hh781509(v=vs.85).aspx)
 
-[![元素尺寸](images/element-size.png)](https://github.com/qiu-deqing/FE-interview/blob/master/img/element-size.png)
+[![元素尺寸](images/elementSize.png)](https://github.com/qiu-deqing/FE-interview/blob/master/img/element-size.png)
 
 
 
@@ -820,7 +820,7 @@ function getScrollOffset(w) {
 
 #### 请用原生js实现一个函数,给页面制定的任意一个元素添加一个透明遮罩(透明度可变,默认0.2),使这个区域点击无效,要求兼容IE8+及各主流浏览器,遮罩层效果如下图所示:
 
-[![遮罩效果](images/element-mask.jpg)](https://github.com/qiu-deqing/FE-interview/blob/master/img/element-mask.jpg)
+[![遮罩效果](images/elementMask.jpg)](https://github.com/qiu-deqing/FE-interview/blob/master/img/element-mask.jpg)
 
 ```javascript
 <style>
@@ -871,7 +871,7 @@ target.addEventListener('click', function () {
 
 #### 完成下面的tool-tip
 
-[![xxx](images/tip-box.jpg)](https://github.com/qiu-deqing/FE-interview/blob/master/img/tip-box.jpg)
+[![xxx](images/tipBox.jpg)](https://github.com/qiu-deqing/FE-interview/blob/master/img/tip-box.jpg)
 
 #### 补充代码,鼠标单击Button1后将Button1移动到Button2的后面
 

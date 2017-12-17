@@ -24,7 +24,7 @@
 
 #### Node 开发技能图解
 
-![img](images/node_skillset.jpg)
+![img](images/nodeSkillset.jpg)
 
 #### 为什么要用node?
 
@@ -48,7 +48,7 @@
 
 参考答案: 主要分为三层，应用app >> V8及node内置架构 >> 操作系统. V8是node运行的环境，可以理解为node虚拟机．node内置架构又可分为三层: 核心模块(javascript实现) >> c++绑定 >> libuv + CAes + http.
 
-![img](images/nodejs-arch-ppt.png)
+![img](images/nodejsStructure.png)
 
 #### node有哪些核心模块?
 
@@ -96,7 +96,7 @@
 
 event loop其实就是一个事件队列，先加入先执行，执行完一次队列，再次循环遍历看有没有新事件加入队列．但是请务必注意，这一个事件队列的循环，一次只执行一个事件，然后下一次循环再执行一个事件．这是由于javascript的单线程机制导致的，如果一次循环多个事件，就可能会阻塞其它代码的执行．异步执行的叫IO events, setImmediate是在当前队列立即执行,setTimout/setInterval是把执行定时到到后面的队列，process.nextTick是在当前执行完，下次遍历前执行．所以总体顺序是: IO events >> setImmediate >> setTimeout/setInterval(注册事件) >> process.nextTick.
 
-![img](images/event_loop.jpg)
+![img](images/eventLoop.jpg)
 
 
 

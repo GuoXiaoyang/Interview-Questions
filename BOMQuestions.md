@@ -36,7 +36,7 @@ web worker是运行在浏览器后台的js程序，他不影响主程序的运�
 
 ### 浏览器渲染原理解析
 
-![img](images/browser.jpeg)
+![img](images/browserRenderingPrinciple.jpeg)
 
 1. 首先渲染引擎下载HTML，解析生成DOM Tree
 2. 遇到css标签或JS脚本标签就新起线程去下载他们，并继续构建DOM。（其中css是异步下载同步执行）浏览器引擎通过 DOM Tree 和 CSS Rule Tree 构建 Rendering Tree
