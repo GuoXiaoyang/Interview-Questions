@@ -1,3 +1,5 @@
+[TOC]
+
 ## CSS相关问题
 
 ### 元素／类
@@ -145,6 +147,22 @@ a:link
 - [cursor](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor)
 - 列表相关 `list-style-image，list-style-position，list-style-type， list-style`
 
+#### 替换元素与非替换元素
+
+元素是文档结构的基础，在CSS中，每个元素生成了一个包含了元素内容的框。但是不同的元素显示的方式会有所不同，例如div和span不同，而strong和p也不一样。在文档类型定义（DTD）中对不同的元素规定了不同的类型，这也是DTD对文档之所以重要的原因之一。而根据元素本身的特点可以分为替换元素（replaced element）和非替换元素，非替换元素，在W3C中没有给出明确的定义，但我们可以由替换元素对应着非替换元素，所以可以理解为除了替换元素，其它的就是非替换元素。
+
+* 替换元素
+
+  CSS 里，可替换元素（replaced element）的展现不是由CSS来控制的。这些元素是一类 外观渲染独立于CSS的 外部对象。 典型的可替换元素有 `<img>、 <object>、 <video>` 和 表单元素，如`<textarea>、 <input>` 。 某些元素只在一些特殊情况下表现为可替换元素，例如 `<audio>` 和 `<canvas>` 。 通过 CSS content 属性来插入的对象 被称作 匿名可替换元素（anonymous replaced elements）。
+
+  CSS在某些情况下会对可替换元素做特殊处理，比如计算外边距和一些auto值。
+
+  需要注意的是，一部分（并非全部）可替换元素，本身具有尺寸和基线（baseline），会被像vertical-align之类的一些 CSS 属性用到。
+
+  替换元素就是浏览器根据元素的标签和属性，来决定元素的具体显示内容，替换元素是其内容不受CSS视觉格式化模型控制的。比如img元素通过src属性的值来读取图片信息并显示出来，而如果查看(x)html代码，却看不到图片的实际内容，而且img元素的内容通常会被src属性指定的图像替换掉；例如input元素的type属性决定是显示输入框，还是单选按钮等。(x)html中的img , input , textarea , select , object都是替换元素。这些元素没有实际的内容，即是个空元素
+
+  浏览器会根据元素的标签类型和属性来显示这些元素。替换元素也在其显示中生成了框。所以，替换元素通常有其固有的尺寸：一个固有的宽度，一个固有的高度和一个固有的比率；CSS渲染模型不考虑替换元素内容的渲染。这些替换元素的展现独立于CSS。object,video,textarea,input也是替换元素,audio和canvas在某些特定情形下为替换元素。使用CSS的content属性插入的对象是匿名替换元素。
+
 #### CSS里的visibility属性有个collapse属性值是干嘛用的？在不同浏览器下以后什么区别
 
 对于普通元素`visibility:collapse`会将元素完全隐藏，不占据页面布局空间，与`display:none`表现相同。如果目标元素为table，`visibility:collapse`将table隐藏，但是会占据页面布局空间。 仅在Firefox下起作用，IE会显示元素，Chrome会将元素隐藏，但是占据空间。
@@ -247,19 +265,50 @@ height: 100vh;
 
 #### 在CSS样式中常使用px、pt、%、em、rem，各有什么优劣，在表现上有什么区别？
 
-px是相对长度单位，相对于显示器屏幕分辨率而言的。
+在CSS中，W3C文档把尺寸单位划为为两类：相对长度单位和绝对长度单位。
 
-em是相对长度单位，相对于当前对象内文本的字体尺寸。
+* 绝对长度单位是固定尺寸，它们采用的是物理度量单位：cm、mm、in、px、pt以及pc。
 
-px定义的字体，无法用浏览器字体放大功能。
+* `px`与显示设备相关。对于屏幕显示，通常是一个设备像素（点）的显示。
 
-em的值并不是固定的，会继承父级元素的字体大小，1 ÷ 父元素的font-size × 需要转换的像素值 = em值。
+  对于打印机和高分辨率的屏幕，一个CSS像素意味着多个设备像素，因此，每英寸的像素的数量保持在96左右。
 
-rem
+  `mm`  毫米。
+
+  `cm`  厘米（10毫米）。
+
+  `in`  英寸（2.54厘米）。
+
+  `pt`  磅（1/72 英寸）。
+
+  `pc`  12 点活字 (1 pc 等于 12 点)。
+
+* 相对长度单位按照不同的参考元素，又可以分为字体相对单位和视窗相对单位。
+
+  * 字体相对单位有：em、ex、ch、rem等
+  * `em `  相对长度单位，这个单位表示元素的[`font-size`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/font-size)的计算值。如果用在[`font-size`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/font-size) 属性本身，它会继承父元素的font-size。
+  * `ex`  这个单位表示元素[`font`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/font)的 [x-height](http://en.wikipedia.org/wiki/X-height) 。在含有“X”字母的字体中，它是该字体的小写字母的高度；对于很多字体， 1ex ≈ 0.5em。
+  * `ch`  这一单位代表元素所用字体 [`font`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/font)中“0”这一字形的宽度（“0”，Unicode字符U+0030）
+  * `lh` 等于元素行高[`line-height`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/line-height)的计算值
+  * `rlh`  等于根元素行高[`line-height`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/line-height)的计算值。当用于设置根元素的行高[`line-height`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/line-height)或是字体大小[`font-size`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/font-size) 时，该rlh指的是根元素行高[`line-height`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/line-height)或字体大小[`font-size`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/font-size) 的初始值
+  * `rem`  这个单位代表根元素的 [`font-size`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/font-size) 大小。当用在根元素的[`font-size`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/font-size)上面时 ，它代表了它的初始值(译者注:默认的初始值是html的默认的font-size大小,比如当未在根元素上面设置font-size大小的时候,此时的1rem==1em,当设置font-size=2rem的时候,就使得页面中1rem的大小相当于html的根字体默认大小的2倍,当然此时页面中字体的大小也是html的根字体默认大小的2倍)。
+  * 视窗相对单位则包含：vw、vh、vmin、vmax
+  * `vh` 视口高度的 1/100。
+  * `vw`  视口宽度的 1/100。
+  * `vmin` 视口高度和宽度之间的最小值的 1/100。
+  * `vmax` 视口高度和宽度之间的最大值的 1/100。
+
+实际应用中，我们使用最广泛的则是em、rem、px以及百分比（%）来度量页面元素的尺寸。
+
+1. px：为像素单位。它是显示屏上显示的每一个小点，为显示的最小单位。它是一个绝对尺寸单位；
+2. em：它是描述相对于应用在当前元素的字体尺寸，所以它也是相对长度单位。一般浏览器字体大小默认为16px，则2em == 32px；
+3. %： 百分比，它是一个更纯粹的相对长度单位。它描述的是相对于父元素的百分比值。如50%，则为父元素的一半。
 
 #### 元素竖向的百分比设定是相对于容器的高度吗
 
+元素宽度与高度的百分比分别相对父元素宽／高设定等；
 
+但元素的margin/padding百分比是相对父元素的宽度。
 
 #### 如果` <p>`元素设置` font-size: 10rem`，页面在改变大小时字体大小会变吗
 
@@ -377,6 +426,10 @@ rem
 
 如果元素拥有`position:absolute`或者`position:fixed`属性那么元素将为绝对定位，float不起作用。
 
+如果元素`position:realative`，float属性与相对定位同时生效
+
+如果元素`position:static`，float属性生效
+
 如果元素float属性不是none，元素会脱离文档流，根据float属性值来显示。有浮动，绝对定位，inline-block属性的元素，margin不会和垂直方向上的其他元素margin折叠。
 
 #### `display: none;`与`visibility: hidden;`的区别
@@ -387,9 +440,14 @@ rem
 
 1. `display:none`会让元素完全从渲染树中消失，渲染的时候不占据任何空间；`visibility: hidden`不会让元素从渲染树消失，渲染师元素继续占据空间，只是内容不可见
 2. `display: none`是非继承属性，子孙节点消失由于元素从渲染树消失造成，通过修改子孙节点属性无法显示；`visibility: hidden`是继承属性，子孙节点消失由于继承了hidden，通过设置`visibility: visible`可以让子孙节点显式
-3. 修改常规流中元素的display通常会造成文档重排。修改visibility属性只会造成本元素的重绘。
-4. 读屏器不会读取`display: none`元素内容；会读取`visibility: hidden`元素内容
+3. 修改常规流中元素的display通常会造成文档重排（reflow）。修改visibility属性只会造成本元素的重绘（repaint）。
+4. 屏幕阅读器不会读取`display: none`元素内容；会读取`visibility: hidden`元素内容
 
+
+#### 绝对定位元素的宽度
+
+* 如果绝对定位元素包裹块级元素，则其width值始终等于子元素中宽度最大者的值
+* 如果绝对定位元素包裹行内元素，则其width值最大为子元素宽度之和，最小为子元素宽度最大值，并需先求出影响width值的left区间，再用其包含块的宽度-left值来求其宽度
 
 ---
 
@@ -403,7 +461,7 @@ rem
 
 标准盒模型下，宽高不包括padding和border，元素的背景会延伸到padding和border；外边距在同一BFC中会发生折叠。
 
-但IE的怪异模式下，盒模型宽高会包括padding和borde。
+但IE的怪异模式下，盒模型宽高会包括padding和border。
 
 通过`box-sizing`能够更改用于计算元素宽度和高度的默认的 CSS 盒子模型。
 
@@ -435,14 +493,258 @@ box-sizing属性主要用来控制元素的盒模型的解析模式。默认值�
 
 #### 多种方法实现两列布局
 
-- 实现左边定宽右边自适应效果
+左固定，右自适应
 
-1. table(父级元素)与tabel-cell（两个子集元素）
-2. flex(父级元素)+flex :1（右边子元素）
-3. 左边定宽，并且左浮动；右边设置距离左边的宽度
-4. 左边定宽，左边设置position:absolute；右边设置距离左边的宽度
+* 左边定宽，左浮动；右边设置距离左边的宽度，即左定宽浮动+右margin
+
+  ```css
+  <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+      }
+      .left {
+        float: left;
+        width: 400px;
+        background: #3975b1;
+      }
+      .right {
+        margin-left: 400px;
+        background: #d66e6e;
+      }
+  </style>
+    <main class="content">
+      <div class="left">
+        <p>left</p>
+      </div>
+      <div class="right">
+        <p>right</p>
+      </div>
+    </main>
+  ```
+
+* 左定宽+右绝对定位
+
+  ```Css
+  .content {
+    position: relative;
+  }
+  .left {
+    position: absolute;
+    width: 400px;
+    background: #3975b1;
+  }
+  .right {
+    position: absolute;
+    left: 400px;
+    right: 0;
+    background: #d66e6e;
+  }
+  ```
+
+  ​
+
+*  flex布局
+
+   ```css
+   .content {
+     display: flex;
+     flex-direction: row;
+   }
+   .left {
+     width: 400px;
+     background: #3975b1;
+   }
+   .right {
+     flex: 1;
+     background: #d66e6e;
+   }
+   ```
+
+   ​
+
+*  浮动+BFC
+
+   ```css
+   .left {
+     float: left;
+     width: 400px;
+     background: #3975b1;
+   }
+   .right {
+     overflow: hidden;
+     background: #d66e6e;
+   }
+   ```
+
+   ​
+
+右固定，左自适应
+
+* 绝对定位
+
+  ```css
+  .content {
+    overflow: hidden;
+    position: relative;
+  }
+  .left {
+    overflow: hidden;
+    margin-right: 400px;
+    background: #3975b1;
+  }
+  .right {
+    position: absolute;
+    width: 400px;
+    top: 0;
+    right: 0;
+    background: #d66e6e;
+  } 
+  ```
+
+* flex
+
+  ```css
+  .left {
+    float: left;
+    background: #3975b1;
+  }
+  .right {
+    width: 400px;
+    right: 0;
+    background: #d66e6e;
+  }
+  ```
+
+  ​
+
+* 浮动
+
+  ```css
+  .left {
+    overflow: hidden;
+    margin-right: 400px;
+    background: #3975b1;
+  }
+  .right {
+    float: right;
+    width: 400px;
+    background: #d66e6e;
+  }
+    <main class="content">
+      <div class="right">
+        <p>right</p>
+      </div>
+      <div class="left">
+        <p>left</p>
+      </div>
+    </main>
+  ```
+
+  浮动布局实现右定宽的方法有一点不好的地方在于右侧内容在html中是在左侧之前（与可视顺序不一致）
+
+* table布局
+
+  ```css
+  .content {
+    display: table;
+    width: 100%;
+  }
+  .left {
+    display: table-cell;
+    background: #3975b1;
+  }
+  .right {
+    display: table-cell;
+    width: 400px;
+    background: #d66e6e;
+  }
+  ```
 
 #### 有一个高度自适应的div，里面有两个div，一个高度100px，希望另一个填满剩下的高度。
+
+下侧定高上侧自适应，双行布局的实现。
+
+* flex布局
+
+  ```css
+  <style>
+  html, body {
+    padding: 0;
+    margin: 0;
+  }
+  p {
+    margin: 0;
+  }
+  /* flex layout */
+  .main {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+  .up {
+    flex: 1;
+    background: rgb(197, 93, 93);
+  }
+  .down {
+    height: 100px;
+    background: rgb(109, 107, 206);
+  }
+  </style>
+  <div class="main">
+  <div class="up">
+    <p>up</p>
+  </div>
+  <div class="down">
+    <p>down</p>
+  </div>
+  </div>
+  ```
+
+* 绝对定位
+
+  ```css
+  /* absolute */
+  .main {
+    position: relative;
+    height: 100vh;
+  }
+  .up {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    bottom: 100px;
+    background: rgb(197, 93, 93);
+  }
+  .down {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    height: 100px;
+    background: rgb(109, 107, 206);
+  }
+  ```
+
+  ​
+
+* calc高度
+
+  ```css
+  /* calc */
+  .main {
+  height: 100vh;
+  }
+  .up {
+  height: calc(100% - 100px);
+  background: rgb(197, 93, 93);
+  }
+  .down {
+  height: 100px;
+  background: rgb(109, 107, 206);
+  }
+  ```
+
+  ​
 
 #### CSS多列等高如何实现？
 
@@ -489,8 +791,73 @@ box-sizing属性主要用来控制元素的盒模型的解析模式。默认值�
 
 #### 三列布局（中间固定两边自适应宽度）
 
-1. 采用浮动布局（左边左浮动，右边右浮动，中间margin：0 宽度值）
-2. 绝对定位方式（左右绝对定位，左边left0右边right0，中间上同）
+圣杯布局就是典型的三列布局
+
+![圣杯布局](images/圣杯布局.png)
+
+```css
+<style>
+    body {
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      min-width: 600px;
+    }
+    #header, #footer {
+      background: #ccc;
+    }
+    #footer {
+      clear: both;
+    }
+    #container {
+      padding-left: 200px;
+      padding-right: 200px;
+    }
+    #container .column {
+      height: 200px;
+      float: left;
+      position: relative;
+    }
+    #center {
+      background: #6cc57b;
+      width: 100%;
+    }
+    #left {
+      width: 200px;
+      margin-left: -100%;
+      right: 200px;
+      background: #ec532d;
+    }
+    #right {
+      width: 200px;
+      margin-right: -200px;
+      background: #847ada;
+    }
+  </style>
+<body>
+  <div id="header">#header</div>
+  <div id="container">
+    <div id="center" class="column">#center</div>
+    <div id="left" class="column">#left</div>
+    <div id="right" class="column">#right</div>
+  </div>
+  <div id="footer">#footer</div>
+</body>
+```
+
+其他实现方法：
+
+* left／right分别左右浮动，main设置左右margin
+
+  但该方法需要html元素顺序 left／right／center
+
+* left／right分别左右浮动，main使用`overflow:hidden`触发块级格式上下文
+
+  该方法需要html元素顺序 left／right／center
+
+* flex布局，left／right定宽，html元素顺序 left/main/right
+
+* left/right绝对定位， main设置margin，html元素顺序main/left/right
 
 #### 你用过栅格系统 (grid system) 吗？如果使用过，你最喜欢哪种？
 
@@ -553,27 +920,25 @@ box-sizing属性主要用来控制元素的盒模型的解析模式。默认值�
 - 阻止元素被浮动元素覆盖
 
 
+IFC：行内格式上下文
+
+框会从包含块的顶部开始，一个接一个地水平摆放。
+摆放这些框的时候，它们在水平方向上的外边距、边框、内边距所占用的空间都会被考虑在内。在垂直方向上，这些框可能会以不同形式来对齐：它们可能会把底部或顶部对齐，也可能把其内部的文本基线对齐。能把在一行上的框都完全包含进去的一个矩形区域，被称为该行的行框。水平的margin、padding、border有效，垂直无效。不能指定宽高。
+行框的宽度是由包含块和存在的浮动来决定。行框的高度由行高计算这一章所描述的规则来决定。
+行框一定会高到足以容纳它所包含的全部框。然而，它也可能比它所包含的最高的框还要高（例如：这些框是以基线对齐）。当框 B 的高度小于包含它的行框时，则 B 在行框中垂直对齐的位置由’vertical-align’ 属性来决定。当几个行级框在水平方向上无法塞得进同一个行框时，它们会被分布在两个或多个垂直堆放的行框中。行框会以既没有垂直间距 也没有重叠的方式被垂直堆放起来。
+
+通常，行框的左边紧贴其包含块的左边，而行框的右边紧贴其包含块的右边。然而，浮动框可以插在包含块边缘与行框边缘之间。因此，尽管在同一个IFC中的行框通常有同样的宽度（也就是其包含块的宽度），但它们的宽度也可能受浮动让水平可用空间减少的影响而有所改变。在同一个IFC中，行框的高度通常是变化的（例如：某一行包含了一个比较高的图片，而其它行只包含文本）。
+
+当一行上的行级框的总宽度小于包含它们的行框的宽度，则它们在行框内的水平分布由’text-align’属性来决定。
+
+当一个行内框的宽度超过了行框的宽度，则它会被分割成几个框，而这些框会分布在几个行框。如果此行内框不可分割（例如：单个字符、或语言指定的文字打断规则不允许在此行内框中出现打断、或该行内框受 white-space 属性为 nowrap或 pre 的影响），那么该行内框溢出该行框。
+
 
 #### BFC的作用
 
 1.清除内部浮动：对子元素设置浮动后，父元素会发生高度塌陷，也就是父元素的高度变为0。解决这个问题，只需要把把父元素变成一个BFC就行了。常用的办法是给父元素设置overflow:hidden。
 
 2.上下margin重合问题，可以通过触发BFC来解决
-
-#### 清除浮动元素的方法和各自的优缺点
-
-清除浮动，实际上是清除父元素的高度塌陷。因为子元素脱离了父元素的文档流，所以，父元素失去了高度，导致了塌陷。要解决这个问题，就是让父元素具有高度。
-
-浮动元素的特性： 在正常布局中位于该浮动元素之下的内容，此时会围绕着浮动元素，填满其右侧的空间。浮动到右侧的元素，其他内容将从左侧环绕它（浮动元素影响的不仅是自己，它会影响周围的元素对其进行环绕。float仍会占据其位置，`position:absolute`不占用页面空间 会有重叠问题 ）
-
-1. 在浮动元素末尾添加空标签清除浮动 clear:both （缺点：增加无意义标签）
-
-  ```Html
-  <div style="clear:both;"></div>
-  ```
-
-2. 给父元素设置 overflow:auto属性 
-3. after伪元素
 
 ---
 
@@ -635,7 +1000,7 @@ BFC元素根据上一个问题有几种方法，比如`overflow`，父元素设�
 1. visibility: hidden；这个属性只是简单的隐藏某个元素，但是元素占用的空间任然存在。
 2. opacity: 0；一个CSS3属性，设置0可以使一个元素完全透明，制作出和visibility一样的效果。与visibility相比，它可以被transition和animate
 3. position: absolute；使元素脱离文档流，处于普通文档之上，给它设置一个很大的left负值定位，使元素定位在可见区域之外。
-4. display: none；元素会变得不可见，并且不会再占用文档的空间。
+4. display: none；元素会变得不可见，并且不会再占用文档的空间。这种方法会对屏幕阅读器不可见。
 5. transform: scale(0)；将一个元素设置为无限小，这个元素将不可见。这个元素原来所在的位置将被保留。
 6. HTML5 hidden attribute；hidden属性的效果和display:none;相同，这个属性用于记录一个元素的状态
 7. height: 0; overflow: hidden；将元素在垂直方向上收缩为0,使元素消失。只要元素没有可见的边框，该技术就可以正常工作。
@@ -1023,7 +1388,9 @@ h3.levin span {
 
 #### 抽离样式模块怎么写
 
+将通用样式／业务样式／皮肤样式及组件样式可以分别抽离出来
 
+方便代码复用+模块化
 
 ---
 ### 性能
@@ -1047,6 +1414,8 @@ h3.levin span {
 也就是说，布局要在页面渲染的时候尽量一次性完成，后边的动画部分用`translate()`性能要优于absolute positioning。
 
 #### style标签写在body后与body前有什么区别？
+
+加载顺序不一致，放在body后可能会出现FOUC情况。
 
 ---
 ### 兼容与适配
@@ -1202,15 +1571,6 @@ retina屏幕属于一种高像素密度的高分屏，在苹果设备上，一�
 ```
 
 不会
-
----
-
-
-
-- ​
-
-
-
 
 ---
 

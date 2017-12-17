@@ -45,7 +45,6 @@ script.type="text/javascript";
 script.src="file.js";
 document.getElementsByTagName("head")[0].appendChild(script);
 </script>
-
 ```
 
 此技术的重点在于：无论在何处启动下载，文件额下载和运行都不会阻塞其他页面处理过程。即使在head里（除了用于下载文件的http链接）。
@@ -157,7 +156,6 @@ Chrome的
 2. 如果嵌入JS放在head中，请把嵌入JS放在CSS头部。
 3. 使用defer（只支持IE）
 4. 不要在嵌入的JS中调用运行时间较长的函数，如果一定要用，可以用`setTimeout`来调用
-
 
 
 ------
