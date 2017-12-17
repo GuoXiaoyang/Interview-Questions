@@ -793,7 +793,7 @@ box-sizing属性主要用来控制元素的盒模型的解析模式。默认值�
 
 圣杯布局就是典型的三列布局
 
-![圣杯布局](images/圣杯布局.png)
+![圣杯布局](images/holyGrailLayout.png)
 
 ```css
 <style>
@@ -1401,7 +1401,7 @@ h3.levin span {
 
 浏览器进行页面渲染的步骤是
 
-![浏览器渲染步骤图](images/BrowserRendering.svg)
+![浏览器渲染步骤图](images/browserRendering.svg)
 
 - JavaScrit    实现元素的添加／删除／移动等动画
 - 样式计算     根据CSS选择器规则获取所有元素的最终样式
