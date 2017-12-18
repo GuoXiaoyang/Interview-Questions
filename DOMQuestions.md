@@ -301,6 +301,8 @@ window.onload = function () {
 };
 ```
 
+#### 事件捕获的应用
+
 #### JS事件：target与currentTarget区别
 
 target在事件流的目标阶段；currentTarget在事件流的捕获，目标及冒泡阶段。只有当事件流处在目标阶段的时候，两个的指向才是一样的， 而当处于捕获和冒泡阶段的时候，target指向被单击的对象而currentTarget指向当前事件活动的对象（一般为父级）。
@@ -1116,6 +1118,8 @@ console.log(serializeForm(form));
 4. mouseup时，拖拽结束
 5. 需要注意浏览器边界的情况
 
+#### 实现拖拽功能，比如把5个兄弟节点中的最后一个节点拖拽到节点1和节点2之间
+
 #### 请写一个简单的幻灯效果页面。
 
 一开始想的方案是，数组存储图片的路径，点击切换`<img>`标签的`src`属性。但是这样用户切换图片时，会有加载延迟。所以比较好的方案应该是：
@@ -1199,6 +1203,14 @@ right.addEventListener('click', () => {
 接着用reverse倒叙，table再appendChild。[查看在线代码](http://codepen.io/strick/pen/VvNzqX)。
 
 这里我有个疑问，就是在appendChild的时候，并不是在最后把列加上，而是做了替换操作？
+
+#### 用一个div模拟textarea的实现
+
+#### 实现页面加载进度条
+
+#### 
+
+#### 编写分页器组件的时候，为了减少服务端查询次数，点击“下一页”怎样能确保还有数据可以加载（请求数据不会为空）
 
 ---
 

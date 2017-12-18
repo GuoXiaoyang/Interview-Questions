@@ -51,6 +51,8 @@ document.getElementsByTagName('body')[0].appendChild(img);
   一般情况下是指私钥用于对数据进行签名，公钥用于对签名进行验证;
   HTTP网站在浏览器端用公钥加密敏感数据，然后在服务器端再用私钥解密。
 
+#### 如何确保表单提交里的密码字段不被泄露。验证码是干嘛的，是为了解决什么安全问题。
+
 ---
 
 - [Crypto (加密)](https://github.com/ElemeFE/node-interview/blob/master/sections/zh-cn/security.md#crypto)

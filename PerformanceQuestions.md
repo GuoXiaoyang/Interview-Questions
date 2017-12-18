@@ -62,6 +62,8 @@ document.getElementsByTagName("head")[0].appendChild(script);
 3. 使用CSSsprite，SVGsprite，Iconfont、Base64等技术，如果图片为css图片的话。
 4. 如果图片过大，可以使用特殊编码的图片，加载时会先加载一张压缩的特别厉害的缩略图，以提高用户体验。
 
+#### 页面DOM节点太多，会出现什么问题？如何优化？
+
 #### 你会用什么方式来增强网站的页面滚动效能？
 
 懒加载

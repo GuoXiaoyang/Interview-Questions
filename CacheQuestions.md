@@ -1,25 +1,24 @@
 ### 缓存相关问题
 
+#### 一次js请求一般情况下有哪些地方会有缓存处理？
+
+1. 浏览器端存储
+2. 浏览器端文件缓存
+3. HTTP缓存304
+4. 服务器端文件类型缓存
+5. 表现层&DOM缓存
+
+参考《[一次HTTP请求中有哪些地方可以缓存](http://www.nowamagic.net/librarys/veda/detail/162)》
+
+---
+
 ### 网络缓存
 
-#### Cookie相关
+#### 页面缓存原理
 
-```
-Set-Cookie: value[; expires=date][; domain=domain][; path=path][; secure]
-```
+页面缓存状态是由http header决定的，一个浏览器请求信息，一个是服务器响应信息。主要包括Pragma: no-cache、Cache-Control、 Expires、 Last-Modified、If-Modified-Since。
 
-如果想让cookie存在一段时间，就要为expires属性设置为未来的一个用毫秒数表示的过期日期或时间点，expires默认为设置的expires的当前时间。现在已经被max-age属性所取代，max-age用秒来设置cookie的生存期。如果max-age为0，则表示删除该cookie。
-
-cookie的属性：
-
-- HttpOnly属性告之浏览器该 cookie 绝不能通过 JavaScript 的 `document.cookie` 属性访问。
-- domain属性可以使多个web服务器共享cookie。
-- 只有path属性匹配向服务器发送的路径，Cookie 才会发送。必须是绝对路径
-- secure属性用来指定Cookie只能在加密协议HTTPS下发送到服务器。
-- max-age属性用来指定Cookie有效期
-- expires属性用于指定Cookie过期时间。它的格式采用Date.toUTCString()的格式。
-
-浏览器的同源政策规定，两个网址只要域名相同和端口相同，就可以共享Cookie。
+#### http缓存字段
 
 1. 浏览器输入 url 之后敲下回车，刷新 F5 与强制刷新(Ctrl + F5)，又有什么区别？
 
@@ -108,19 +107,11 @@ localStorage.clear();  // remove all data
 
 ```
 
-------
 
-#### 一次js请求一般情况下有哪些地方会有缓存处理？
-
-1. 浏览器端存储
-2. 浏览器端文件缓存
-3. HTTP缓存304
-4. 服务器端文件类型缓存
-5. 表现层&DOM缓存
-
-参考《[一次HTTP请求中有哪些地方可以缓存](http://www.nowamagic.net/librarys/veda/detail/162)》
 
 ------
+
+### Cookie相关
 
 #### cookie及其操作
 
@@ -146,9 +137,30 @@ document.cookie = 'name=aaa; path=/; domain=domain; secure';
 
 ```
 
-#### 页面缓存原理
+#### 
 
-页面缓存状态是由http header决定的，一个浏览器请求信息，一个是服务器响应信息。主要包括Pragma: no-cache、Cache-Control、 Expires、 Last-Modified、If-Modified-Since。
+```
+Set-Cookie: value[; expires=date][; domain=domain][; path=path][; secure]
+```
+
+如果想让cookie存在一段时间，就要为expires属性设置为未来的一个用毫秒数表示的过期日期或时间点，expires默认为设置的expires的当前时间。现在已经被max-age属性所取代，max-age用秒来设置cookie的生存期。如果max-age为0，则表示删除该cookie。
+
+cookie的属性：
+
+- HttpOnly属性告之浏览器该 cookie 绝不能通过 JavaScript 的 `document.cookie` 属性访问。
+- domain属性可以使多个web服务器共享cookie。
+- 只有path属性匹配向服务器发送的路径，Cookie 才会发送。必须是绝对路径
+- secure属性用来指定Cookie只能在加密协议HTTPS下发送到服务器。
+- max-age属性用来指定Cookie有效期
+- expires属性用于指定Cookie过期时间。它的格式采用Date.toUTCString()的格式。
+
+浏览器的同源政策规定，两个网址只要域名相同和端口相同，就可以共享Cookie。
+
+#### 服务器和浏览器之间的 cookies 是怎么传的
+
+#### httponly 的 cookies 和可读写的 cookie 有什么区别，有无长度限制
+
+---
 
 #### 应用程序存储和离线web应用
 
@@ -169,6 +181,8 @@ NETWORK:
 cgi/
 
 ```
+
+#### ServiceWorker
 
 
 

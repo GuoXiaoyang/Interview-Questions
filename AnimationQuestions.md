@@ -67,6 +67,8 @@ function moveLeft(elem, distance) {
 
 
 
+#### 动画：setTimeout何时执行，requestAnimationFrame的优点
+
 ---
 
 #### 视差滚动效果，如何给每页做不同的动画？（回到顶部，向下滑动要再次出现，和只出现一次分别怎么做？）

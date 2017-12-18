@@ -181,6 +181,8 @@ a.map(parseInt);  // ["1-0", "2-1", "3-2"] 不能大于radix
  因为二进制里面，没有数字3,导致出现超范围的radix赋值和不合法的进制解析，才会返回NaN
  所以`["1", "2", "3"].map(parseInt)` 答案也就是：[1, NaN, NaN]
 
+#### 手写parseInt的实现：要求简单一些，把字符串型的数字转化为真正的数字即可，但不能使用JS原生的字符串转数字的- - - API，比如Number()
+
 #### `[].forEach.call($("*"),function(a){a.style.outline="1px solid #"+(~~(Math.random()*(1<<24))).toString(16)})` 能解释一下这段代码的意思吗？
 
 #### 如何判断一个对象是否为数组

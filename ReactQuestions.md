@@ -18,6 +18,8 @@
 - jsx的一个问题是，渲染函数常常包含大量逻辑，最终看着更像是程序片段，而不是视觉呈现。后期如果发生需求更改，维护起来工作量将是巨大的
 - 大而全，上手有难度
 
+#### 使用前端框架（angular/vue/react）带来哪些好处，相对于使用jQuery
+
 #### jsx的优缺点
 
 允许使用熟悉的语法来定义HTML元素树 JSX 让小组件更加简单、明了、直观。 更加语义化且易懂的标签 JSX 本质是对JavaScript语法的一个扩展，看起来像是某种模板语言，但其实不是。但正因为形似HTML，描述UI就更直观了，也极大地方便了开发； 在React中babel会将JSX转换为`React.createElement`函数调用，然后将JSX转换为正确的JSON对象（VDOM 也是一个“树”形的结构） React/JSX乍看之下，觉得非常啰嗦，但使用JavaScript而不是模板语法来开发（模板语法比较有局限性），赋予了开发者许多编程能力。
@@ -356,7 +358,7 @@ window.history.replaceState(stateObject, title, URL)
 
 #### 
 
-
+#### 单页应用，如何实现其路由功能
 
 ---
 

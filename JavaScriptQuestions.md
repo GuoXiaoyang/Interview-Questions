@@ -45,7 +45,13 @@
 4. 如果一个值是**数字**另一个是**字符串**，将**字符串转换为数字**进行比较
 5. 如果有布尔类型，将**true转换为1，false转换为0**，然后用==规则继续比较
 6. 如果一个值是对象，另一个是数字或字符串，将对象转换为原始值然后用==规则继续比较
-7. **其他所有情况都认为不相等**
+7. 其他所有情况都认为不相等
+
+转换的过程是字符串／布尔类型 -> 数字，对象->原始值
+
+[`Object.prototype.valueOf()`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/valueOf) 
+
+
 
 #### 描述以下变量的区别：`null`，`undefined` 或 `undeclared`？该如何检测它们？
 
@@ -88,7 +94,9 @@
 
 `''`为`false`
 
-#### 对象到字符串的转换步骤
+#### 
+
+#### 对象到字符串的转换步骤/对象是怎样转换成原始类型的
 
 1. 如果对象有toString()方法，javascript调用它。如果返回一个原始值（primitive value如：string number boolean）,将这个值转换为字符串作为结果
 2. 如果对象没有toString()方法或者返回值不是原始值，javascript寻找对象的valueOf()方法，如果存在就调用它，返回结果是原始值则转为字符串作为结果
@@ -221,20 +229,32 @@ let arr2 = arr1.concat();
 
 ```javascript
 function isEqual(a, b) {
-    var aProps = Object.getOwnPropertyNames(a),
-        bProps = Object.getOwnPropertyNames(b);
-
-    if (aProps.length != bProps.length) {
+  // Object.getOwnPropertyNames(a) vs Object.keys(a)
+  // Object.getOwnPropertyNames(a) 获取对象的自身属性，包括不可枚举(enumerable)属性
+  // Object.keys(a) 获取对象的自身属性，不包括不可枚举(enumerable)属性
+  var aProps = Object.getOwnPropertyNames(a),
+      bProps = Object.getOwnPropertyNames(b);
+  // 属性长度不等则返回false
+  if (aProps.length != bProps.length) {
+    return false;
+  }
+  // 比较具体的属性值，需要嵌套比较
+  for (var i = 0; i < aProps.length; i++) {
+    var propName = aProps[i];
+    // 如果属性值为对象
+    if(typeof a[propName] === 'object' && typeof b[propName] === 'object') {
+      if(!isEqual(a[propName], b[propName])) {
         return false;
+      }
+    } else if(typeof a[propName] !== 'object' && typeof b[propName] !== 'object') {
+      if (a[propName] !== b[propName]) {
+      	return false;
+      }
+    } else {
+      return false;
     }
-
-    for (var i = 0; i < aProps.length; i++) {
-        var propName = aProps[i];     
-        if (a[propName] !== b[propName]) {
-            return false;
-        }
-    }
-    return true;
+  }
+  return true;
 }
 ```
 
@@ -284,8 +304,6 @@ promise.then(function(result) {
 });
 ```
 
-
-
 #### 使用 Promises 而非回调 (callbacks) 优缺点是什么？
 
 优点
@@ -323,6 +341,8 @@ Promise 也有一些缺点。首先，无法取消 Promise，一旦新建它就�
 - Promise.all和Promise.race的区别？
 
 Promise.all 把多个promise实例当成一个promise实例,当这些实例的状态都发生改变时才会返回一个新的promise实例，才会执行then方法。 Promise.race 只要该数组中的 Promise 对象的状态发生变化（无论是resolve还是reject）该方法都会返回。
+
+* Promise中`then`的第二个函数与catch有什么异同
 
 #### 请解释同步 (synchronous) 和异步 (asynchronous) 函数的区别。
 
@@ -885,6 +905,8 @@ JS中不同的模块加载机制。大概梳理JS模块化的发展吧。
 
 最近使用React偏多，两者都有吧。如果可能的话，尽量跳出框架用原生JS写几个项目。
 
+#### require.js的实现原理（如果使用过webpack，进一步会问，两者打包的异同及优缺点）
+
 ---
 ### Ajax／跨域
 
@@ -1031,6 +1053,10 @@ fetch(url).then(response => response.json())
   .then(data => console.log(data))
   .catch(e => console.log("Oops, error", e))
 ```
+
+#### postMessage原理，怎样跨域
+
+
 
 ---
 

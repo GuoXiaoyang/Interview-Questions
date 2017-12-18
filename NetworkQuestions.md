@@ -3,7 +3,6 @@
 
 浏览器对单个域名请求对资源数量做了限制。
 
----
 #### 请尽可能完整得描述从输入 URL 到整个网页加载完毕及显示在屏幕上的整个流程。
 
 很经典的面试题目。
@@ -234,6 +233,8 @@ GET方式需要使用Request.QueryString来取得变量的值，而POST方式通
 向服务器发送大量数据（POST 没有数据量限制）
 发送包含未知字符的用户输入时，POST 比 GET 更稳定也更可靠
 
+
+
 ---
 
 #### Web应用从服务器主动推送Data到客户端有哪些方式
@@ -363,7 +364,15 @@ socket.onopen = function(event) {
 
 ---
 
-#### HTTP和HTTPS
+#### 说一下网络五层模型（HTTP协议从应用层到底层都基于哪些协议）
+
+#### http1与http2
+
+http://www.alloyteam.com/2016/07/httphttp2-0spdyhttps-reading-this-is-enough/
+
+https://www.zhihu.com/question/34074946
+
+#### http与https
 
 `HTTP`协议通常承载于TCP协议之上，有时也承载于`TLS`或`SSL`协议层之上，这个时候，就成了我们常说的HTTPS。
 
@@ -413,7 +422,7 @@ http1.0默认关闭，http1.1默认启用
 - 缓存处理，在HTTP1.0中主要使用header里的If-Modified-Since，Expires来做为缓存判断的标准，HTTP1.1则引入更多缓存控制策略，例如Entity tag,If-Match,If-None-Match等
 - Http1.1支持长连接和请求的流水线（pipeline）处理，在一个TCP连接上可以传送多个HTTP请求和响应，减少了建立和关闭连接的消耗和延迟，默认开启Connection:keep-alive
 
----
+
 
 #### HTTP request报文结构是怎样的
 
@@ -468,8 +477,6 @@ Content-Type: text/html; charset=iso-8859-1
 
 {"name": "qiu", "age": 25}
 ```
-
----
 
 #### HTTP状态码及其含义
 
