@@ -320,7 +320,7 @@ promise.then(function(result) {
 
 ECMAScript 6 Promise 缺少两个有时很有用的特性：
 
-- 不能取消执行。
+- 不能取消执行。？
 - 无法获取当前执行的进度信息（比如，要在用户界面展示进度条）。
 
 #### Promise的原理
@@ -340,7 +340,7 @@ Promise 也有一些缺点。首先，无法取消 Promise，一旦新建它就�
 
 - Promise.all和Promise.race的区别？
 
-Promise.all 把多个promise实例当成一个promise实例,当这些实例的状态都发生改变时才会返回一个新的promise实例，才会执行then方法。 Promise.race 只要该数组中的 Promise 对象的状态发生变化（无论是resolve还是reject）该方法都会返回。
+Promise.all 把多个promise实例当成一个promise实例,当这些实例的状态都发生改变时才会返回一个新的promise实例，才会执行then方法。 Promise.race 只要该数组中的任意一个 Promise 对象的状态发生变化（无论是resolve还是reject）该方法都会返回。
 
 * Promise中`then`的第二个函数与catch有什么异同
 
