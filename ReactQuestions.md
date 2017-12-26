@@ -366,6 +366,18 @@ window.history.replaceState(stateObject, title, URL)
 
 ---
 
+### 错误处理
+
+#### ```ComponentDidCatch``` vs ```try  Catch```
+
+https://reactjs.org/blog/2017/07/26/error-handling-in-react-16.html
+
+https://stackoverflow.com/questions/35932162/reactjs-try-catch-in-render-does-not-catch-children-errors
+
+https://engineering.classdojo.com/blog/2016/12/10/catching-react-errors/
+
+---
+
 ### 其他常用相关库
 
 #### Redux
