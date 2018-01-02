@@ -541,7 +541,19 @@ console.log(c, b);
 
 ```
 
+#### 实现Object.assign的polyfill
 
+
+
+#### 实现Function.prototype.bind
+
+#### 实现Array.prototype.reduce
+
+#### 实现一个简单的Promise，只需要支持Promise.then
+
+#### promise封装fetch api使其支持timeout
+
+#### 原生js实现jQuery的fn.animate({scrollTop: 100}, 500)
 
 ---
 

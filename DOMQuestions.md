@@ -239,7 +239,7 @@ function getElementsByAttribute(attribute){
 */
 ```
 
-
+#### event.target与event.currentTarget区别
 
 ---
 
@@ -1211,6 +1211,12 @@ right.addEventListener('click', () => {
 #### 
 
 #### 编写分页器组件的时候，为了减少服务端查询次数，点击“下一页”怎样能确保还有数据可以加载（请求数据不会为空）
+
+
+
+#### 瀑布流滚动加载下一页的方法，以及可能会遇到的问题及解决
+
+#### 无页面刷新跳转实现
 
 ---
 

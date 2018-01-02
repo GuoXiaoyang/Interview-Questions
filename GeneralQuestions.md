@@ -287,11 +287,15 @@ Chrome:     6
 - 优雅降级则更接近敏捷开发，先针对现代浏览器将功能开发完善，然后对于老旧版本浏览器进行功能或者页面上的降级。
 
 
+
+
+
+
 ---
 
 #### 参考
 
 [^ 1 ]: 跨域：http://www.ruanyifeng.com/blog/2016/04/cors.html
-[^2]: https://github.com/ElemeFE/hire
-[^3]: https://www.kancloud.cn/digest/front-interview/86832
+[^ 2]: https://github.com/ElemeFE/hire
+[^ 3]: https://www.kancloud.cn/digest/front-interview/86832
 
